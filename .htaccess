@@ -14,7 +14,3 @@ Options All -Indexes
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?route=/$1 [L,QSA]
-
-<IfModule mime_module>
-AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
-</IfModule>

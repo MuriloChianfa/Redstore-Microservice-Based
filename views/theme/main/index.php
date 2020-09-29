@@ -9,7 +9,7 @@
             <div class="col-2">
                 <h1>Give your workout <br> A new style!</h1>
                 <p>Success isn't alwayes about greatness. It's aboute consistency. Consistent <br> hard work gains
-                    success. Greatness will comee.</p>
+                    success. Greatness will comeee.</p>
                 <a href="" class="btn">Explore Now &#8594;</a>
             </div>
         </div>
