@@ -17,8 +17,8 @@
 
     <div class="row">
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-1.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-1.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -30,8 +30,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-2.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-2.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -43,8 +43,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-3.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-3.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -56,8 +56,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-4.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-4.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -70,8 +70,8 @@
     </div>
     <div class="row">
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-1.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-1.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -83,8 +83,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-2.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-2.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -96,8 +96,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-3.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-3.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -109,8 +109,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-4.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-4.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -124,8 +124,8 @@
 
     <div class="row">
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-5.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-5.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -137,8 +137,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-6.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-6.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -150,8 +150,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-7.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-7.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -163,8 +163,8 @@
         </div>
 
         <div class="col-4">
-            <a href="products-details.html"><img src="<?= asset("/images/product-8.jpg"); ?>" alt="produto1"></a>
-            <a href="products-details.html"><h4>Red Printed T-shirt</h4></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset("/images/product-8.jpg"); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4>Red Printed T-shirt</h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
