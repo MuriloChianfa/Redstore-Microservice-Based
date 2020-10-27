@@ -13,13 +13,7 @@ function routeImage(string $imageUrl): string {
 }
 
 function asset(string $path, $time = true): string {
-    $file = "./views/assets".$path;
-    $fileOnDir = dirname(__DIR__, 1)."/views/assets/{$path}";
-    
-    if($time && file_exists($fileOnDir)) {
-        $file .= "?time=".filemtime($fileOnDir);
-    }
-    return $file;
+    return SITE["root"] . "/views/assets". $path;
 }
 
 function flash(string $type = null, string $message = null): ?string {

@@ -52,9 +52,9 @@
 
     <script src="<?= asset("/js/jquery.js"); ?>"></script>
     <script src="<?= asset("/js/jquery-ui.js"); ?>"></script>
-    <?= $v->section("scripts"); ?>
     <script src="<?= asset("/js/footer.js"); ?>"></script>
     <script src="<?= asset("/js/form.js"); ?>"></script>
 
+    <?= $v->section("scripts"); ?>
 </body>
 </html>

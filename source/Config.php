@@ -5,7 +5,7 @@ define("SITE", [
     "desc" => "A verdadeira plataforma de ecommerce",
     "domain" => "redstore.codedrop.com.br",
     "locale" => "pt_BR",
-    "root" => "./"
+    "root" => "http://127.0.0.1/Github/RedStore"
 ]);
 
 // DESCOMENTAR APENAS PARA FAZER OS MINIFY
