@@ -7,7 +7,6 @@ use Source\Models\User;
 class Login extends Controller {
     public function __construct($router) {
         parent::__construct($router);
-
         // if(!empty($_SESSION["user"])) {
         //     $this->router->redirect("web.home");
         // }

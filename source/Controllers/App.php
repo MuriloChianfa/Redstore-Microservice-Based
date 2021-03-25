@@ -12,7 +12,7 @@ class App extends Controller {
     public function __construct($router) {
         parent::__construct($router);
 
-        if(empty($_SESSION["user"]) || !$this->user = (new User())->findById($_SESSION["user"])) {
+        if(empty($_SESSION["user"])) {
             unset($_SESSION["user"]);
 
             flash("error", "Acesso negado. Favor logar antes");

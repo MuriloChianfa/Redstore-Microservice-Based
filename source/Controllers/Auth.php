@@ -41,7 +41,7 @@ class Auth extends Controller
 
     public function register($data): void {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-        if(in_array("", $data)) {
+        if(in_array("", $data) || empty($data)) {
             echo $this->ajaxResponse("message", [
                 "type" => "error",
                 "message" => "Preencha todos os campos para cadastrar-se"
@@ -49,38 +49,35 @@ class Auth extends Controller
             return;
         }
 
-        // if(!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
-        //     echo $this->ajaxResponse("message", [
-        //         "type" => "error",
-        //         "message" => "Favor informe um e-mail válido para continuar"
-        //     ]);
-        //     return;
-        // }
-
-        // $check_user_email = (new User())->find("email = :e", "e={$data["email"]}")->count();
-        // if($check_user_email) {
-        //     echo $this->ajaxResponse("message", [
-        //         "type" => "error",
-        //         "message" => "Ja existe um usuario cadastrado com esse e-mail"
-        //     ]);
-        //     return;
-        // }
-        
-        $user = new User();
-        $user->first_name = $data["first_name"];
-        $user->last_name = $data["last_name"];
-        $user->email = $data["email"];
-        $user->passwd = $data["passwd"];
-
-        if(!$user->save()) {
+        if(!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
             echo $this->ajaxResponse("message", [
                 "type" => "error",
-                "message" => $user->fail()->getMessage()
+                "message" => "Favor informe um e-mail válido para continuar"
             ]);
             return;
         }
 
-        $_SESSION["user"] = $user->id;
+        $req = callAPI('/register', 'POST', $data);
+
+        if (isset($req['curl_error']) || $req['code'] != 200) {
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => "Ocorreu algum problema interno!"
+            ]);
+            return;
+        }
+
+        $req = json_decode($req['result']);
+
+        if (!isset($req->token)) {
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => $req->message
+            ]);
+            return;
+        }
+
+        $_SESSION["user"] = $req->token;
         echo $this->ajaxResponse("redirect", [
             "url" => $this->router->route("app.home")
         ]);
