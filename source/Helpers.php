@@ -38,7 +38,7 @@ function flash(string $type = null, string $message = null): ?string {
     return null;
 }
 
-function callAPI(string $url, string $method, string $jwt = null, $data = null)
+function callAPI(string $url, string $method, $data = null, string $jwt = null)
 {
     $curl = curl_init(BASE_API . $url); // Montar url da API
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // Desligar a verificação do TLS

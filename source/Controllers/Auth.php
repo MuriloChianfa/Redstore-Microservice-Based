@@ -13,7 +13,7 @@ class Auth extends Controller
 
     public function login($data): void {
         $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
-        $passwd = filter_var($data["passwd"], FILTER_DEFAULT);
+        $passwd = filter_var($data["password"], FILTER_DEFAULT);
 
         if(!$email || !$passwd) {
             echo $this->ajaxResponse("message", [
@@ -23,20 +23,39 @@ class Auth extends Controller
             return;
         }
 
-        $user = (new User())->find("email = :e", "e={$email}")->fetch();
-        if(!$user || !password_verify($passwd, $user->passwd)) {
+        $data = [
+            "email" => $email,
+            "password" => $passwd
+        ];
+
+        $req = callAPI('/login', 'POST', $data, $_SESSION['user']);
+
+        if (isset($req['curl_error']) || $req['code'] != 200) {
             echo $this->ajaxResponse("message", [
                 "type" => "error",
-                "message" => "E-mail ou senha invalido"
+                "message" => "Ocorreu algum problema interno!"
             ]);
             return;
         }
 
-        $_SESSION["user"] = $user->id;
+        $req = json_decode($req['result']);
 
-        echo $this->ajaxResponse("redirect", [
-            "url" => $this->router->route("app.home")
+        if (!isset($req->token)) {
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => $req->message
+            ]);
+            return;
+        }
+
+        echo $this->ajaxResponse("message", [
+            "type" => "success",
+            "message" => $req->token
         ]);
+
+        // echo $this->ajaxResponse("redirect", [
+        //     "url" => $this->router->route("app.home")
+        // ]);
     }
 
     public function register($data): void {
