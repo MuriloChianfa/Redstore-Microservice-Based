@@ -1,0 +1,47 @@
+{
+  "name": "upinside/fsphp",
+  "description": "Formação Full Stack PHP Developer",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Murilo",
+      "email": "tibiaparainiciantes@outlook.com",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor",
+    "platform": {
+      "php": "7.2.18"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Source\\": "source/"
+    },
+    "files": [
+      "source/Boot/Config.php",
+      "source/Boot/Helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "coffeecode/router": "^1.0",
+    "predis/predis": "1.1.*",
+    "php-amqplib/php-amqplib": "2.12",
+    "vlucas/phpdotenv": "5.3.*"
+  },
+  "require-dev": {
+      "phpunit/phpunit": "8.*"
+  },
+  "scripts": {
+    "post-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ]
+  }
+}

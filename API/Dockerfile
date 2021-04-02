@@ -30,9 +30,9 @@ RUN sed -i 's/error_log = syslog/error_log = \/var\/log\/apache2\/error.log/g' "
 RUN ln -sf /dev/stdout /var/log/apache2/error.log
 
 # Set all front files
-WORKDIR /var/www/html/
-ADD ./api.zip /var/www/html/
-RUN unzip api.zip && mv /var/www/html/api/* /var/www/html/ && rm api.zip
+# WORKDIR /var/www/html/
+# ADD ./api.zip /var/www/html/
+# RUN unzip api.zip && mv /var/www/html/api/* /var/www/html/ && rm api.zip
 
 # removing bins
 # RUN rm -rf /usr/bin/wget /usr/bin/curl /usr/bin/apt-get /usr/bin/apt /usr/bin/unzip /usr/bin/which /usr/bin/whereis /usr/bin/whoami
@@ -41,5 +41,5 @@ RUN unzip api.zip && mv /var/www/html/api/* /var/www/html/ && rm api.zip
 # COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # ssl port
-EXPOSE 4433
+EXPOSE 443
 

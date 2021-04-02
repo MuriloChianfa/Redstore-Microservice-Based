@@ -21,19 +21,25 @@ services:
     #  - database-network
   
   redstore-api:
-    build:
-      context: /home/simple-server/Redstore/API
-      dockerfile: Dockerfile
+    build:    
+      context: .
+      network: host
     image: redstore-api
     container_name: redstore-api
+    restart: unless-stopped
     network_mode: host
-    #networks:
-    #  - database-network
-    #  - rabbitmq-network
     ports:
-      - "4433:80"
+      - "443:443"
     volumes:
-      - /home/simple-server/Redstore/API/API:/var/www/html
+      - /home/simple-server/redstore/API/api:/var/www/html
+    stdin_open: false
+    tty: false
+    healthcheck:
+      test: ["CMD", "netstat", "-nltp", "|", "grep", "::443"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   redstore-queue:
     build:
@@ -82,7 +88,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /home/simple-server/Redstore/Web/Frontend:/usr/share/nginx/html
+      - /home/simple-server/redstore/Web/Frontend:/usr/share/nginx/html
 
 networks:
   host:
