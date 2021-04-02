@@ -1,0 +1,93 @@
+version: "3.8"
+services:
+  redstore-database:
+    build:
+      context: ./Database
+      dockerfile: Dockerfile
+    image: redstore-database
+    container_name: redstore-database
+    network_mode: host
+    #networks:
+    #  - database-network
+
+  redstore-cache:
+    build:
+      context: ./Cache
+      dockerfile: Dockerfile
+    image: redstore-cache
+    container_name: redstore-cache
+    network_mode: host
+    #networks:
+    #  - database-network
+  
+  redstore-api:
+    build:
+      context: /home/simple-server/Redstore/API
+      dockerfile: Dockerfile
+    image: redstore-api
+    container_name: redstore-api
+    network_mode: host
+    #networks:
+    #  - database-network
+    #  - rabbitmq-network
+    ports:
+      - "4433:80"
+    volumes:
+      - /home/simple-server/Redstore/API/API:/var/www/html
+
+  redstore-queue:
+    build:
+      context: ./Queue
+      dockerfile: Dockerfile
+    image: redstore-queue
+    container_name: redstore-queue
+    depends_on:
+      - redstore-api
+    networks:
+      - rabbitmq-network
+
+  redstore-logs:
+    build:
+      context: ./Logs
+      dockerfile: Dockerfile
+    image: redstore-logs
+    container_name: redstore-logs
+    depends_on:
+      - redstore-queue
+    networks:
+      - rabbitmq-network
+
+  redstore-mailler:
+    build:
+      context: ./Mailler
+      dockerfile: Dockerfile
+    image: redstore-mailler
+    container_name: redstore-mailler
+    depends_on:
+      - redstore-queue
+    networks:
+      - rabbitmq-network
+
+  redstore-web:
+    build:
+      context: ./Web
+      dockerfile: Dockerfile
+    image: redstore-web
+    container_name: redstore-web
+    depends_on:
+      - redstore-api
+    networks:
+      - host
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /home/simple-server/Redstore/Web/Frontend:/usr/share/nginx/html
+
+networks:
+  host:
+    driver: bridge
+  rabbitmq-network:
+    driver: bridge
+  database-network:
+    driver: bridge

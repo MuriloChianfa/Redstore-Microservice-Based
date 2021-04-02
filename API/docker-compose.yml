@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  made4it-web:
+    build:    
+      context: .
+      network: host
+    image: docker.made4it.com.br/made4it-web
+    container_name: made4flow-web
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - "443:443"
+    stdin_open: false
+    tty: false
+    healthcheck:
+      test: ["CMD", "netstat", "-nltp", "|", "grep", "::443"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
