@@ -1,5 +1,13 @@
-FROM rabbitmq:3.8.9-management
+FROM rabbitmq:3.8.14-alpine
 
-MAINTAINER Murilo Chianfa <https://github.com/murilochianfa>
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
-EXPOSE 15671 15672
+# installing curl
+RUN apk update && apk add curl
+
+# set reference for conf file
+ADD rabbitmq.conf /etc/rabbitmq/
+
+# default options
+ADD definitions.json /etc/rabbitmq/
+

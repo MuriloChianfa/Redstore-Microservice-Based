@@ -1,5 +1,18 @@
-FROM cassandra:3.11.9
+FROM alpine:latest
 
-MAINTAINER Murilo Chianfa <https://github.com/murilochianfa>
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
-EXPOSE 7000 7001 7199 9042 9160
+RUN apk update
+
+RUN apk add --no-cache rsyslog
+RUN apk add --no-cache rsyslog-mysql
+
+COPY /skel /
+
+RUN chmod +x init.sh
+
+# expose rsyslog ports
+EXPOSE 514/tcp
+EXPOSE 514/udp
+
+ENTRYPOINT [ "./init.sh" ]

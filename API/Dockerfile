@@ -1,7 +1,7 @@
 # PHP 7.2 docker apache image
 FROM php:7.2-apache
 
-MAINTAINER Murilo Chianfa <https://github.com/murilochianfa>
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
 # Adicionar extenções PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql 

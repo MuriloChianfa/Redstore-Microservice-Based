@@ -1,5 +1,5 @@
 FROM redis:6.0.9
 
-MAINTAINER Murilo Chianfa <https://github.com/murilochianfa>
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
 EXPOSE 6379

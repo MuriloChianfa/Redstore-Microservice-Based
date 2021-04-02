@@ -23,7 +23,8 @@ $router->get("/cart", "Web:cart", "web.cart");
  */
 $router->group(null);
 $router->get("/login", "Login:loginn", "login.login");
-// $router->get("/cadastrar", "Web:register", "web.register");
+// $router->get("/login", "Login:loginn", "auth.facebook");
+// $router->get("/login", "Login:loginn", "auth.google");
 // $router->get("/recuperar", "Web:forget", "web.forget");
 // $router->get("/senha/{email}/{forget}", "Web:reset", "web.reset");
 
@@ -31,8 +32,8 @@ $router->get("/login", "Login:loginn", "login.login");
  * AUTH
  */
 // $router->group(null);
-// $router->post("/login", "Auth:login", "auth.login");
-// $router->post("/register", "Auth:register", "auth.register");
+$router->post("/login", "Auth:login", "auth.login");
+$router->post("/register", "Auth:register", "auth.register");
 // $router->post("/forget", "Auth:forget", "auth.forget");
 // $router->post("/reset", "Auth:reset", "auth.reset");
 

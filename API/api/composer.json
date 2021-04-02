@@ -1,12 +1,11 @@
 {
-  "name": "upinside/fsphp",
-  "description": "Formação Full Stack PHP Developer",
+  "name": "murilochianfa/redstore-api",
+  "description": "Api redstore",
   "minimum-stability": "stable",
   "prefer-stable": true,
   "authors": [
     {
-      "name": "Murilo",
-      "email": "tibiaparainiciantes@outlook.com",
+      "name": "MuriloChianfa",
       "role": "Developer"
     }
   ],

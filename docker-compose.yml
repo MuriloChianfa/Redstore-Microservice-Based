@@ -4,75 +4,243 @@ services:
     build:
       context: ./Database
       dockerfile: Dockerfile
+      cache_from:
+        - mysql:5.5.60
+      args:
+        buildno: 1
     image: redstore-database
     container_name: redstore-database
-    network_mode: host
-    #networks:
-    #  - database-network
-
-  redstore-cache:
-    build:
-      context: ./Cache
-      dockerfile: Dockerfile
-    image: redstore-cache
-    container_name: redstore-cache
-    network_mode: host
-    #networks:
-    #  - database-network
-  
-  redstore-api:
-    build:    
-      context: .
-      network: host
-    image: redstore-api
-    container_name: redstore-api
     restart: unless-stopped
-    network_mode: host
+    environment:
+      - MYSQL_ROOT_PASSWORD: simple-server
     ports:
-      - "443:443"
-    volumes:
-      - /home/simple-server/redstore/API/api:/var/www/html
+      # - "3306:3306"
     stdin_open: false
     tty: false
+    networks:
+      log-network:
+        ipv4_address: 172.16.238.10
+    logging:
+      driver: local
     healthcheck:
-      test: ["CMD", "netstat", "-nltp", "|", "grep", "::443"]
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:3306"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  redstore-queue:
-    build:
-      context: ./Queue
-      dockerfile: Dockerfile
-    image: redstore-queue
-    container_name: redstore-queue
-    depends_on:
-      - redstore-api
-    networks:
-      - rabbitmq-network
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
 
   redstore-logs:
     build:
       context: ./Logs
       dockerfile: Dockerfile
+      cache_from:
+        - alpine
+      args:
+        buildno: 1
     image: redstore-logs
     container_name: redstore-logs
+    restart: unless-stopped
+    depends_on:
+      - redstore-database
+    ports:
+      # - "514:514"
+    stdin_open: false
+    tty: false
+    networks:
+      log-network:
+        ipv4_address: 172.16.238.11
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:514"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
+
+  redstore-cache:
+    build:
+      context: ./Cache
+      dockerfile: Dockerfile
+      cache_from:
+        - redis:6.0.9
+      args:
+        buildno: 1
+    image: redstore-cache
+    container_name: redstore-cache
+    restart: unless-stopped
+    depends_on:
+      - redstore-logs
+    ports:
+      # - "6379:6379"
+    stdin_open: false
+    tty: false
+    networks:
+      log-network:
+        ipv4_address: 172.16.238.12
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:6379"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
+
+  redstore-queue:
+    build:
+      context: ./Queue
+      dockerfile: Dockerfile
+      cache_from:
+        - php:7.2-apache
+      args:
+        buildno: 1
+    image: redstore-queue
+    container_name: redstore-queue
+    restart: unless-stopped
+    depends_on:
+      - redstore-logs
+    ports:
+      # - "15671:15671"
+      # - "15672:15672"
+      # - "5671:5671"
+      # - "5672:5672"
+    stdin_open: false
+    tty: false
+    networks:
+      log-network:
+        ipv4_address: 172.16.238.14
+      queue-network:
+        ipv4_address: 172.16.239.10
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5672"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
+
+  redstore-api:
+    build:    
+      context: ./API
+      network: host
+      cache_from:
+        - php:7.2-apache
+      args:
+        buildno: 1
+    image: redstore-api
+    container_name: redstore-api
+    restart: unless-stopped
     depends_on:
       - redstore-queue
+    ports:
+      - "3000:3000"
+    volumes:
+      - /home/simple-server/redstore/API/api:/var/www/html
+    stdin_open: false
+    tty: false
     networks:
-      - rabbitmq-network
+      log-network:
+        ipv4_address: 172.16.238.13
+      queue-network:
+        ipv4_address: 172.16.239.11
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
 
   redstore-mailler:
     build:
       context: ./Mailler
       dockerfile: Dockerfile
+      cache_from:
+        - php:8.0.3-alpine3.13
+      args:
+        buildno: 1
     image: redstore-mailler
     container_name: redstore-mailler
     depends_on:
-      - redstore-queue
+      - redstore-api
+      stdin_open: false
+      tty: false
     networks:
-      - rabbitmq-network
+      log-network:
+        ipv4_address: 172.16.238.15
+      queue-network:
+        ipv4_address: 172.16.239.12
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-n", "&&", "echo", "1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
 
   redstore-web:
     build:
@@ -91,9 +259,23 @@ services:
       - /home/simple-server/redstore/Web/Frontend:/usr/share/nginx/html
 
 networks:
-  host:
-    driver: bridge
-  rabbitmq-network:
-    driver: bridge
-  database-network:
-    driver: bridge
+  log-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
+  queue-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.239.0/24"
+  api-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.240.0/24"
+  cache-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.241.0/24"
