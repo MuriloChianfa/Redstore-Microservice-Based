@@ -15,7 +15,7 @@ RUN chown -R mysql:mysql /docker-entrypoint-initdb.d/
 RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise main universe" >> /etc/apt/source.list
 
 # installing components
-RUN apt-get update && apt-get install -o Acquire::ForceIPv4=true -y wget git gcc make automake pkg-config libbsd-dev librabbitmq4 librabbitmq-dev default-libmysqlclient-dev rsyslog
+RUN apt-get update && apt-get install -o Acquire::ForceIPv4=true -y wget git gcc make automake pkg-config libbsd-dev librabbitmq4 librabbitmq-dev default-libmysqlclient-dev rsyslog net-tools
 
 # enable rsyslog output send to a log container
 ADD ./outlogs.conf /etc/rsyslog.d/outlogs.conf

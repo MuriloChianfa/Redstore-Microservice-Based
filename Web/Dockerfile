@@ -3,10 +3,10 @@ FROM php:7.2-apache
 
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
-# Adicionar extenções PDO
-RUN docker-php-ext-install mysqli pdo pdo_mysql 
+RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip libcurl3-dev curl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Adicionar extenções PDO
+RUN docker-php-ext-install mysqli pdo pdo_mysql curl
 
 RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
 

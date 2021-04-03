@@ -3,7 +3,7 @@ FROM php:8.0.3-alpine3.13
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
 # install docker for php
-RUN docker-php-ext-install sockets
+RUN docker-php-ext-install sockets pcntl
 
 # install net-tools for heakthcheck
 RUN apk update && apk add --no-cache net-tools

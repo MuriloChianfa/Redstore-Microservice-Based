@@ -64,7 +64,7 @@ abstract class RabbitMQ // implements RabbitMQInterface
         $this->connection = new AMQPStreamConnection(self::HOST, self::PORT, self::USER, self::PASSWD);
         $this->channel = $this->connection->channel();
 
-        $this->channel->queue_declare($this->queue, true, false, false, ['x-message-ttl' => ['I', 4500]]);
+        $this->channel->queue_declare($this->queue, true, false, false);
         $this->channel->exchange_declare($this->exchanger, AMQPExchangeType::DIRECT, false, true, false);
         $this->channel->queue_bind($this->queue, $this->exchanger);
 

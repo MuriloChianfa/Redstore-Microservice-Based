@@ -12,18 +12,20 @@ services:
     container_name: redstore-database
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD: simple-server
-    ports:
+      - MYSQL_ROOT_PASSWORD=simple-server
+    # ports:
       # - "3306:3306"
     stdin_open: false
     tty: false
     networks:
       log-network:
         ipv4_address: 172.16.238.10
+      api-network:
+        ipv4_address: 172.16.240.10
     logging:
       driver: local
     healthcheck:
-      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:3306"]
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "3306"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -51,7 +53,7 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-database
-    ports:
+    # ports:
       # - "514:514"
     stdin_open: false
     tty: false
@@ -87,19 +89,23 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-logs
-    ports:
+    # ports:
       # - "6379:6379"
     stdin_open: false
     tty: false
     networks:
       log-network:
         ipv4_address: 172.16.238.12
+      api-network:
+        ipv4_address: 172.16.240.11
+      cache-network:
+        ipv4_address: 172.16.241.10
     logging:
       driver: syslog
       options:
         syslog-address: "tcp://172.16.238.11:514"
     healthcheck:
-      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:6379"]
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "6379"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -127,7 +133,7 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-logs
-    ports:
+    # ports:
       # - "15671:15671"
       # - "15672:15672"
       # - "5671:5671"
@@ -144,7 +150,7 @@ services:
       options:
         syslog-address: "tcp://172.16.238.11:514"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5672"]
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "5672"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -183,6 +189,10 @@ services:
         ipv4_address: 172.16.238.13
       queue-network:
         ipv4_address: 172.16.239.11
+      api-network:
+        ipv4_address: 172.16.240.12
+      cache-network:
+        ipv4_address: 172.16.241.11
     logging:
       driver: syslog
       options:
@@ -215,13 +225,15 @@ services:
     container_name: redstore-mailler
     depends_on:
       - redstore-api
-      stdin_open: false
-      tty: false
+    stdin_open: false
+    tty: false
     networks:
       log-network:
         ipv4_address: 172.16.238.15
       queue-network:
         ipv4_address: 172.16.239.12
+      cache-network:
+        ipv4_address: 172.16.241.12
     logging:
       driver: syslog
       options:
@@ -246,17 +258,48 @@ services:
     build:
       context: ./Web
       dockerfile: Dockerfile
+      cache_from:
+        - php:7.2-apache
+      args:
+        buildno: 1
     image: redstore-web
     container_name: redstore-web
+    restart: unless-stopped
     depends_on:
       - redstore-api
-    networks:
-      - host
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - /home/simple-server/redstore/Web/Frontend:/usr/share/nginx/html
+      - /home/simple-server/redstore/Web/Frontend:/var/www/html
+    stdin_open: false
+    tty: false
+    networks:
+      log-network:
+        ipv4_address: 172.16.238.16
+      queue-network:
+        ipv4_address: 172.16.239.13
+      api-network:
+        ipv4_address: 172.16.240.13
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+          - "engine.labels.operatingsystem==ubuntu 18.04"
+        preferences:
+          - spread: node.labels.zone
 
 networks:
   log-network:

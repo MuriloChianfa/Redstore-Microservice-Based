@@ -3,15 +3,15 @@
 /**
  * RABBITMQ
  */
-define("RABBITMQ_HOST", "127.0.0.1");
+define("RABBITMQ_HOST", "172.16.239.10");
 define("RABBITMQ_PORT", 5672);
-define("RABBITMQ_USER", "guest");
-define("RABBITMQ_PASS", "guest");
+define("RABBITMQ_USER", "mailler");
+define("RABBITMQ_PASS", "22c6eb2978adf441f9a4b3448e7999f7");
 
 /**
  * REDIS
  */
-define("CONF_REDIS_HOST", "127.0.0.1");
+define("CONF_REDIS_HOST", "172.16.241.12");
 define("CONF_REDIS_SCHEME", "tcp");
 define("CONF_REDIS_PORT", 6379);
 define("CONF_REDIS_PASS", "");

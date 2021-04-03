@@ -4,7 +4,7 @@ FROM php:7.2-apache
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
 # Adicionar extenções PDO
-RUN docker-php-ext-install mysqli pdo pdo_mysql 
+RUN docker-php-ext-install mysqli pdo pdo_mysql pcntl
 
 RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
