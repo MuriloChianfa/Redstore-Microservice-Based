@@ -5,10 +5,10 @@ define('SITE', [
     'desc' => 'A verdadeira plataforma de ecommerce',
     'domain' => 'redstore.codedrop.com.br',
     'locale' => 'pt_BR',
-    'root' => 'https://0.0.0.0/'
+    'root' => 'https://192.168.0.14'
 ]);
 
-define('BASE_API', 'https://172.16.240.12:3000/api');
+define('BASE_API', 'https://172.16.240.12:3000');
 
 // DESCOMENTAR APENAS PARA FAZER OS MINIFY
 

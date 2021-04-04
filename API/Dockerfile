@@ -3,11 +3,15 @@ FROM php:7.2-apache
 
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
+RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip apache2-utils && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Adicionar extenções PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql pcntl
 
-RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Enable rewrite url
+RUN a2enmod rewrite
 
+# Enable ssl mode
 RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
 
 # Adicionar certificados auto assinados
@@ -41,5 +45,5 @@ RUN ln -sf /dev/stdout /var/log/apache2/error.log
 # COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # ssl port
-EXPOSE 443
+EXPOSE 3000
 

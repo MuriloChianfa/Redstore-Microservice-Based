@@ -3,11 +3,15 @@ FROM php:7.2-apache
 
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
-RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip libcurl3-dev curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip libcurl3-dev curl apache2-utils && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Adicionar extenções PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql curl
 
+# Enable rewrite url
+RUN a2enmod rewrite
+
+# Enable ssl mode
 RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
 
 # Adicionar certificados auto assinados
