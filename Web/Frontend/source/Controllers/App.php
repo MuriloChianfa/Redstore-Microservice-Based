@@ -12,26 +12,26 @@ class App extends Controller {
     public function __construct($router) {
         parent::__construct($router);
 
-        if(empty($_SESSION["user"])) {
-            unset($_SESSION["user"]);
+        // if(empty(@$_SESSION["user"])) {
+        //     unset(@$_SESSION["user"]);
 
-            flash("error", "Acesso negado. Favor logar antes");
-            $this->router->redirect("web.login");
-        }
+        //     flash("error", "Acesso negado. Favor logar antes");
+        //     $this->router->redirect("web.login");
+        // }
 
         //
     }
 
-    public function home(): void {
+    public function account(): void {
         // var_dump($this->user);
         $head = $this->seo->optimize(
-            "Bem vindo(a) {$this->user->first_name} |" . site("name"),
+            "Bem vindo(a) a |" . site("name"),
             site("desc"),
-            $this->router->route("app.home"),
-            routeImage("Conta de {$this->user->first_name}")
+            $this->router->route("app.account"),
+            routeImage("Conta de a")
         )->render();
 
-        echo $this->view->render("theme/dashboard", [
+        echo $this->view->render("theme/account/account", [
             "head" => $head,
             "user" => $this->user
         ]);
@@ -40,7 +40,7 @@ class App extends Controller {
     public function logoff(): void {
         unset($_SESSION["user"]);
 
-        flash("info", "Você saiu com sucesso, volte logo {$this->user->first_name}");
+        flash("info", "Você saiu com sucesso, volte logo a");
         $this->router->redirect("web.login");
     }
 }

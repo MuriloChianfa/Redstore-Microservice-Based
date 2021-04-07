@@ -44,8 +44,8 @@ $router->post("/register", "Auth:register", "auth.register");
 /**
  * PROFILE
  */
-// $router->group("/me");
-// $router->get("/", "App:home", "app.home");
+$router->group("/me");
+$router->get("/", "App:account", "app.account");
 // $router->get("/sair", "App:logoff", "app.logoff");
 
 /**
