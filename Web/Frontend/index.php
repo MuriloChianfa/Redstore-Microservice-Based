@@ -16,6 +16,7 @@ $router->group(null);
 $router->get("/", "Web:home", "web.home");
 $router->get("/products", "Web:products", "web.products");
 $router->get("/product", "Web:productsDetails", "web.productsDetails");
+$router->get("/product", "Web:about", "web.about");
 $router->get("/cart", "Web:cart", "web.cart");
 
 /**
@@ -23,10 +24,16 @@ $router->get("/cart", "Web:cart", "web.cart");
  */
 $router->group(null);
 $router->get("/login", "Login:loginn", "login.login");
-// $router->get("/login", "Login:loginn", "auth.facebook");
-// $router->get("/login", "Login:loginn", "auth.google");
-// $router->get("/recuperar", "Web:forget", "web.forget");
-// $router->get("/senha/{email}/{forget}", "Web:reset", "web.reset");
+$router->get("/login/face", "Login:loginn", "auth.facebook");
+$router->get("/login/google", "Login:loginn", "auth.google");
+$router->get("/forget", "Login:forget", "login.forget");
+$router->get("/reset/{email}/{forget}", "Login:reset", "login.reset");
+
+/**
+ * LOGIN
+ */
+$router->group(null);
+$router->get("/register", "Login:register", "login.register");
 
 /**
  * AUTH
@@ -34,8 +41,8 @@ $router->get("/login", "Login:loginn", "login.login");
 // $router->group(null);
 $router->post("/login", "Auth:login", "auth.login");
 $router->post("/register", "Auth:register", "auth.register");
-// $router->post("/forget", "Auth:forget", "auth.forget");
-// $router->post("/reset", "Auth:reset", "auth.reset");
+$router->post("/forget", "Auth:forget", "auth.forget");
+$router->post("/reset", "Auth:reset", "auth.reset");
 
 /**
  * AUTH SOCIAL
@@ -46,7 +53,7 @@ $router->post("/register", "Auth:register", "auth.register");
  */
 $router->group("/me");
 $router->get("/", "App:account", "app.account");
-// $router->get("/sair", "App:logoff", "app.logoff");
+$router->get("/logoff", "App:logoff", "app.logoff");
 
 /**
  * ERRORS

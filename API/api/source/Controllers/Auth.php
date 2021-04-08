@@ -70,7 +70,8 @@ class Auth
 
         $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
         $passwd = filter_var($data["password"], FILTER_DEFAULT);
-        $name = filter_var($data["name"], FILTER_DEFAULT);
+        $first_name = filter_var($data["first_name"], FILTER_DEFAULT);
+        $last_name = filter_var($data["last_name"], FILTER_DEFAULT);
 
         if(!$email || !$passwd) {
             $this->Message->message = 'Informe um e-mail e uma senha para se cadastrar!';
@@ -78,19 +79,24 @@ class Auth
             return;
         }
 
-        if(!$name) {
-            $this->Message->message = 'Informe seu nome para se cadastrar!';
+        if(!$first_name) {
+            $this->Message->message = 'Informe seu primeiro nome para se cadastrar!';
+            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+            return;
+        }
+
+        if(!$last_name) {
+            $this->Message->message = 'Informe seu ultimo nome para se cadastrar!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
         }
 
         $User = new User();
 
-        $User->name = $name;
+        $User->first_name = $first_name;
+        $User->last_name = $last_name;
         $User->email = $email;
         $User->password = $passwd;
-        $User->access_level_id = 2;
-        $User->receive_promotion = 1;
 
         if (!$User->save()) {
             $this->Message->message = $User->message();

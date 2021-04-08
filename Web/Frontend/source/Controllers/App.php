@@ -12,14 +12,12 @@ class App extends Controller {
     public function __construct($router) {
         parent::__construct($router);
 
-        // if(empty(@$_SESSION["user"])) {
-        //     unset(@$_SESSION["user"]);
+        if(empty(@$_SESSION["user"])) {
+            flash("error", "Acesso negado. Favor logar antes");
+            $this->router->redirect("login.login");
+        }
 
-        //     flash("error", "Acesso negado. Favor logar antes");
-        //     $this->router->redirect("web.login");
-        // }
-
-        //
+        $this->user = $_SESSION["user"];
     }
 
     public function account(): void {
@@ -28,20 +26,19 @@ class App extends Controller {
             "Bem vindo(a) a |" . site("name"),
             site("desc"),
             $this->router->route("app.account"),
-            routeImage("Conta de a")
+            routeImage("Conta de ")
         )->render();
 
         echo $this->view->render("theme/account/account", [
-            "head" => $head,
-            "user" => $this->user
+            "head" => $head
         ]);
     }
 
     public function logoff(): void {
         unset($_SESSION["user"]);
 
-        flash("info", "Você saiu com sucesso, volte logo a");
-        $this->router->redirect("web.login");
+        flash("info", "Você saiu com sucesso, volte logo");
+        $this->router->redirect("login.login");
     }
 }
 

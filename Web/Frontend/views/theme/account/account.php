@@ -1,6 +1,6 @@
 <?php $v->layout("theme/_theme"); ?>
 
-<!------------ FEATURED PRODUCTS ------------->
+<!------------ PROFILE PAGE ------------->
 
 <div class="minimal-container">
 
@@ -23,7 +23,7 @@
                 <h2>Primeiro nome</h2>
             </div>
             <div class="bordered-data">
-                <h2>contato1</h2>
+                <h2>contato</h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line">

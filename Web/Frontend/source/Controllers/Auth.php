@@ -48,14 +48,11 @@ class Auth extends Controller
             return;
         }
 
-        echo $this->ajaxResponse("message", [
-            "type" => "success",
-            "message" => $req->token
-        ]);
+        $_SESSION["user"] = $req->token;
 
-        // echo $this->ajaxResponse("redirect", [
-        //     "url" => $this->router->route("app.home")
-        // ]);
+        echo $this->ajaxResponse("redirect", [
+            "url" => $this->router->route("app.account")
+        ]);
     }
 
     public function register($data): void {
@@ -97,8 +94,9 @@ class Auth extends Controller
         }
 
         $_SESSION["user"] = $req->token;
+
         echo $this->ajaxResponse("redirect", [
-            "url" => $this->router->route("app.home")
+            "url" => $this->router->route("app.account")
         ]);
     }
 

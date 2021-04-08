@@ -7,10 +7,6 @@ use Source\Models\User;
 class Web extends Controller {
     public function __construct($router) {
         parent::__construct($router);
-
-        // if(!empty($_SESSION["user"])) {
-        //     $this->router->redirect("app.home");
-        // }
     }
 
     public function home(): void {
@@ -25,6 +21,7 @@ class Web extends Controller {
             "head" => $head
         ]);
     }
+
     public function products(): void {
         $head = $this->seo->optimize(
             "RedStore | " . site("name"),
@@ -37,6 +34,7 @@ class Web extends Controller {
             "head" => $head
         ]);
     }
+
     public function productsDetails(): void {
         $head = $this->seo->optimize(
             "RedStore | " . site("name"),
@@ -49,6 +47,20 @@ class Web extends Controller {
             "head" => $head
         ]);
     }
+
+    public function about(): void {
+        $head = $this->seo->optimize(
+            "RedStore | " . site("name"),
+            site("desc"),
+            $this->router->route("web.about"),
+            routeImage("About")
+        )->render();
+
+        echo $this->view->render("theme/main/about", [
+            "head" => $head
+        ]);
+    }
+
     public function cart(): void {
         $head = $this->seo->optimize(
             "RedStore | " . site("name"),

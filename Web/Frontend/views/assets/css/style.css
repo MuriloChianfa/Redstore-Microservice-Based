@@ -305,6 +305,7 @@ ul {
 .menu-icon {
     width: 28px;
     margin-left: 20px;
+    display: none;
 }
 
 /* ---------- media query for menu ----------- */
@@ -334,6 +335,7 @@ ul {
     .menu-icon {
         display: block;
         cursor: pointer;
+        display: flex;
     }
 }
 
@@ -586,14 +588,10 @@ form .btn:focus {
 }
 
 #LoginForm {
-    left: -300px;
+    margin-top: -30px;
 }
 
-#RegForm {
-    left: 0;
-}
-
-#Indicator {
+#Indicator-register {
     width: 100px;
     border: none;
     background: #ff523b;
@@ -601,6 +599,36 @@ form .btn:focus {
     margin-top: 8px;
     transform: translateX(100px);
     transition: transform 0.8s;
+}
+
+#Indicator-login {
+    width: 100px;
+    border: none;
+    background: #ff523b;
+    height: 3px;
+    margin-top: 8px;
+    transform: translateX(0px);
+    transition: transform 0.8s;
+}
+
+.form img {
+    padding: 0;
+}
+
+.login-facebook-button {
+    margin-top: 1.5em;
+    transition: transform 0.25s ease-out;
+}
+
+.login-google-button {
+    transition: transform 0.25s ease-out;
+}
+
+.login-facebook-button:hover,
+.login-google-button:hover {
+    -webkit-filter: brightness(103%);
+    filter: brightness(103%);
+    transform: translateY(-1px);
 }
 
 /* ------------ ACCOUNT-PAGE ------------- */
@@ -713,6 +741,9 @@ form .btn:focus {
     filter: drop-shadow(-3px 3px 4px #000000);
 }
 
-
+.form-message {
+    max-width: 300px;
+    margin: auto;
+}
 
 

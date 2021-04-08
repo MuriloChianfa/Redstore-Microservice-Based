@@ -14,7 +14,7 @@ class User extends Model
      */
     public function __construct()
     {
-        parent::__construct("user", ["id"], ["name", "email", "password", "access_level_id", "receive_promotion"]);
+        parent::__construct("user", ["id"], ["first_name", "last_name", "email", "password"]);
     }
 
     /**
@@ -25,17 +25,16 @@ class User extends Model
      * @return User
      */
     public function bootstrap(
-        string $name,
+        string $first_name,
+        string $last_name,
         string $email,
-        string $password,
-        int $access_level_id,
-        int $receive_promotion
+        string $password
     ): User {
-        $this->name = $name;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
         $this->email = $email;
         $this->password = $password;
-        $this->access_level_id = $access_level_id;
-        $this->receive_promotion = $receive_promotion;
+        $this->cpf = 00000000000;
         return $this;
     }
 

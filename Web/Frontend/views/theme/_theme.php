@@ -34,9 +34,13 @@
                 <ul id="MenuItems">
                     <li><a href="<?= $router->route("web.home"); ?>">Home</a></li>
                     <li><a href="<?= $router->route("web.products"); ?>">Products</a></li>
-                    <li><a href="<?= $router->route("web.home"); ?>">About</a></li>
-                    <li><a href="<?= $router->route("web.home"); ?>">Contact</a></li>
-                    <li><a href="<?= $router->route("login.login"); ?>">Account</a></li>
+                    <li><a href="<?= $router->route("web.about"); ?>">About</a></li>
+
+                    <?php if(!empty($_SESSION["user"])): ?>
+                        <li><a href="<?= $router->route("app.logoff"); ?>">Logoff</a></li>
+                    <?php else: ?>
+                        <li><a href="<?= $router->route("login.login"); ?>">Account</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
             <a href="<?= $router->route("web.cart"); ?>"><img src="<?= asset("/images/cart.png"); ?>" alt="cart" width="30px" height="30px"></a>

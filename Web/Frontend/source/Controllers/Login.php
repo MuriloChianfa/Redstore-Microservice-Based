@@ -7,9 +7,10 @@ use Source\Models\User;
 class Login extends Controller {
     public function __construct($router) {
         parent::__construct($router);
-        // if(!empty($_SESSION["user"])) {
-        //     $this->router->redirect("web.home");
-        // }
+        
+        if(!empty($_SESSION["user"])) {
+            $this->router->redirect("app.account");
+        }
     }
 
     public function loginn(): void {
@@ -29,18 +30,12 @@ class Login extends Controller {
         $head = $this->seo->optimize(
             "Crie sua conta no " . site("name"),
             site("desc"),
-            $this->router->route("web.register"),
+            $this->router->route("login.register"),
             routeImage("Register")
         )->render();
 
-        $form_user = new \stdClass();
-        $form_user->first_name = null;
-        $form_user->last_name = null;
-        $form_user->email = null;
-
-        echo $this->view->render("theme/register", [
-            "head" => $head,
-            "user" => $form_user
+        echo $this->view->render("theme/main/register", [
+            "head" => $head
         ]);
     }
 
@@ -48,11 +43,11 @@ class Login extends Controller {
         $head = $this->seo->optimize(
             "Recupere sua senha |" . site("name"),
             site("desc"),
-            $this->router->route("web.forget"),
+            $this->router->route("login.forget"),
             routeImage("Forget")
         )->render();
 
-        echo $this->view->render("theme/forget", [
+        echo $this->view->render("theme/main/forget", [
             "head" => $head
         ]);
     }
@@ -86,7 +81,7 @@ class Login extends Controller {
             routeImage("Reset")
         )->render();
 
-        echo $this->view->render("theme/reset", [
+        echo $this->view->render("theme/main/reset", [
             "head" => $head
         ]);
     }
