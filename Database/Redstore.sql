@@ -120,6 +120,7 @@ CREATE TABLE phone (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
   phone_type_id INT(11) NOT NULL,
+  number INT(11) NOT NULL,
   PRIMARY KEY (id),
   KEY phone_user_id_fk_idx (user_id),
   CONSTRAINT phone_user_id_fk FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE NO ACTION,

@@ -53,8 +53,6 @@ $route->namespace("Source\Controllers")->group("/me");
 /** GET */ ## AUTH REQUIRED
 $route->get("/profile", "Profile:profile");
 $route->get("/favorite", "Profile:favorite");
-$route->get("/adresses", "Profile:adresses");
-$route->get("/shopping", "Profile:shopping");
 $route->get("/history", "Profile:history");
 $route->get("/cart", "Profile:cart");
 

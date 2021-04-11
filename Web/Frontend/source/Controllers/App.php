@@ -29,8 +29,11 @@ class App extends Controller {
             routeImage("Conta de ")
         )->render();
 
+        $userData = callAPI('/me/profile', 'POST', null, $this->user);
+
         echo $this->view->render("theme/account/account", [
-            "head" => $head
+            "head" => $head,
+            "userData" => $userData
         ]);
     }
 
