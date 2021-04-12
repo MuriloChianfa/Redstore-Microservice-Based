@@ -2,11 +2,10 @@
 
 namespace Source\Controllers;
 
-use Source\Models\User;
+class App extends Controller
+{
 
-class App extends Controller {
-
-    /** @var User */
+    /** @var mixed */
     protected $user;
 
     public function __construct($router) {
@@ -21,7 +20,6 @@ class App extends Controller {
     }
 
     public function account(): void {
-        // var_dump($this->user);
         $head = $this->seo->optimize(
             "Bem vindo(a) a |" . site("name"),
             site("desc"),
@@ -29,7 +27,16 @@ class App extends Controller {
             routeImage("Conta de ")
         )->render();
 
-        $userData = callAPI('/me/profile', 'POST', null, $this->user);
+        $req = callAPI('/me/profile', 'POST', null, $this->user);
+
+        if (isset($req['curl_error']) || $req['code'] != 200) {
+            $userData = $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => "Ocorreu algum problema interno!"
+            ]);
+        }
+        
+        $userData = (json_decode($req['result']))->message;
 
         echo $this->view->render("theme/account/account", [
             "head" => $head,

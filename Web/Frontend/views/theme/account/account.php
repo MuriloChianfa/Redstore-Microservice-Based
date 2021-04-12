@@ -23,7 +23,7 @@
                 <h2>Primeiro nome</h2>
             </div>
             <div class="bordered-data">
-                <h2>contato</h2>
+                <h2><?= $userData->first_name ?></h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line">
@@ -31,7 +31,7 @@
                 <h2>Segundo nome</h2>
             </div>
             <div class="bordered-data">
-                <h2>contato</h2>
+                <h2><?= $userData->last_name ?></h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line">
@@ -39,7 +39,7 @@
                 <h2>E-mail</h2>
             </div>
             <div class="bordered-data">
-                <h2>contato@email.com.br</h2>
+                <h2><?= $userData->email ?></h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line-bottom bordered-border-top">
@@ -62,7 +62,7 @@
                 <h2>Data de nascimento</h2>
             </div>
             <div class="bordered-data">
-                <h2>contato@email.com.br</h2>
+                <h2><?= date_fmt($userData->birth_date); ?></h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line">
@@ -70,7 +70,7 @@
                 <h2>CPF</h2>
             </div>
             <div class="bordered-data">
-                <h2>123.123.123-41</h2>
+                <h2><?= $userData->cpf ?></h2>
             </div>
         </div>
         <div class="col-12 bordered bordered-line-bottom bordered-border-top">
@@ -78,7 +78,11 @@
                 <h2>Promoções via E-mail</h2>
             </div>
             <div class="bordered-data">
-                <h2>Sim</h2>
+                <?php if ($userData->receive_promotion == 1): ?>
+                    <h2>Sim</h2>
+                <?php else: ?>
+                    <h2>Não</h2>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -88,19 +92,29 @@
     </div>
 
     <div class="row">
-        <div class="col-12 bordered bordered-line-top">
-            <div class="bordered-content bordered-align-left">
-                <h2>Telefone 1</h2>
+        <?php if (is_null($userData->phone)): ?>
+            <div class="col-12 bordered bordered-line-both bordered-border">
+                <div class="bordered-content bordered-align-left">
+                    <h2 style="cursor: pointer;" onclick="alert('adicionar telefone');">Adicionar telefone...</h2>
+                </div>
             </div>
-            <div class="bordered-data">
-                <h2>(43) 9 9912-5512</h2>
+        <?php else: ?>
+            <?php foreach ($userData->phone as $key => $value): ?>
+                <div class="col-12 bordered bordered-line-top">
+                    <div class="bordered-content bordered-align-left">
+                        <h2>Telefone <?= ($key + 1); ?></h2>
+                    </div>
+                    <div class="bordered-data">
+                        <h2><?= $value->number; ?></h2>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="col-12 bordered bordered-line-bottom bordered-border-top">
+                <div class="bordered-content bordered-align-left">
+                    <h2 style="cursor: pointer;" onclick="alert('adicionar telefone');">Adicionar telefone...</h2>
+                </div>
             </div>
-        </div>
-        <div class="col-12 bordered bordered-line-bottom bordered-border-top">
-            <div class="bordered-content bordered-align-left">
-                <h2>Adicionar telefone...</h2>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 
     <div class="row row-account-continous">

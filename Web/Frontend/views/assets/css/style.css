@@ -676,6 +676,16 @@ form .btn:focus {
     box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.1);
 }
 
+.bordered-line-both {
+    width: 100%;
+    background-color: rgb(238, 238, 238);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.1);
+}
+
 .bordered h2 {
     color: rgb(81, 81, 81);
     font-size: 17px;

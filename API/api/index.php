@@ -51,10 +51,15 @@ $route->post("/category", "Categories:addCategory");
  */
 $route->namespace("Source\Controllers")->group("/me");
 /** GET */ ## AUTH REQUIRED
-$route->get("/profile", "Profile:profile");
-$route->get("/favorite", "Profile:favorite");
-$route->get("/history", "Profile:history");
-$route->get("/cart", "Profile:cart");
+$route->get("/profile", "Profile:profile-get");
+$route->get("/favorite", "Profile:favorite-get");
+$route->get("/history", "Profile:history-get");
+$route->get("/cart", "Profile:cart-get");
+/** POST */ ## AUTH REQUIRED
+$route->post("/profile", "Profile:profile");
+$route->post("/favorite", "Profile:favorite");
+$route->post("/history", "Profile:history");
+$route->post("/cart", "Profile:cart");
 
 /**
  * WEB ROUTES
