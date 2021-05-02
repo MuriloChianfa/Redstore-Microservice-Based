@@ -1,7 +1,7 @@
 server {
     listen 80 default_server;
     
-    server_name 192.168.0.14;
+    server_name ${MAIN_IP};
 
     return 301 https://$host$request_uri;
 }
@@ -9,7 +9,7 @@ server {
 server {
     listen 443 ssl;
 
-    server_name 192.168.0.14;
+    server_name ${MAIN_IP};
 
     # RSA certificate
     ssl_certificate /etc/ssl/ssl.crt;
@@ -26,9 +26,9 @@ server {
     location / {
         # include proxy_params;
         proxy_set_header Host $http_host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme; 
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme; 
 
         proxy_pass $upstreamWeb;
         proxy_redirect off;
@@ -44,11 +44,11 @@ server {
 
         # include proxy_params;
         proxy_set_header Host $http_host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
 
-		proxy_pass $upstreamApi;
+        proxy_pass $upstreamApi;
         proxy_redirect off;
 
         # Handle Web Socket connections

@@ -26,11 +26,18 @@ RUN rm /etc/nginx/nginx.conf && rm /etc/nginx/conf.d/*
 COPY ./nginx.conf /etc/nginx/
 
 COPY ./proxy_params /etc/nginx/conf.d/
-COPY ./default.conf /etc/nginx/conf.d/
+COPY ./default.conf.template /etc/nginx/conf.d/
 
-VOLUME /etc/letsencrypt
+# VOLUME /etc/letsencrypt
 
 #CMD [ "sh", "-c", "cron && nginx -g 'daemon off;'" ]
+
+COPY ./docker-entrypoint.sh /
+RUN chmod 774 /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["nginx", "-g", "daemon off;"]
 
 # Web port
 EXPOSE 80

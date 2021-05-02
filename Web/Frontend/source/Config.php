@@ -8,10 +8,10 @@ define('SITE', [
     'desc' => 'A verdadeira plataforma de ecommerce',
     'domain' => 'redstore.codedrop.com.br',
     'locale' => 'pt_BR',
-    'root' => getenv('PROD_URL')
+    'root' => 'https://' . getenv('MAIN_IP')
 ]);
 
-define('BASE_API', getenv('PROD_URL') . '/api');
+define('BASE_API', 'https://' . getenv('MAIN_IP') . '/api');
 
 // DESCOMENTAR APENAS PARA FAZER OS MINIFY
 
