@@ -1,14 +1,17 @@
 <?php 
 
+$enviroment = Dotenv\Dotenv::createImmutable(__DIR__ . '/..', '.env');
+$enviroment->load();
+
 define('SITE', [
     'name' => 'A loja virtual',
     'desc' => 'A verdadeira plataforma de ecommerce',
     'domain' => 'redstore.codedrop.com.br',
     'locale' => 'pt_BR',
-    'root' => 'https://192.168.0.14'
+    'root' => getenv('PROD_URL')
 ]);
 
-define('BASE_API', 'https://172.16.240.12:3000');
+define('BASE_API', getenv('PROD_URL') . '/api');
 
 // DESCOMENTAR APENAS PARA FAZER OS MINIFY
 

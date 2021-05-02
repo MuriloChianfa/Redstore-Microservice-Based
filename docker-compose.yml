@@ -4,8 +4,8 @@ services:
     build:
       context: ./Database
       dockerfile: Dockerfile
-      cache_from:
-        - mysql:5.5.60
+      # cache_from:
+        # - mysql:5.5.60
       args:
         buildno: 1
     image: redstore-database
@@ -33,19 +33,13 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-logs:
     build:
       context: ./Logs
       dockerfile: Dockerfile
-      cache_from:
-        - alpine
+      # cache_from:
+        # - alpine
       args:
         buildno: 1
     image: redstore-logs
@@ -69,19 +63,13 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-cache:
     build:
       context: ./Cache
       dockerfile: Dockerfile
-      cache_from:
-        - redis:6.0.9
+      # cache_from:
+        # - redis:6.0.9
       args:
         buildno: 1
     image: redstore-cache
@@ -114,19 +102,13 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-queue:
     build:
       context: ./Queue
       dockerfile: Dockerfile
-      cache_from:
-        - php:7.2-apache
+      # cache_from:
+        # - php:7.2-apache
       args:
         buildno: 1
     image: redstore-queue
@@ -160,19 +142,14 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-api:
     build:    
       context: ./API
+      dockerfile: Dockerfile
       network: host
-      cache_from:
-        - php:7.2-apache
+      # cache_from:
+        # - php:7.2-apache
       args:
         buildno: 1
     image: redstore-api
@@ -180,10 +157,12 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-queue
-    ports:
-      - "3000:3000"
+    # ports:
+      # - "3000:3000"
     volumes:
       - /home/simple-server/redstore/API/api:/var/www/html
+    env_file:
+      - ./.env
     stdin_open: false
     tty: false
     networks:
@@ -209,19 +188,13 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-mailler:
     build:
       context: ./Mailler
       dockerfile: Dockerfile
-      cache_from:
-        - php:8.0.3-alpine3.13
+      # cache_from:
+        # - php:8.0.3-alpine3.13
       args:
         buildno: 1
     image: redstore-mailler
@@ -251,19 +224,13 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
 
   redstore-web:
     build:
       context: ./Web
       dockerfile: Dockerfile
-      cache_from:
-        - php:7.2-apache
+      # cache_from:
+        # - php:7.2-apache
       args:
         buildno: 1
     image: redstore-web
@@ -271,11 +238,13 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-api
-    ports:
-      - "80:80"
-      - "443:443"
+    # ports:
+      # - "80:80"
+      # - "443:443"
     volumes:
       - /home/simple-server/redstore/Web/Frontend:/var/www/html
+    env_file:
+      - ./.env
     stdin_open: false
     tty: false
     networks:
@@ -299,12 +268,44 @@ services:
     deploy:
       mode: global
       replicas: 1
-      placement:
-        constraints:
-          - "node.role==manager"
-          - "engine.labels.operatingsystem==ubuntu 18.04"
-        preferences:
-          - spread: node.labels.zone
+
+  redstore-reverse-proxy:
+    build:
+      context: ./Reverse-Proxy
+      dockerfile: Dockerfile
+      # cache_from:
+        # - nginx:1.20.0
+      #args:
+        # buildno: 1
+        # - DOMAIN_LIST=redstore.com.br
+    image: redstore-reverse-proxy
+    container_name: redstore-reverse-proxy
+    restart: unless-stopped
+    depends_on:
+      - redstore-api
+      - redstore-web
+    ports:
+      - "80:80"
+      - "443:443"
+    stdin_open: false
+    tty: false
+    networks:
+      api-network:
+        ipv4_address: 172.16.240.14
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://172.16.238.11:514"
+        tag: "Redstore-Reverse-Proxy"
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
 
 networks:
   log-network:

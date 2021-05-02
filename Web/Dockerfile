@@ -12,12 +12,12 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql curl
 RUN a2enmod rewrite
 
 # Enable ssl mode
-RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
+# RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
 
 # Adicionar certificados auto assinados
-RUN mkdir -p /var/run/apache2/ssl/
-COPY ./ssl.key /etc/apache2/ssl/ssl.key
-COPY ./ssl.crt /etc/apache2/ssl/ssl.crt
+# RUN mkdir -p /var/run/apache2/ssl/
+# COPY ./ssl.key /etc/apache2/ssl/ssl.key
+# COPY ./ssl.crt /etc/apache2/ssl/ssl.crt
 
 # Copiar conf com ssl habilitado
 COPY ./000-default.conf /etc/apache2/sites-enabled/000-default.conf 
@@ -48,4 +48,4 @@ RUN ln -sf /dev/stdout /var/log/apache2/error.log
 EXPOSE 80
 
 # ssl port
-EXPOSE 443
+# EXPOSE 443

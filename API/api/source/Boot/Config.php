@@ -6,8 +6,8 @@ $enviroment->load();
 /**
  * PROJECT URLs
  */
-define('CONF_URL_BASE', $_ENV['PROD_URL']);
-define('CONF_URL_TEST', $_ENV['DEV_URL']);
+define('CONF_URL_BASE', getenv('PROD_URL'));
+define('CONF_URL_TEST', getenv('PROD_URL'));
 
 /**
  * DATABASE
