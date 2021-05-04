@@ -15,6 +15,8 @@ services:
       - MYSQL_ROOT_PASSWORD=simple-server
     # ports:
       # - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
     stdin_open: false
     tty: false
     networks:
@@ -330,3 +332,6 @@ networks:
       driver: default
       config:
         - subnet: "172.16.241.0/24"
+
+volumes:
+  database:

@@ -28,10 +28,7 @@ class Products
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        $page = filter_var($data["page"], FILTER_VALIDATE_INT);
-        $limit = filter_var($data["limit"], FILTER_VALIDATE_INT);
-
-        if (empty($page) && empty($limit)) {
+        if (empty($data["page"]) && empty($data["limit"])) {
             if (is_null(($products = $Product->findAll()))) {
                 (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
                 return;
@@ -41,7 +38,10 @@ class Products
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
         }
-        
+
+        $page = filter_var($data["page"], FILTER_VALIDATE_INT);
+        $limit = filter_var($data["limit"], FILTER_VALIDATE_INT);
+
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
             return;
@@ -56,7 +56,7 @@ class Products
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $id = filter_var(@$data["id"], FILTER_VALIDATE_INT);
 
         if (!$id) {
             $this->Message->message = 'parâmetro inválido';

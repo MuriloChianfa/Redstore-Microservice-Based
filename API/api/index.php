@@ -37,7 +37,7 @@ $route->post("/product", "Products:addProduct");
 $route->patch("/product", "Products:alterProduct");
 
 /**
- * PRODUCTS 
+ * CATEGORIES 
  */
 $route->namespace("Source\Controllers")->group("/");
 /** GET */ ## NO AUTH
@@ -50,11 +50,6 @@ $route->post("/category", "Categories:addCategory");
  * PROFILE
  */
 $route->namespace("Source\Controllers")->group("/me");
-/** GET */ ## AUTH REQUIRED
-$route->get("/profile", "Profile:profile-get");
-$route->get("/favorite", "Profile:favorite-get");
-$route->get("/history", "Profile:history-get");
-$route->get("/cart", "Profile:cart-get");
 /** POST */ ## AUTH REQUIRED
 $route->post("/profile", "Profile:profile");
 $route->post("/favorite", "Profile:favorite");

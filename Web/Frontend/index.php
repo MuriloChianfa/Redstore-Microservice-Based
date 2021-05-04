@@ -24,15 +24,10 @@ $router->get("/cart", "Web:cart", "web.cart");
  */
 $router->group(null);
 $router->get("/login", "Login:loginn", "login.login");
-$router->get("/login/face", "Login:loginn", "auth.facebook");
+$router->get("/login/facebook", "Login:loginn", "auth.facebook");
 $router->get("/login/google", "Login:loginn", "auth.google");
 $router->get("/forget", "Login:forget", "login.forget");
 $router->get("/reset/{email}/{forget}", "Login:reset", "login.reset");
-
-/**
- * LOGIN
- */
-$router->group(null);
 $router->get("/register", "Login:register", "login.register");
 
 /**
@@ -47,6 +42,7 @@ $router->post("/reset", "Auth:reset", "auth.reset");
 /**
  * AUTH SOCIAL
  */
+// $router->post("/login/facebook", "Auth:loginFacebook", "auth.loginFacebook");
 
 /**
  * PROFILE
