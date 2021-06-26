@@ -8,10 +8,10 @@ Web/Frontend/composer.lock
 Web/Frontend/symfony.lock
 Web/Frontend/.env
 
-Mailler/vendor/
-Mailler/composer.lock
-Mailler/symfony.lock
-Mailler/.env
+Mailler/App/vendor/
+Mailler/App/composer.lock
+Mailler/App/symfony.lock
+Mailler/App/.env
 
 .env
 

@@ -31,11 +31,12 @@ function str_slug(string $string): string
     $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
     $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
 
-    $slug = str_replace(["-----", "----", "---", "--"], "-",
-        str_replace(" ", "-",
+    $slug = str_replace(['-----', '----', '---', '--'], '-',
+        str_replace(' ', '-',
             trim(strtr(utf8_decode($string), utf8_decode($formats), $replace))
         )
     );
+
     return $slug;
 }
 
@@ -46,8 +47,8 @@ function str_slug(string $string): string
 function str_studly_case(string $string): string
 {
     $string = str_slug($string);
-    $studlyCase = str_replace(" ", "",
-        mb_convert_case(str_replace("-", " ", $string), MB_CASE_TITLE)
+    $studlyCase = str_replace(' ', '',
+        mb_convert_case(str_replace('-', ' ', $string), MB_CASE_TITLE)
     );
 
     return $studlyCase;
@@ -77,17 +78,18 @@ function str_title(string $string): string
  * @param string $pointer
  * @return string
  */
-function str_limit_words(string $string, int $limit, string $pointer = "..."): string
+function str_limit_words(string $string, int $limit, string $pointer = '...'): string
 {
     $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
-    $arrWords = explode(" ", $string);
+    $arrWords = explode(' ', $string);
     $numWords = count($arrWords);
 
     if ($numWords < $limit) {
         return $string;
     }
 
-    $words = implode(" ", array_slice($arrWords, 0, $limit));
+    $words = implode(' ', array_slice($arrWords, 0, $limit));
+
     return "{$words}{$pointer}";
 }
 
@@ -97,14 +99,15 @@ function str_limit_words(string $string, int $limit, string $pointer = "..."): s
  * @param string $pointer
  * @return string
  */
-function str_limit_chars(string $string, int $limit, string $pointer = "..."): string
+function str_limit_chars(string $string, int $limit, string $pointer = '...'): string
 {
     $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
     if (mb_strlen($string) <= $limit) {
         return $string;
     }
 
-    $chars = mb_substr($string, 0, mb_strrpos(mb_substr($string, 0, $limit), " "));
+    $chars = mb_substr($string, 0, mb_strrpos(mb_substr($string, 0, $limit), ' '));
+
     return "{$chars}{$pointer}";
 }
 
@@ -132,7 +135,7 @@ function base64UrlEncode(string $text): string
  * @param string $format
  * @return string
  */
-function date_fmt(string $date = "now", string $format = "d/m/Y H\hi"): string
+function date_fmt(string $date = 'now', string $format = 'd/m/Y H\hi'): string
 {
     return (new DateTime($date))->format($format);
 }
@@ -141,7 +144,7 @@ function date_fmt(string $date = "now", string $format = "d/m/Y H\hi"): string
  * @param string $date
  * @return string
  */
-function date_fmt_br(string $date = "now"): string
+function date_fmt_br(string $date = 'now'): string
 {
     return (new DateTime($date))->format(CONF_DATE_BR);
 }
@@ -150,7 +153,26 @@ function date_fmt_br(string $date = "now"): string
  * @param string $date
  * @return string
  */
-function date_fmt_app(string $date = "now"): string
+function date_fmt_app(string $date = 'now'): string
 {
     return (new DateTime($date))->format(CONF_DATE_APP);
 }
+
+/**
+ * ##############
+ * ###  LOGS  ###
+ * ##############
+ */
+
+/**
+ * Write log on syslog
+ * 
+ * @param string $message
+ * @return void
+ */
+function writeLog(string $message): void
+{
+    $message = "{$message}\n";
+    syslog(LOG_DEBUG, $message);
+}
+

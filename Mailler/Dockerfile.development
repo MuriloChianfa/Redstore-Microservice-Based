@@ -11,9 +11,7 @@ RUN apk update && apk add --no-cache net-tools
 # add composer to install all dependencis
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN mkdir /app
-COPY . /app/
+WORKDIR /app/
 
-# RUN cd /app/ && rm -rf vendor/ && composer install && composer update && composer fund
+CMD composer install > /dev/null 2> /dev/null; composer update > /dev/null 2> /dev/null && php /app/Mailler.php --debug > /dev/stdout 2> /dev/stdout
 
-CMD cd /app/ && composer install && php -f /app/Listener.php > /dev/stdout 2> /dev/stdout

@@ -5,7 +5,7 @@ namespace Source\Email;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-final class Email // extends AnotherClass implements Interface
+final class Email
 {
     /**
      * @var PHPMailer\PHPMailer\PHPMailer $mail
@@ -26,7 +26,9 @@ final class Email // extends AnotherClass implements Interface
 
         //Server settings
         $this->mail->isSMTP();
-        // $this->mail->isHTML();
+        
+        $this->mail->isHTML();
+        
         $this->mail->setLanguage("br");
 
         $this->mail->CharSet = 'UTF-8';
@@ -52,20 +54,20 @@ final class Email // extends AnotherClass implements Interface
      */
     private function setConfig(): void
     {
-        $this->mail->Host = gethostbyname("smtp.sendgrid.net");
-        $this->mail->Port = "587";
-        $this->mail->Username = "apikey";
-        $this->mail->Password = "";
+        $this->mail->Host = gethostbyname('smtp.sendgrid.net');
+        $this->mail->Port = '587';
+        $this->mail->Username = 'apikey';
+        $this->mail->Password = '';
         $this->mail->SMTPAuth = true;
         $this->mail->SMTPSecure = 'tls';
 
-        // no debug
-        $this->mail->SMTPDebug = 3;
+        // Debug off
+        $this->mail->SMTPDebug = 0;
 
-        // // full debug
+        // Debug on
         // $this->mail->SMTPDebug = 4;
 
-        $this->mail->setFrom("contato@contato.com.br", 'TESTES');
+        $this->mail->setFrom('contato@contato.com.br', 'TESTES');
         $this->mail->SMTPOptions = [
             'ssl' => [
                 'verify_peer' => false,
@@ -94,7 +96,11 @@ final class Email // extends AnotherClass implements Interface
             }
 
             return true;
-        } catch (Exception $e) {
+        }
+        catch (\Exception $e) {
+            \writeLog($e->getMessage());
+            \writeLob($this->mail->ErrorInfo);
+
             $this->error = $this->mail->ErrorInfo;
             return false;
         }
@@ -108,3 +114,4 @@ final class Email // extends AnotherClass implements Interface
         $this->mail->ClearAddresses();
     }
 }
+

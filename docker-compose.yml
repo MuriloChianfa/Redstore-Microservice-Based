@@ -164,11 +164,13 @@ services:
   redstore-mailler:
     build:
       context: ./Mailler
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     image: redstore-mailler
     container_name: redstore-mailler
     depends_on:
       - redstore-api
+    volumes:
+      - ./Mailler/App:/app
     stdin_open: false
     tty: false
     networks:

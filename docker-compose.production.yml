@@ -158,7 +158,7 @@ services:
   redstore-mailler:
     build:
       context: ./Mailler
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.production
     image: redstore-mailler
     container_name: redstore-mailler
     depends_on:

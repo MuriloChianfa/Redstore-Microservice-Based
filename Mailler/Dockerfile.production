@@ -1,0 +1,23 @@
+FROM php:8.0.3-alpine3.13
+
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
+
+# install docker for php
+RUN docker-php-ext-install sockets pcntl
+
+# install net-tools for heakthcheck
+RUN apk update && apk add --no-cache net-tools
+
+# add composer to install all dependencis
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# set files
+RUN mkdir /app
+COPY ./App /app/
+
+WORKDIR /app/
+
+RUN rm -rf vendor/ > /dev/null 2> /dev/null; composer install > /dev/null 2> /dev/null; composer update > /dev/null 2> /dev/null && composer fund > /dev/null 2> /dev/null
+
+CMD composer install > /dev/null 2> /dev/null; composer update > /dev/null 2> /dev/null && php /app/Mailler.php --debug > /dev/stdout 2> /dev/stdout
+
