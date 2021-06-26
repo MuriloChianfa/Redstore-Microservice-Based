@@ -1,0 +1,32 @@
+# PHP 7.2 docker apache image
+FROM php:7.2-apache
+
+MAINTAINER Murilo Chianfa <github.com/murilochianfa>
+
+RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip libcurl3-dev curl apache2-utils && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Adicionar extenções PDO
+RUN docker-php-ext-install mysqli pdo pdo_mysql curl
+
+# Enable rewrite url
+RUN a2enmod rewrite
+
+# Copiar conf com ssl habilitado
+COPY ./000-default.conf /etc/apache2/sites-enabled/000-default.conf 
+
+# Habilitar portas de acesso
+COPY ./ports.conf /etc/apache2/ports.conf
+
+# Adicionar php.ini de desenvolvimento!
+COPY ./php.ini-development "$PHP_INI_DIR/php.ini"
+
+# Habilitar log do container
+RUN rm -rf /var/log/apache2/access.log
+RUN sed -i 's/error_log = syslog/error_log = \/var\/log\/apache2\/error.log/g' "$PHP_INI_DIR/php.ini"
+RUN ln -sf /dev/stdout /var/log/apache2/error.log
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# http port
+EXPOSE 80
+

@@ -9,8 +9,6 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=simple-server
-    ports:
-      - "3306:3306"
     volumes:
       - database:/var/lib/mysql
     stdin_open: false
@@ -98,8 +96,6 @@ services:
     restart: unless-stopped
     depends_on:
       - redstore-logs
-    ports:
-      - "15672:15672"
     stdin_open: false
     tty: false
     networks:
@@ -125,14 +121,12 @@ services:
   redstore-api:
     build:    
       context: ./API
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile.production
     image: redstore-api
     container_name: redstore-api
     restart: unless-stopped
     depends_on:
       - redstore-queue
-    volumes:
-      - ./API/API:/var/www/html
     env_file:
       - ./.env
     stdin_open: false
@@ -196,14 +190,12 @@ services:
   redstore-web:
     build:
       context: ./Web
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile.production
     image: redstore-web
     container_name: redstore-web
     restart: unless-stopped
     depends_on:
       - redstore-api
-    volumes:
-      - ./Web/Frontend:/var/www/html
     env_file:
       - ./.env
     stdin_open: false

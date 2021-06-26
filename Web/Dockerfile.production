@@ -6,18 +6,11 @@ MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip libcurl3-dev curl apache2-utils && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Adicionar extenções PDO
-RUN docker-php-ext-install mysqli pdo pdo_mysql curl
+RUN docker-php-ext-configure opcache --enable-opcache
+RUN docker-php-ext-install mysqli pdo pdo_mysql curl opcache
 
 # Enable rewrite url
 RUN a2enmod rewrite
-
-# Enable ssl mode
-# RUN ln -s /etc/apache2/mods-available/ssl.load  /etc/apache2/mods-enabled/ssl.load
-
-# Adicionar certificados auto assinados
-# RUN mkdir -p /var/run/apache2/ssl/
-# COPY ./ssl.key /etc/apache2/ssl/ssl.key
-# COPY ./ssl.crt /etc/apache2/ssl/ssl.crt
 
 # Copiar conf com ssl habilitado
 COPY ./000-default.conf /etc/apache2/sites-enabled/000-default.conf 
@@ -26,7 +19,7 @@ COPY ./000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY ./ports.conf /etc/apache2/ports.conf
 
 # Adicionar php.ini de produção!
-COPY ./php.ini "$PHP_INI_DIR/php.ini"
+COPY ./php.ini-production "$PHP_INI_DIR/php.ini"
 
 # Habilitar log do container
 RUN rm -rf /var/log/apache2/access.log
@@ -34,18 +27,15 @@ RUN sed -i 's/error_log = syslog/error_log = \/var\/log\/apache2\/error.log/g' "
 RUN ln -sf /dev/stdout /var/log/apache2/error.log
 
 # Set all front files
-# WORKDIR /var/www/html/
-# ADD ./api.zip /var/www/html/
-# RUN unzip api.zip && mv /var/www/html/api/* /var/www/html/ && rm api.zip
+WORKDIR /var/www/html/
+COPY ./* /var/www/html/
 
 # removing bins
-# RUN rm -rf /usr/bin/wget /usr/bin/curl /usr/bin/apt-get /usr/bin/apt /usr/bin/unzip /usr/bin/which /usr/bin/whereis /usr/bin/whoami
-# RUN for entry in $(ls /usr/sbin/ | grep -v apache2); do rm -rf "/usr/sbin/$entry"; done
+RUN rm -rf /usr/bin/wget /usr/bin/curl /usr/bin/apt-get /usr/bin/apt /usr/bin/unzip /usr/bin/which /usr/bin/whereis /usr/bin/whoami
+RUN for entry in $(ls /usr/sbin/ | grep -v apache2); do rm -rf "/usr/sbin/$entry"; done
 
-# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # http port
 EXPOSE 80
 
-# ssl port
-# EXPOSE 443
