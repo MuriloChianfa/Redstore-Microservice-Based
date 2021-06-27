@@ -53,6 +53,14 @@ $route->namespace('Source\Controllers')->group('/me');
 /** POST */ ## AUTH REQUIRED
 $route->post('/profile', 'Profile:profile');
 $route->patch('/update', 'Profile:update');
+// Phone
+$route->post('/phone', 'Profile:addPhone');
+$route->patch('/phone', 'Profile:updatePhone');
+// Address
+$route->get('/address/{id}', 'Profile:address');
+$route->post('/address', 'Profile:addAddress');
+$route->patch('/address', 'Profile:updateAddress');
+
 $route->post('/favorite', 'Profile:favorite');
 $route->post('/history', 'Profile:history');
 $route->post('/cart', 'Profile:cart');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Models;
+namespace Source\Models\Address;
 
 use Source\Core\Model;
 use Source\Core\Connect;
@@ -15,31 +15,44 @@ class Address extends Model
      */
     public function __construct()
     {
-        parent::__construct("phone", ["id"], ["user_id", "phone_type_id", "number"]);
+        parent::__construct('address', ['id'], ['city_id', 'street', 'cep', 'number']);
     }
 
     /**
-     * @param int $user_id
-     * @param int $phone_type_id
-     * @param int $phone_type_id
+     * @param int $city_id
+     * @param string $street
+     * @param string $cep
+     * @param int $number
      * @return Address
      */
-    public function bootstrap(int $user_id, int $phone_type_id, int $number): Address
+    public function bootstrap(int $city_id, string $street, string $cep, int $number): Address
     {
-        $this->user_id = $user_id;
-        $this->phone_type_id = $phone_type_id;
+        $this->city_id = $city_id;
+        $this->street = $street;
+        $this->cep = $cep;
         $this->number = $number;
         return $this;
     }
 
-    /**
-     * @param string $userId
-     * @return null|Phone
-     */
-    public function findByUserId(string $userId)
+    public static function bindAddress(int $userId, int $addressId)
     {
         try {
-            $stmt = Connect::getInstance()->prepare("SELECT phone.number, phone_type.name FROM redstore.phone INNER JOIN redstore.phone_type ON phone_type.id = phone.phone_type_id WHERE phone.user_id = :userId;");
+            $stmt = Connect::getInstance()->prepare("INSERT INTO redstore.user_address (user_id, address_id, created_by, created_at, updated_at) VALUES (:userId, :addressId, :userId2, NOW(), NOW());");
+            $stmt->bindValue(":userId", $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(":addressId", $addressId, \PDO::PARAM_INT);
+            $stmt->bindValue(":userId2", $userId, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            return true;
+        } catch (\PDOException $exception) {
+            return null;
+        }
+    }
+
+    public static function getAddressByUserId(int $userId)
+    {
+        try {
+            $stmt = Connect::getInstance()->prepare("SELECT redstore.address.* FROM redstore.address INNER JOIN redstore.user_address ON redstore.address.id = redstore.user_address.address_id WHERE redstore.user_address.user_id = :userId;");
             $stmt->bindValue(":userId", $userId, \PDO::PARAM_INT);
             $stmt->execute();
 
@@ -49,7 +62,24 @@ class Address extends Model
 
             return $stmt->fetchAll();
         } catch (\PDOException $exception) {
-            $this->fail = $exception;
+            return null;
+        }
+    }
+
+    public static function getBindedAddress(int $userId, int $addressId)
+    {
+        try {
+            $stmt = Connect::getInstance()->prepare("SELECT user_id, address_id FROM redstore.user_address WHERE user_id = :userId AND address_id = :addressId;");
+            $stmt->bindValue(":userId", $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(":addressId", $addressId, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            if (!$stmt->rowCount()) {
+                return null;
+            }
+
+            return $stmt->fetchAll();
+        } catch (\PDOException $exception) {
             return null;
         }
     }
@@ -59,32 +89,32 @@ class Address extends Model
      */
     public function save(): bool
     {
-        if (!$this->required()) {
-            $this->error = "Faltam campos obrigatórios!";
-            return false;
-        }
-
-        /** Phone Update */
+        /** Address Update */
         if (!empty($this->id)) {
-            $phoneId = $this->id;
+            $addressId = $this->id;
 
-            $this->update($this->safe(), "id = :id", "id={$phoneId}");
+            $this->update($this->safe(), "id = :id", "id={$addressId}");
             if ($this->fail()) {
                 $this->error = "Erro ao atualizar, verifique os dados";
                 return false;
             }
         }
 
-        /** Phone Create */
+        if (!$this->required()) {
+            $this->error = "Campos inválidos!";
+            return false;
+        }
+
+        /** Address Create */
         if (empty($this->id)) {
-            $phoneId = $this->create($this->safe());
+            $addressId = $this->create($this->safe());
             if ($this->fail()) {
                 $this->error = "Erro ao cadastrar, verifique os dados";
                 return false;
             }
         }
 
-        $this->data = ($this->findById($phoneId))->data();
+        $this->data = ($this->findById($addressId))->data();
         return true;
     }
 }

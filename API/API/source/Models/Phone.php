@@ -39,7 +39,7 @@ class Phone extends Model
     public function findByUserId(string $userId)
     {
         try {
-            $stmt = Connect::getInstance()->prepare("SELECT phone.number, phone_type.name FROM redstore.phone INNER JOIN redstore.phone_type ON phone_type.id = phone.phone_type_id WHERE phone.user_id = :userId;");
+            $stmt = Connect::getInstance()->prepare("SELECT phone.id, phone.number, phone_type.name FROM redstore.phone INNER JOIN redstore.phone_type ON phone_type.id = phone.phone_type_id WHERE phone.user_id = :userId;");
             $stmt->bindValue(":userId", $userId, \PDO::PARAM_INT);
             $stmt->execute();
 

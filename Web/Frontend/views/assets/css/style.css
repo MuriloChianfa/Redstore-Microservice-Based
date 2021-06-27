@@ -866,6 +866,25 @@ input:checked + .slider:before {
     transition: all .5s;
 }
 
+.modal-container-address {
+    width: 450px;
+    height: 458px;
+    margin: 20px auto 0;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: all .5s;
+}
+
+.address-label {
+    position: absolute;
+    left: 0px;
+    font-size: 14px;
+    margin: 2px 22px;
+}
+
 .show-modal {
     display: flex;
 }
