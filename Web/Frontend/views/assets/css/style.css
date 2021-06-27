@@ -819,6 +819,10 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
+.default-cursor {
+    cursor: default;
+}
+
 .editable {
     margin-left: auto;
     content: ">";
@@ -827,3 +831,99 @@ input:checked + .slider:before {
     font-size: 18px;
     font-weight: 400;
 }
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.bg-modalbg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(1, 1, 1, 0.7);
+    position: fixed;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 101;
+    display: none;
+}
+
+.modal-container {
+    width: 450px;
+    height: 190px;
+    margin: 20px auto 0;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: all .5s;
+}
+
+.show-modal {
+    display: flex;
+}
+
+.closebutton {
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    font-size: 26px;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.alter-input {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    margin-top: 24px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: #99A3BA;
+    border: 1px solid #CDD9ED;
+    background: #FFFFFF;
+    transition: border .3s ease;
+}
+
+.modal-text {
+    color: rgb(81, 81, 81);
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.modal-button {
+    border: none;
+    color: white;
+    margin: auto 0;
+    padding: 12px 12px;
+    width: 49%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: rgb(170, 170, 170);
+}
+
+.save-button {
+    background-color: rgb(255, 83, 59);
+}
+
+.modal-options-buttons {
+    margin-top: 10px;
+}
+

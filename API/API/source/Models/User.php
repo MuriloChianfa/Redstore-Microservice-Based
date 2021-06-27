@@ -49,6 +49,25 @@ class User extends Model
 
         return $find->fetch();
     }
+    
+    public function updateUser(): bool
+    {
+        $userId = $this->id;
+
+        if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$userId}", "id")->fetch()) {
+            $this->error = "O e-mail informado já está cadastrado";
+            return false;
+        }
+
+        $this->update($this->safe(), "id = :id", "id={$userId}");
+
+        if ($this->fail()) {
+            $this->error = "Erro ao atualizar, verifique os dados";
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * @return bool

@@ -1,8 +1,5 @@
 <?php 
 
-$enviroment = Dotenv\Dotenv::createImmutable(__DIR__ . '/..', '.env');
-$enviroment->load();
-
 define('SITE', [
     'name' => 'A loja virtual',
     'desc' => 'A verdadeira plataforma de ecommerce',
@@ -30,3 +27,4 @@ define('SOCIAL', [
 define('FACEBOOK_LOGIN', []);
 
 define('GOOGLE_LOGIN', []);
+

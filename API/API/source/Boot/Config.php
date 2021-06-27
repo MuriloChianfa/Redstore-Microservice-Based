@@ -1,8 +1,5 @@
 <?php
 
-$enviroment = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..', '.env');
-$enviroment->load();
-
 /**
  * PROJECT URLs
  */
@@ -12,22 +9,22 @@ define('CONF_URL_TEST', 'https://' . getenv('MAIN_IP'));
 /**
  * DATABASE
  */
-define('CONF_DB_HOST', $_ENV['DB_HOST']);
-define('CONF_DB_USER', $_ENV['DB_USER']);
-define('CONF_DB_PASS', $_ENV['DB_PASS']);
-define('CONF_DB_NAME', $_ENV['DB_NAME']);
+define('CONF_DB_HOST', '172.16.240.10');
+define('CONF_DB_USER', 'root');
+define('CONF_DB_PASS', 'simple-server');
+define('CONF_DB_NAME', 'redstore');
 
 # redis cache
-define('CONF_REDIS_HOST', $_ENV['REDIS_HOST']);
-define('CONF_REDIS_SCHEME', $_ENV['REDIS_SCHEME']);
-define('CONF_REDIS_PORT', $_ENV['REDIS_PORT']);
-define('CONF_REDIS_PASS', $_ENV['REDIS_PASS']);
+define('CONF_REDIS_HOST', '172.16.240.11');
+define('CONF_REDIS_SCHEME', 'tcp');
+define('CONF_REDIS_PORT', '6379');
+define('CONF_REDIS_PASS', '');
 
 # rabbitmq
-define('CONF_RABBITMQ_HOST', $_ENV['RABBITMQ_HOST']);
-define('CONF_RABBITMQ_PORT', $_ENV['RABBITMQ_PORT']);
-define('CONF_RABBITMQ_USER', $_ENV['RABBITMQ_USER']);
-define('CONF_RABBITMQ_PASS', $_ENV['RABBITMQ_PASS']);
+define('CONF_RABBITMQ_HOST', '172.16.239.10');
+define('CONF_RABBITMQ_PORT', '5672');
+define('CONF_RABBITMQ_USER', 'admin');
+define('CONF_RABBITMQ_PASS', 'admin');
 
 /**
  * DATES
@@ -62,7 +59,7 @@ define('CONF_IMAGE_QUALITY', ['jpg' => 75, 'png' => 5]);
  * JWT
  */
 define('CONF_JWT_CONTEXT', ['typ' => 'JWT', 'alg' => 'HS256']);
-define('CONF_JWT_SECRET', $_ENV['JWT_SECRET']);
+define('CONF_JWT_SECRET', 'SECRET');
 
 /**
  * HTTP

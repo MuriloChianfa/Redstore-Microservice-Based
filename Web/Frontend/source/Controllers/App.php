@@ -4,14 +4,13 @@ namespace Source\Controllers;
 
 class App extends Controller
 {
-
     /** @var mixed */
     protected $user;
 
     public function __construct($router) {
         parent::__construct($router);
 
-        if(empty(@$_SESSION["user"])) {
+        if (empty(@$_SESSION["user"])) {
             flash("error", "Acesso negado. Favor logar antes");
             $this->router->redirect("login.login");
         }
@@ -40,7 +39,9 @@ class App extends Controller
 
         echo $this->view->render("theme/account/account", [
             "head" => $head,
-            "userData" => $userData
+            "userData" => $userData,
+            'userJWT' => $this->user,
+            'mainURL' => BASE_API 
         ]);
     }
 

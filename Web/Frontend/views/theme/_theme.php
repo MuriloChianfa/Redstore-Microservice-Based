@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<?= asset("/css/message.css"); ?>" />
     <link rel="stylesheet" href="<?= asset("/css/load.css"); ?>" />
     <link rel="stylesheet" href="<?= asset("/css/style.css"); ?>" />
+    <link rel="stylesheet" href="<?= asset("/css/iziToast.min.css"); ?>" />
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -57,9 +58,11 @@
 
     <script src="<?= asset("/js/jquery.js"); ?>"></script>
     <script src="<?= asset("/js/jquery-ui.js"); ?>"></script>
+    <script src="<?= asset("/js/iziToast.min.js"); ?>"></script>
+    <script src="<?= asset("/js/alerts.js"); ?>"></script>
     <script src="<?= asset("/js/footer.js"); ?>"></script>
     <script src="<?= asset("/js/form.js"); ?>"></script>
-
+    
     <?= $v->section("scripts"); ?>
 </body>
 </html>
