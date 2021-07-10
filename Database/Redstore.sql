@@ -5884,3 +5884,14 @@ CREATE TABLE product_sale (
   KEY product_sale_sale_id_fk_idx (sale_id),
   CONSTRAINT product_sale_sale_id_fk FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS product_image;
+CREATE TABLE product_image (
+  id INT(11) NOT NULL,
+  product_id INT(11) NOT NULL,
+  url_slug VARCHAR(255) NOT NULL,
+  real_path VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id),
+  KEY product_image_product_id_fk_idx (product_id),
+  CONSTRAINT product_image_product_id_fk_idx FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

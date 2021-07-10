@@ -14,7 +14,7 @@ class Category extends Model
      */
     public function __construct()
     {
-        parent::__construct("category", ["id"], ["name"]);
+        parent::__construct("product_type", ["id"], ["name"]);
     }
 
     /**

@@ -1,5 +1,38 @@
 <?php
 
+/**
+ * @param \Throwable $exception
+ * @return void
+ */
+function exceptionHandler($exception) {
+    $errorCode = @$exception->getCode();
+    $errorMessage = @$exception->getMessage();
+
+    if (!empty($exception->getTrace())) {
+        $errorLine = @$exception->getTrace()[0]['line'] ?? '';
+        $errorFile = @$exception->getTrace()[0]['file'] ?? '';
+    }
+
+    error_log((empty($errorLine)) ? "[{$errorCode}] {$errorMessage}" : "[{$errorCode}] {$errorMessage} on line {$errorLine} of file {$errorFile}");
+
+    header('Location: /500');
+    exit;
+}
+
+/**
+ * @param int $errno
+ * @param string $errstr
+ * @param string $errfile
+ * @param int $errline
+ * @return void
+ */
+function errorHandler($errno, $errstr, $errfile, $errline) {
+    exceptionHandler(new ErrorException($errstr, 0, $errno, $errfile, $errline));
+}
+
+set_error_handler('errorHandler');
+set_exception_handler('exceptionHandler');
+
 ob_start();
 @session_start();
 
@@ -17,8 +50,11 @@ $router->group(null);
 $router->get('/', 'Web:home', 'web.home');
 $router->get('/products', 'Web:products', 'web.products');
 $router->get('/product', 'Web:productsDetails', 'web.productsDetails');
-$router->get('/product', 'Web:about', 'web.about');
+$router->get('/about', 'Web:about', 'web.about');
 $router->get('/cart', 'Web:cart', 'web.cart');
+
+// Products
+$router->get('/product/insert', 'Web:productInsert', 'web.productInsert');
 
 /**
  * LOGIN

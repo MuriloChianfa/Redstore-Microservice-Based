@@ -6,6 +6,9 @@
 
     <div class="row row-2">
         <h2>All Products</h2>
+        <?php if (!empty($user) && in_array($user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])): ?>
+            <button class="btn" onclick="window.location.href='<?= $router->route('web.productInsert'); ?>';">Adicionar produto</button>
+        <?php endif; ?>
         <select>
             <option>Default Shorting</option>
             <option>Default by price</option>
