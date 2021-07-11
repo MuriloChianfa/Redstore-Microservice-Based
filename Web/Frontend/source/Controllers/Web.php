@@ -13,7 +13,11 @@ class Web extends Controller
     {
         parent::__construct($router);
 
-        if (!empty(@$_SESSION['user'])) {
+        if (!isset($_SESSION['user'])) {
+            return;
+        }
+
+        if (!empty($_SESSION['user'])) {
             $req = callAPI('/me/profile', 'POST', null, $_SESSION['user']);
 
             if (isset($req['curl_error'])) {

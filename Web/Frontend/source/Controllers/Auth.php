@@ -27,7 +27,7 @@ class Auth extends Controller
             "password" => $passwd
         ];
 
-        $req = callAPI('/login', 'POST', $data, @$_SESSION['user']);
+        $req = callAPI('/login', 'POST', $data);
 
         if (isset($req['curl_error']) || $req['code'] != 200) {
             echo $this->ajaxResponse("message", [

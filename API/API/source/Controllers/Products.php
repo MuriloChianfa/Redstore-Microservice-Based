@@ -28,15 +28,21 @@ class Products
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        if (empty($data["page"]) && empty($data["limit"])) {
+        if (empty($data)) {
             if (is_null(($products = $Product->findAll()))) {
                 (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
-                return;
             }
-            
+
             $this->Message->message = $products;
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-            return;
+        }
+
+        if (!isset($data['page']) || !isset($data['limit'])) {
+            $this->Message->message = [
+                'message' => 'Missing page or limit argument'
+            ];
+
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
         }
 
         $page = filter_var($data["page"], FILTER_VALIDATE_INT);
@@ -44,9 +50,8 @@ class Products
 
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
-            return;
         }
-        
+
         $this->Message->message = $products;
         
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);

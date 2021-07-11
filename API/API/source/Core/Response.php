@@ -80,7 +80,7 @@ final class Response
         $this->setHeaders();
         $this->sendResponse();
 
-        return;
+        exit;
     }    
 
     private function sendResponse(): void
