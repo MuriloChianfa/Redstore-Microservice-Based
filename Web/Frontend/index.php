@@ -55,6 +55,7 @@ $router->get('/cart', 'Web:cart', 'web.cart');
 
 // Products
 $router->get('/product/insert', 'Web:productInsert', 'web.productInsert');
+$router->post('/product/insert', 'Products:insert', 'products.insert');
 
 /**
  * LOGIN

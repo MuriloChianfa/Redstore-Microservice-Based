@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <form action="<?= $mainURL ?>/product" method="post">
+    <form action="<?= $router->route('products.insert'); ?>" method="POST">
         <div class="row">
             <div class="raw-col-8">
                 <h4 class="modal-text noselect">Title</h4>
@@ -37,7 +37,7 @@
             <div class="raw-col-8">
                 <h4 class="modal-text noselect">Category</h4>
 
-                <select name="category_id" style="margin-top: 24px; width: 100%;">
+                <select name="product_type_id" style="margin-top: 24px; width: 100%;">
                     <option value="" selected>Select one category...</option>
                     <?php if (!empty($categories)): ?>
                         <?php foreach ($categories as $value): ?>
@@ -60,7 +60,7 @@
             <div class="raw-col-8">
                 <h4 class="modal-text noselect">Quantity</h4>
 
-                <input type="number" class="alter-input" name="avaliable" value="" />
+                <input type="number" class="alter-input" name="available" value="" />
             </div>
         </div>
 

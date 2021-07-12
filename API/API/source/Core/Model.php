@@ -212,6 +212,12 @@ abstract class Model
         return $stmt->rowCount();
     }
 
+    public function rawQuery(string $query): self
+    {
+        $this->query = $query;
+        return $this;
+    }
+
     /**
      * @param string $entity
      * @param array $data

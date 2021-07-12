@@ -52,37 +52,37 @@ class Login extends Controller {
         ]);
     }
 
-    public function reset($data): void {
-        if(empty($_SESSION["forget"])) {
-            flash("info", "Informe seu email para recuperar a senha");
-            $this->router->redirect("web.forget");
-        }
+    // public function reset($data): void {
+    //     if(empty($_SESSION["forget"])) {
+    //         flash("info", "Informe seu email para recuperar a senha");
+    //         $this->router->redirect("web.forget");
+    //     }
 
-        $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
-        $forget = filter_var($data["forget"], FILTER_DEFAULT);
+    //     $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
+    //     $forget = filter_var($data["forget"], FILTER_DEFAULT);
 
-        $errForget = "Não foi possivel continuar com a verificação";
+    //     $errForget = "Não foi possivel continuar com a verificação";
 
-        if(!$email || !$forget) {
-            flash("error", $errForget);
-            $this->router->redirect("web.forget");
-        }
+    //     if(!$email || !$forget) {
+    //         flash("error", $errForget);
+    //         $this->router->redirect("web.forget");
+    //     }
 
-        $user = (new User())->find("email = :e AND forget = :f", "e={$email}&f={$forget}")->fetch();
-        if(!$user) {
-            flash("error", $errForget);
-            $this->router->redirect("web.forget");
-        }
+    //     $user = (new User())->find("email = :e AND forget = :f", "e={$email}&f={$forget}")->fetch();
+    //     if(!$user) {
+    //         flash("error", $errForget);
+    //         $this->router->redirect("web.forget");
+    //     }
 
-        $head = $this->seo->optimize(
-            "Crie sua nova senha |" . site("name"),
-            site("desc"),
-            $this->router->route("web.reset"),
-            routeImage("Reset")
-        )->render();
+    //     $head = $this->seo->optimize(
+    //         "Crie sua nova senha |" . site("name"),
+    //         site("desc"),
+    //         $this->router->route("web.reset"),
+    //         routeImage("Reset")
+    //     )->render();
 
-        echo $this->view->render("theme/main/reset", [
-            "head" => $head
-        ]);
-    }
+    //     echo $this->view->render("theme/main/reset", [
+    //         "head" => $head
+    //     ]);
+    // }
 }

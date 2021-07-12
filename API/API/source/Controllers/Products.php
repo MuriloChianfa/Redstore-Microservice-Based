@@ -12,17 +12,32 @@ use Source\Models\Category;
 
 class Products
 {
+    /**
+     * @var \stdClass $Message
+     */
     private $Message;
 
+    /**
+     * @var Request $Request
+     */
     private $Request;
 
+    /**
+     * Products model constructor...
+     */
     public function __construct()
     {
         $this->Message = new stdClass();
         $this->Request = new Request();
     }
 
-    public function products($data)
+    /**
+     * GET the list of all products
+     * 
+     * @param array|null $data Receive the current page and limit of then
+     * @return void
+     */
+    public function products($data): void
     {
         $Product = new Product();
 
@@ -51,12 +66,19 @@ class Products
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
         }
-
-        $this->Message->message = $products;
         
+        $this->Message->message = $products;
+        $this->Message->count = $Product->count();
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
+    /**
+     * GET one single product
+     * 
+     * @param array $data
+     * @return void
+     */
     public function product($data)
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -66,18 +88,16 @@ class Products
         if (!$id) {
             $this->Message->message = 'parâmetro inválido';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         $Product = new Product();
 
         if (is_null(($product = $Product->findByProductId($id)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
-            return;
         }
-        
+
         $this->Message->message = $product->data();
-        
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
@@ -86,7 +106,7 @@ class Products
         (new Auth())->validateLogin();
 
         $Product = new Product();
-        
+
         foreach ($Product->getRequired() as $required) {
             if (!isset($data[$required])) {
                 $this->Message->message = "parâmetro '{$required}' é requerido";
@@ -100,21 +120,19 @@ class Products
         $name = filter_var(trim($data["name"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $value = filter_var($data["value"], FILTER_VALIDATE_FLOAT);
         $description = filter_var(trim($data["description"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $avaliable = filter_var($data["avaliable"], FILTER_VALIDATE_INT);
-        $category_id = filter_var($data["category_id"], FILTER_VALIDATE_INT);
+        $available = filter_var($data["available"], FILTER_VALIDATE_INT);
+        $product_type_id = filter_var($data["product_type_id"], FILTER_VALIDATE_INT);
 
-        if (!$value || !$avaliable || !$category_id || empty($name) || empty($description)) {
+        if (!$value || !$available || !$product_type_id || empty($name) || empty($description)) {
             $this->Message->message = 'parâmetro inválido';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         $Category = new Category();
 
-        if (is_null($Category->findById($category_id, 'id'))) {
+        if (is_null($Category->findById($product_type_id, 'id'))) {
             $this->Message->message = 'esta categoria não existe';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         $Product = new Product();
@@ -125,7 +143,6 @@ class Products
             if (!$id) {
                 $this->Message->message = 'este produto não foi encontrado';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
             if (!is_null($Product->findById($id, 'id'))) {
@@ -137,13 +154,12 @@ class Products
         $Product->name = $name;
         $Product->value = $value;
         $Product->description = $description;
-        $Product->avaliable = $avaliable;
-        $Product->category_id = $category_id;
-        
+        $Product->available = $available;
+        $Product->product_type_id = $product_type_id;
+
         if (!$Product->save()) {
             $this->Message->message = $Product->message();
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-            return;
         }
 
         $this->Message->message = 'Produto adicionado com sucesso';
@@ -161,21 +177,18 @@ class Products
         if (!isset($data['id'])) {
             $this->Message->message = 'ID do produto é requerido';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         $id = filter_var($data["id"], FILTER_VALIDATE_INT);
-            
+
         if (!$id) {
             $this->Message->message = 'parâmetro inválido';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         if (is_null(($Product = $Product->findById($id, '*')))) {
             $this->Message->message = 'este produto não foi encontrado';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            return;
         }
 
         $productData = &$Product->data();
@@ -186,7 +199,6 @@ class Products
             if (!$name) {
                 $this->Message->message = 'parâmetro inválido';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
             $productData->name = $name;
@@ -198,7 +210,6 @@ class Products
             if (!$value) {
                 $this->Message->message = 'parâmetro inválido';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
             $productData->value = $value;
@@ -210,48 +221,43 @@ class Products
             if (!$description) {
                 $this->Message->message = 'parâmetro inválido';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
             $productData->description = $description;
         }
 
-        if (isset($data["avaliable"])) {
-            $avaliable = filter_var($data["avaliable"], FILTER_VALIDATE_INT);
+        if (isset($data["available"])) {
+            $available = filter_var($data["available"], FILTER_VALIDATE_INT);
 
-            if (!$avaliable) {
+            if (!$available) {
                 $this->Message->message = 'parâmetro inválido';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
-            $productData->avaliable = $avaliable;
+            $productData->available = $available;
         }
 
-        if (isset($data["category_id"])) {
-            $category_id = filter_var($data["category_id"], FILTER_VALIDATE_INT);
+        if (isset($data["product_type_id"])) {
+            $product_type_id = filter_var($data["product_type_id"], FILTER_VALIDATE_INT);
 
-            if (!$category_id) {
+            if (!$product_type_id) {
                 $this->Message->message = 'parâmetro inválido';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
             $Category = new Category();
 
-            if (is_null($Category->findById($category_id, 'id'))) {
+            if (is_null($Category->findById($product_type_id, 'id'))) {
                 $this->Message->message = 'esta categoria não existe';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-                return;
             }
 
-            $productData->category_id = $category_id;
+            $productData->product_type_id = $product_type_id;
         }
-        
+
         if (!$Product->save()) {
             $this->Message->message = $Product->message();
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-            return;
         }
 
         $this->Message->message = 'Produto atualizado com sucesso';

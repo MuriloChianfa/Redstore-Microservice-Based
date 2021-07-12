@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 
 use Source\Models\Category;
+use Source\Models\ProductImage;
 
 /**
  * @package Source\Models
@@ -16,29 +17,29 @@ class Product extends Model
      */
     public function __construct()
     {
-        parent::__construct("product", ["id"], ["name", "value", "description", "avaliable", "category_id"]);
+        parent::__construct("product", ["id"], ["name", "value", "description", "available", "product_type_id"]);
     }
 
     /**
      * @param string $name
      * @param string $value
      * @param string $description
-     * @param int $avaliable
-     * @param int $category_id
+     * @param int $available
+     * @param int $product_type_id
      * @return Product
      */
     public function bootstrap(
         string $name,
         string $value,
         string $description,
-        int $avaliable,
-        int $category_id
+        int $available,
+        int $product_type_id
     ): Product {
         $this->name = $name;
         $this->value = $value;
         $this->description = $description;
-        $this->avaliable = $avaliable;
-        $this->category_id = $category_id;
+        $this->available = $available;
+        $this->product_type_id = $product_type_id;
         return $this;
     }
 
@@ -76,7 +77,8 @@ class Product extends Model
         foreach ($find as $key => $value) {
             $result = $value->data();
 
-            $result->category = (new Category())->findById((int) $result->category_id)->data();
+            $result->category = (new Category())->findById((int) $result->product_type_id)->data();
+            $result->ProductImage = (new ProductImage())->findAllByProductId((int) $result->id);
             
             $return[] = $result;
         }
@@ -94,7 +96,8 @@ class Product extends Model
             return null;
         }
 
-        $value->category =(new Category())->findById((int) $value->category_id)->data();
+        $value->category =(new Category())->findById((int) $value->product_type_id)->data();
+        $value->ProductImage = (new ProductImage())->findAllByProductId((int) $value->id);
 
         return $value;
     }
@@ -111,14 +114,12 @@ class Product extends Model
 
         /** User Update */
         if (!empty($this->id)) {
-            $productId = $this->id;
-
-            if ($this->find("name = :e AND id != :i", "e={$this->name}&i={$productId}", "id")->fetch()) {
+            if ($this->find("name = :e AND id != :i", "e={$this->name}&i={$this->id}", "id")->fetch()) {
                 $this->error = "O produto informado já está cadastrado";
                 return false;
             }
 
-            $this->update($this->safe(), "id = :id", "id={$productId}");
+            $this->update($this->safe(), "id = :id", "id={$this->id}");
             if ($this->fail()) {
                 $this->error = "Erro ao atualizar, verifique os dados";
                 return false;
@@ -127,19 +128,21 @@ class Product extends Model
 
         /** User Create */
         if (empty($this->id)) {
-            if ($this->find("name = :e AND id != :i", "e={$this->name}&i={$productId}", "id")->fetch()) {
+            if ($this->find("name = :e", "e={$this->name}")->fetch()) {
                 $this->error = "O produto informado já está cadastrado";
                 return false;
             }
 
-            $productId = $this->create($this->safe());
+            $this->id = $this->create($this->safe());
+
             if ($this->fail()) {
+                error_log($this->fail());
                 $this->error = "Erro ao cadastrar, verifique os dados";
                 return false;
             }
         }
 
-        $this->data = ($this->findById($productId))->data();
+        $this->data = ($this->findById($this->id))->data();
         return true;
     }
 }

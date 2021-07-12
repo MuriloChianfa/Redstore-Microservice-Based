@@ -5887,7 +5887,7 @@ CREATE TABLE product_sale (
 
 DROP TABLE IF EXISTS product_image;
 CREATE TABLE product_image (
-  id INT(11) NOT NULL,
+  id INT(11) NOT NULL AUTO_INCREMENT,
   product_id INT(11) NOT NULL,
   url_slug VARCHAR(255) NOT NULL,
   real_path VARCHAR(255) NOT NULL,
