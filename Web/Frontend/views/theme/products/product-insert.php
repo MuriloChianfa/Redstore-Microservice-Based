@@ -64,13 +64,13 @@
             </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="raw-col-8">
                 <h4 class="modal-text noselect">Images</h4>
 
                 <input type="file" name="name" multiple />
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="raw-col-8">

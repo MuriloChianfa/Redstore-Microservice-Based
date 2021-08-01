@@ -9,6 +9,7 @@ define('SITE', [
 ]);
 
 define('BASE_API', 'https://' . getenv('MAIN_IP') . '/api');
+define('CONF_URL_BASE', 'https://' . getenv('MAIN_IP'));
 
 // DESCOMENTAR APENAS PARA FAZER OS MINIFY
 

@@ -5,28 +5,20 @@
 <div class="small-container single-product">
     <div class="row">
         <div class="col-2">
-            <img src="<?= asset("/images/gallery-1.jpg"); ?>" width="100%" id="ProductImg">
+            <img src="<?= asset($product->ProductImage[0]->url_slug); ?>" width="100%" id="ProductImg">
 
             <div class="small-img-row">
-                <div class="small-img-col">
-                    <img src="<?= asset("/images/gallery-1.jpg"); ?>" class="small-img" width="100%">
-                </div>
-                <div class="small-img-col">
-                    <img src="<?= asset("/images/gallery-2.jpg"); ?>" class="small-img" width="100%">
-                </div>
-                <div class="small-img-col">
-                    <img src="<?= asset("/images/gallery-3.jpg"); ?>" class="small-img" width="100%">
-                </div>
-                <div class="small-img-col">
-                    <img src="<?= asset("/images/gallery-4.jpg"); ?>" class="small-img" width="100%">
-                </div>
+                <div class="small-img-col"><img src="<?= asset($product->ProductImage[1]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= asset($product->ProductImage[2]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= asset($product->ProductImage[3]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= asset($product->ProductImage[4]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
             </div>
 
         </div>
         <div class="col-2">
             <p>Home / T-Shirt</p>
-            <h1>Red Printed T-Shirt by HRX</h1>
-            <h4>$50.00</h4>
+            <h1><?= $product->name; ?></h1>
+            <h4>$<?= $product->value; ?></h4>
             <select>
                 <option>Select Size</option>
                 <option>XXL</option>
@@ -39,9 +31,7 @@
             <a href="" class="btn">Add To Cart</a>
             <h3>Product Details <i class="fa fa-indent"></i></h3>
             <br>
-            <p>Give your summer wardrobe a style upgrade with the HRX Men's Active T-shirt. 
-                Team it with a pair of shorts for your morning workout 
-                or a denims for an evening out with  the guys.</p>
+            <p><?= $product->description; ?></p>
         </div>
     </div>
 </div>
@@ -59,10 +49,11 @@
 
 <div class="small-container">
 
-    <div class="row">
+<div class="row">
+    <?php foreach ($relatedProducts as $product): ?>
         <div class="col-4">
-            <img src="<?= asset("/images/product-1.jpg"); ?>" alt="produto1">
-            <h4>Red Printed T-shirt</h4>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset($product->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
+            <a href="<?= $router->route("web.productsDetails"); ?>"><h4><?= $product->name ?></h4></a>
             <div class="rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -70,48 +61,10 @@
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star-o"></i>
             </div>
-            <p>$50.00</p>
+            <p>$<?= $product->value ?></p>
         </div>
-
-        <div class="col-4">
-            <img src="<?= asset("/images/product-2.jpg"); ?>" alt="produto1">
-            <h4>Red Printed T-shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-
-        <div class="col-4">
-            <img src="<?= asset("/images/product-3.jpg"); ?>" alt="produto1">
-            <h4>Red Printed T-shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-
-        <div class="col-4">
-            <img src="<?= asset("/images/product-4.jpg"); ?>" alt="produto1">
-            <h4>Red Printed T-shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-    </div>
+    <?php endforeach; ?>
+</div>
 
 </div>
 

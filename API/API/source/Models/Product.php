@@ -102,6 +102,13 @@ class Product extends Model
         return $value;
     }
 
+    public function coluntAllAvailableProducts(): int
+    {
+        $this->rawQuery('SELECT COUNT(id) AS count FROM product;');
+
+        return (int) ($this->fetch())->data()->count;
+    }
+
     /**
      * @return bool
      */

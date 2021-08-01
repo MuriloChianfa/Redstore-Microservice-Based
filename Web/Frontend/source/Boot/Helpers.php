@@ -13,6 +13,19 @@ function site(string $param = null): string {
     return SITE["root"];
 }
 
+/**
+ * @param string $path
+ * @return string
+ */
+function url(string $path = null): string
+{
+    if ($path) {
+        return CONF_URL_BASE . "/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
+    }
+
+    return CONF_URL_BASE;
+}
+
 function routeImage(string $imageUrl): string {
     return "https://via.placeholder.com/1200x628/0984e3/FFFFFF?text={$imageUrl}";
 }

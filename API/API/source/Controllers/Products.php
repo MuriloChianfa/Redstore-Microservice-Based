@@ -8,6 +8,7 @@ use Source\Core\Request;
 use Source\Core\Response;
 
 use Source\Models\Product;
+use Source\Models\ProductImage;
 use Source\Models\Category;
 
 class Products
@@ -68,7 +69,7 @@ class Products
         }
         
         $this->Message->message = $products;
-        $this->Message->count = $Product->count();
+        $this->Message->count = $Product->coluntAllAvailableProducts();
 
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
@@ -101,6 +102,12 @@ class Products
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
+    /**
+     * POST insert a new product
+     * 
+     * @param array $data
+     * @return void
+     */
     public function addProduct($data)
     {
         (new Auth())->validateLogin();
@@ -160,6 +167,16 @@ class Products
         if (!$Product->save()) {
             $this->Message->message = $Product->message();
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+        }
+
+        $ProductImage = new ProductImage();
+
+        $ProductImage->product_id = $Product->id;
+        $ProductImage->url_slug = '/images/no-product-image.png';
+        $ProductImage->real_path = '/images/no-product-image.png';
+
+        if (!$ProductImage->save()) {
+            erro_log($ProductImage->message());
         }
 
         $this->Message->message = 'Produto adicionado com sucesso';

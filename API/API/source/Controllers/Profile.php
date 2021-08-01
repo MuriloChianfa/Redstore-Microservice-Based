@@ -44,19 +44,7 @@ class Profile
     {
         $User = new User();
         
-        $result = $User->findById($this->token['id'], "
-            id, 
-            gender_id, 
-            access_level_id, 
-            first_name, 
-            last_name, 
-            email, 
-            cpf, 
-            birth_date, 
-            photo, 
-            status, 
-            receive_promotion
-        ");
+        $result = $User->findById($this->token['id'], 'id, gender_id, access_level_id, first_name, last_name, email, cpf, birth_date, photo, status, receive_promotion');
         
         if (!$result || $result == null) {
             $this->Message->message = 'Usuário não encontrado!';
