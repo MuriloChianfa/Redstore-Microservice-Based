@@ -16,20 +16,20 @@ class ProductImage extends Model
      */
     public function __construct()
     {
-        parent::__construct('product_image', [ 'id' ], [ 'product_id', 'url_slug', 'real_path' ]);
+        parent::__construct('product_image', [ 'id' ], [ 'product_id', 'url_slug', 'image' ]);
     }
 
     /**
      * @param int $product_id
      * @param string $url_slug
-     * @param string $real_path
+     * @param string $image
      * @return ProductImage
      */
-    public function bootstrap(int $product_id, string $url_slug, string $real_path): ProductImage
+    public function bootstrap(int $product_id, string $url_slug, string $image): ProductImage
     {
         $this->product_id = $product_id;
         $this->url_slug = $url_slug;
-        $this->real_path = $real_path;
+        $this->image = $image;
         return $this;
     }
 
@@ -73,7 +73,7 @@ class ProductImage extends Model
     public function save(): bool
     {
         if (!$this->required()) {
-            $this->error = "ID do produto, URL Slug e Real Path, são obrigatórios!";
+            $this->error = "ID do produto, URL Slug e Base64, são obrigatórios!";
             return false;
         }
 

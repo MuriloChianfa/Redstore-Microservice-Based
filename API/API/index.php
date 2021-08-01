@@ -31,9 +31,11 @@ $route->namespace('Source\Controllers')->group('/');
 /** GET */ ## NO AUTH
 $route->get('/products', 'Products:products');
 $route->get('/products/{page}/{limit}', 'Products:products');
+$route->get('/products/{page}/{limit}/{order}/{direction}', 'Products:products');
 $route->get('/product/{id}', 'Products:product');
 /** POST */ ## ADMIN AUTH REQUIRED
 $route->post('/product', 'Products:addProduct');
+$route->post('/product-image/{id}', 'Products:addProductImage');
 $route->patch('/product', 'Products:alterProduct');
 
 /**

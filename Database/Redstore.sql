@@ -5866,7 +5866,7 @@ CREATE TABLE product (
   value VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
   available INT(11) NOT NULL DEFAULT 0,
-  rate FLOAT(1, 1) default 0,
+  rate FLOAT(2, 1) default 0,
   PRIMARY KEY (id),
   KEY product_product_type_id_fk_idx (product_type_id),
   CONSTRAINT product_product_type_id_fk FOREIGN KEY (product_type_id) REFERENCES product_type(id) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -5891,7 +5891,7 @@ CREATE TABLE product_image (
   id INT(11) NOT NULL AUTO_INCREMENT,
   product_id INT(11) NOT NULL,
   url_slug VARCHAR(255) NOT NULL,
-  real_path VARCHAR(255) NOT NULL,
+  image MEDIUMBLOB NOT NULL,
   PRIMARY KEY (id),
   KEY product_image_product_id_fk_idx (product_id),
   CONSTRAINT product_image_product_id_fk_idx FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE NO ACTION ON UPDATE NO ACTION

@@ -49,14 +49,10 @@
     <div class="row">
         <?php foreach ($featuredProducts as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= asset($product->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
                 <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
                 <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                    <?= starRate($product->rate); ?>
                 </div>
                 <p>$<?= $product->value ?></p>
             </div>
@@ -70,14 +66,10 @@
     <div class="row">
         <?php foreach ($latestProducts as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= asset($product->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
                 <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
                 <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                    <?= starRate($product->rate); ?>
                 </div>
                 <p>$<?= $product->value ?></p>
             </div>
@@ -87,14 +79,10 @@
     <div class="row">
         <?php foreach ($latestProducts2 as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= asset($product->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
                 <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
                 <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                    <?= starRate($product->rate); ?>
                 </div>
                 <p>$<?= $product->value ?></p>
             </div>

@@ -10,11 +10,11 @@
             <button class="btn" onclick="window.location.href='<?= $router->route('web.productInsert'); ?>';">Adicionar produto</button>
         <?php endif; ?>
         <select>
-            <option>Default Shorting</option>
-            <option>Default by price</option>
-            <option>Default by popularity</option>
-            <option>Default raging</option>
-            <option>Default sale</option>
+            <option>Default Sorting</option>
+            <option>Sort by price</option>
+            <option>Sort by popularity</option>
+            <option>Sort by rating</option>
+            <option>Sort by sales</option>
         </select>
     </div>
     
@@ -30,14 +30,10 @@
                 <div class="row">
             <?php endif; ?>
                     <div class="col-4">
-                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><img src="<?= asset($products[$i]->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
+                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><img src="<?= productImage($products[$i]); ?>" alt="produto1"></a>
                         <a href="<?= url("/product/{$products[$i]->id}"); ?>"><h4><?= $products[$i]->name; ?></h4></a>
                         <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
+                            <?= starRate($products[$i]->rate); ?>
                         </div>
                         <p>$<?= $products[$i]->value; ?></p>
                     </div>

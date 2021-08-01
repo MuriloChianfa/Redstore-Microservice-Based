@@ -41,21 +41,27 @@ class Web extends Controller
     public function home(): void
     {
         $head = $this->seo->optimize(
-            "RedStore | " . site("name"),
-            site("desc"),
-            $this->router->route("web.home"),
-            routeImage("Home")
+            'RedStore | ' . site('name'),
+            site('desc'),
+            $this->router->route('web.home'),
+            routeImage('Home')
         )->render();
 
-        $req = callAPI('/products/1/4', 'GET', [], $_SESSION['user']);
+        $req = callAPI('/products/1/4/rate/DESC', 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
-        $featuredProducts = (json_decode($req['result']))->message ?? []; // limit 4
-        $latestProducts = (json_decode($req['result']))->message ?? []; // limit 4
-        $latestProducts2 = (json_decode($req['result']))->message ?? []; // limit 4
+        $req2 = callAPI('/products/1/4/id/DESC', 'GET', [], $_SESSION['user'] ?? '');
+        if (isset($req2['curl_error']) || $req2['code'] != 200) { error_log(json_encode($req2)); }
 
-        echo $this->view->render("theme/main/index", [
-            "head" => $head,
+        $req3 = callAPI('/products/2/4/id/DESC', 'GET', [], $_SESSION['user'] ?? '');
+        if (isset($req3['curl_error']) || $req3['code'] != 200) { error_log(json_encode($req3)); }
+
+        $featuredProducts = (json_decode($req['result']))->message ?? [];
+        $latestProducts = (json_decode($req2['result']))->message ?? [];
+        $latestProducts2 = (json_decode($req3['result']))->message ?? [];
+
+        echo $this->view->render('theme/main/index', [
+            'head' => $head,
             'featuredProducts' => $featuredProducts,
             'latestProducts' => $latestProducts,
             'latestProducts2' => $latestProducts2
@@ -77,13 +83,13 @@ class Web extends Controller
         }
 
         $head = $this->seo->optimize(
-            "RedStore | " . site("name"),
-            site("desc"),
-            $this->router->route("web.products"),
-            routeImage("Products")
+            'RedStore | ' . site('name'),
+            site('desc'),
+            $this->router->route('web.products'),
+            routeImage('Products')
         )->render();
 
-        $req = callAPI("/products/{$page}/12", 'GET', [], $_SESSION['user']);
+        $req = callAPI("/products/{$page}/12", 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
         $products = (json_decode($req['result']))->message ?? [];
@@ -92,8 +98,8 @@ class Web extends Controller
         $lastpage = ceil($productsCount / 12);
         if ($lastpage == 0) { $lastpage = 1; }
 
-        echo $this->view->render("theme/products/products", [
-            "head" => $head,
+        echo $this->view->render('theme/products/products', [
+            'head' => $head,
             'user' => $this->user,
             'currentPage' => $page,
             'lastPage' => $lastpage,
@@ -105,7 +111,7 @@ class Web extends Controller
     public function productsDetails($data): void
     {
         $head = $this->seo->optimize(
-            "RedStore | " . site('name'),
+            'RedStore | ' . site('name'),
             site('desc'),
             $this->router->route('web.productsDetails'),
             routeImage('ProductsDetails')
@@ -117,18 +123,19 @@ class Web extends Controller
             $this->router->redirect('web.home');
         }
 
-        $req = callAPI("/product/{$data['id']}", 'GET', [], $_SESSION['user']);
+        $req = callAPI("/product/{$data['id']}", 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
         $product = (json_decode($req['result']))->message;
 
-        $req = callAPI('/products/1/4', 'GET', [], $_SESSION['user']);
+        $req = callAPI('/products/1/4', 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
         $relatedProducts = (json_decode($req['result']))->message ?? [];
 
         echo $this->view->render('theme/products/products-details', [
             'head' => $head,
+            'user' => $this->user,
             'product' => $product,
             'relatedProducts' => $relatedProducts
         ]);
@@ -137,27 +144,27 @@ class Web extends Controller
     public function productInsert(): void
     {
         if (empty($this->user) || !in_array($this->user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])) {
-            $this->router->redirect("web.products");
+            $this->router->redirect('web.products');
         }
 
         $head = $this->seo->optimize(
-            "RedStore | " . site("name"),
-            site("desc"),
-            $this->router->route("web.productInsert"),
-            routeImage("ProductInsert")
+            'RedStore | ' . site('name'),
+            site('desc'),
+            $this->router->route('web.productInsert'),
+            routeImage('ProductInsert')
         )->render();
 
         $req = callAPI('/categories', 'GET');
 
         if (isset($req['curl_error']) || $req['code'] != 200) {
             error_log(json_encode($req));
-            $this->router->redirect("web.products");
+            $this->router->redirect('web.products');
         }
 
         $categories = (json_decode($req['result']))->message;
 
-        echo $this->view->render("theme/products/product-insert", [
-            "head" => $head,
+        echo $this->view->render('theme/products/product-insert', [
+            'head' => $head,
             'categories' => $categories,
             'mainURL' => BASE_API
         ]);
@@ -166,44 +173,45 @@ class Web extends Controller
     public function about(): void
     {
         $head = $this->seo->optimize(
-            "RedStore | " . site("name"),
-            site("desc"),
-            $this->router->route("web.about"),
-            routeImage("About")
+            'RedStore | ' . site('name'),
+            site('desc'),
+            $this->router->route('web.about'),
+            routeImage('About')
         )->render();
 
-        echo $this->view->render("theme/main/about", [
-            "head" => $head
+        echo $this->view->render('theme/main/about', [
+            'head' => $head
         ]);
     }
 
     public function cart(): void
     {
         $head = $this->seo->optimize(
-            "RedStore | " . site("name"),
-            site("desc"),
-            $this->router->route("web.cart"),
-            routeImage("Cart")
+            'RedStore | ' . site('name'),
+            site('desc'),
+            $this->router->route('web.cart'),
+            routeImage('Cart')
         )->render();
 
-        echo $this->view->render("theme/main/cart", [
-            "head" => $head
+        echo $this->view->render('theme/main/cart', [
+            'head' => $head
         ]);
     }
 
     public function error($data): void
     {
-        $error = filter_var($data["errcode"], FILTER_VALIDATE_INT);
+        $error = filter_var($data['errcode'], FILTER_VALIDATE_INT);
+
         $head = $this->seo->optimize(
-            "Ooooppss {$error} |" . site("name"),
-            site("desc"),
-            $this->router->route("web.error", ["errcode" => $error]),
+            "Ooooppss {$error} |" . site('name'),
+            site('desc'),
+            $this->router->route('web.error', [ 'errcode' => $error ]),
             routeImage($error)
         )->render();
 
-        echo $this->view->render("theme/main/error", [
-            "head" => $head,
-            "error" => $error
+        echo $this->view->render('theme/main/error', [
+            'head' => $head,
+            'error' => $error
         ]);
     }
 }

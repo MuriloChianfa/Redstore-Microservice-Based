@@ -61,8 +61,30 @@ class Products
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
         }
 
-        $page = filter_var($data["page"], FILTER_VALIDATE_INT);
-        $limit = filter_var($data["limit"], FILTER_VALIDATE_INT);
+        $page = filter_var($data['page'], FILTER_VALIDATE_INT);
+        $limit = filter_var($data['limit'], FILTER_VALIDATE_INT);
+
+        if (isset($data['order']) && isset($data['direction'])) {
+            $find = $Product->find();
+            $find = $find->order($data['order'] . ' ' . $data['direction']);
+            $find = $find->limit($limit);
+            $find = $find->offset(($page * $limit) - $limit);
+            $products = $find->fetch(true);
+
+            if (empty($products)) {
+                (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
+            }
+
+            foreach ($products as $key => $value) {
+                $products[$key] = $value->data();
+
+                $products[$key]->category = (new Category())->findById((int) $products[$key]->product_type_id)->data();
+                $products[$key]->ProductImage = (new ProductImage())->findAllByProductId((int) $products[$key]->id);
+            }
+
+            $this->Message->message = $products;
+            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+        }
 
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
@@ -169,17 +191,56 @@ class Products
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
         }
 
-        $ProductImage = new ProductImage();
+        $this->Message->message = 'Produto adicionado com sucesso';
+        (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
 
-        $ProductImage->product_id = $Product->id;
-        $ProductImage->url_slug = '/images/no-product-image.png';
-        $ProductImage->real_path = '/images/no-product-image.png';
+    /**
+     * POST insert a new product image to one product
+     * 
+     * @param array $data
+     * @return void
+     */
+    public function addProductImage($data)
+    {
+        (new Auth())->validateLogin();
 
-        if (!$ProductImage->save()) {
-            erro_log($ProductImage->message());
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        $Product = new Product();
+
+        if (isset($data['id'])) {
+            $id = filter_var($data['id'], FILTER_VALIDATE_INT);
+
+            if (!$id) {
+                $this->Message->message = 'este produto não foi encontrado';
+                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+            }
+
+            if (!is_null($Product->findById($id, 'id'))) {
+                $Product->id = $id;
+            }
         }
 
-        $this->Message->message = 'Produto adicionado com sucesso';
+        $ProductImage = new ProductImage();
+
+        $imageName = md5(date('Y-m-dH:i:s', time()));
+
+        if (empty($data['image'])) {
+            $this->Message->message = 'imagem nao encontrada';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        $ProductImage->product_id = $Product->id;
+        $ProductImage->url_slug = $imageName;
+        $ProductImage->image = $data['image'];
+
+        if (!$ProductImage->save()) {
+            $this->Message->message = $Product->message();
+            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+        }
+
+        $this->Message->message = 'Imagem adicionada com sucesso';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 

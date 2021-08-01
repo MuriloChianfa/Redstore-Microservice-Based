@@ -81,4 +81,50 @@ class Products extends Controller
             ]
         ]);
     }
+
+    public function image($data): void
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        if (in_array('', $data) || empty($data) || !isset($data['id']) || !filter_var($data['id'], FILTER_VALIDATE_INT)) {
+            $this->send([
+                'message' => [
+                    'type' => 'error',
+                    'message' => 'Preencha todos os campos para adicionar uma imagem'
+                ]
+            ]);
+        }
+
+        $req = callAPI("/product-image/{$data['id']}", 'POST', $data, $_SESSION['user']);
+
+        if (isset($req['curl_error'])) {
+            error_log(json_encode($req));
+            $this->send([
+                'message' => [
+                    'type' => 'error',
+                    'message' => 'Ocorreu algum erro interno ao adicionar a imagem!'
+                ]
+            ]);
+        }
+
+        if ($req['code'] != 200) {
+            error_log(json_encode($req));
+
+            $this->send([
+                'message' => [
+                    'type' => 'error',
+                    'message' => $message = (json_decode($req['result']))->message
+                ]
+            ]);
+        }
+
+        $message = (json_decode($req['result']))->message;
+
+        $this->send([
+            'message' => [
+                'type' => 'success',
+                'message' => $message
+            ]
+        ]);
+    }
 }

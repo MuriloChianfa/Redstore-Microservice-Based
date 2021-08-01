@@ -4,14 +4,45 @@
 
 <div class="small-container single-product">
     <div class="row">
+        <?php if (!empty($user) && in_array($user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])): ?>
+            <div class="form-message">
+                <div class="login_form_callback">
+                    <?= flash(); ?>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+            <form action="<?= $router->route('products.image'); ?>" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?= $product->id; ?>">
+                <input type="hidden" name="image" id="image">
+                <input type="file" class="btn" onchange="getBaseUrl()" />
+
+                <input type="submit" class="btn" value="Adicionar" />
+            </form>
+            <script>
+                function getBaseUrl ()  {
+                    var reader = new FileReader();
+
+                    reader.onloadend = function () {
+                        let baseString = reader.result;
+                        document.getElementById('image').value = baseString;
+                    };
+
+                    reader.readAsDataURL(document.querySelector('input[type=file]')['files'][0]);
+                }
+            </script>
+        <?php endif; ?>
+    </div>
+    
+    <div class="row">
         <div class="col-2">
-            <img src="<?= asset($product->ProductImage[0]->url_slug); ?>" width="100%" id="ProductImg">
+            <img src="<?= productImage($product); ?>" width="100%" id="ProductImg">
 
             <div class="small-img-row">
-                <div class="small-img-col"><img src="<?= asset($product->ProductImage[1]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
-                <div class="small-img-col"><img src="<?= asset($product->ProductImage[2]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
-                <div class="small-img-col"><img src="<?= asset($product->ProductImage[3]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
-                <div class="small-img-col"><img src="<?= asset($product->ProductImage[4]->url_slug ?? $product->ProductImage[0]->url_slug); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= productImage($product); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= productImage($product, 1); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= productImage($product, 2); ?>" class="small-img" width="100%"></div>
+                <div class="small-img-col"><img src="<?= productImage($product, 3); ?>" class="small-img" width="100%"></div>
             </div>
 
         </div>
@@ -52,14 +83,10 @@
 <div class="row">
     <?php foreach ($relatedProducts as $product): ?>
         <div class="col-4">
-            <a href="<?= $router->route("web.productsDetails"); ?>"><img src="<?= asset($product->ProductImage[0]->url_slug); ?>" alt="produto1"></a>
-            <a href="<?= $router->route("web.productsDetails"); ?>"><h4><?= $product->name ?></h4></a>
+            <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
+            <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
             <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
+                <?= starRate($product->rate); ?>
             </div>
             <p>$<?= $product->value ?></p>
         </div>
