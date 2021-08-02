@@ -136,6 +136,7 @@ class Web extends Controller
         echo $this->view->render('theme/products/products-details', [
             'head' => $head,
             'user' => $this->user,
+            'token' => $_SESSION['user'] ?? '',
             'product' => $product,
             'relatedProducts' => $relatedProducts
         ]);

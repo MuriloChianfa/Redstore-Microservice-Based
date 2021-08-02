@@ -962,3 +962,12 @@ input[type="file"] {
     border: 0;
     margin-top: 24px;
 }
+
+.exclude-product-icon {
+    display: none;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    margin-top: -80px;
+    margin-left: 35px;
+}

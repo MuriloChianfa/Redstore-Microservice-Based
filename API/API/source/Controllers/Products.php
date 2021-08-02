@@ -244,6 +244,40 @@ class Products
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
+    /**
+     * DELETE delete one product image by id
+     * 
+     * @param array $data
+     * @return void
+     */
+    public function deleteProductImage($data)
+    {
+        (new Auth())->validateLogin();
+
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        $ProductImage = new ProductImage();
+
+        if (!isset($data['id']) || !filter_var($data['id'], FILTER_VALIDATE_INT)) {
+            $this->Message->message = 'ID da imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        $id = (int) $data['id'];
+
+        if (is_null($ProductImage->findById($id, 'id'))) {
+            $this->Message->message = 'Imagem nao encontrada';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        if (!$ProductImage->delete('id', $id)) {
+            $this->Message->message = $ProductImage->message();
+            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+        }
+
+        (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
+
     public function alterProduct($data)
     {
         (new Auth())->validateLogin();
