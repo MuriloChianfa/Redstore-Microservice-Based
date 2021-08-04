@@ -49,8 +49,8 @@
     <div class="row">
         <?php foreach ($featuredProducts as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
-                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" class="big-img" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= str_limit_chars($product->name, 30); ?></h4></a>
                 <div class="rating">
                     <?= starRate($product->rate); ?>
                 </div>
@@ -66,8 +66,8 @@
     <div class="row">
         <?php foreach ($latestProducts as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
-                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" class="big-img" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= str_limit_chars($product->name, 30); ?></h4></a>
                 <div class="rating">
                     <?= starRate($product->rate); ?>
                 </div>
@@ -79,8 +79,8 @@
     <div class="row">
         <?php foreach ($latestProducts2 as $product): ?>
             <div class="col-4">
-                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
-                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" class="big-img" alt="produto1"></a>
+                <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= str_limit_chars($product->name, 30); ?></h4></a>
                 <div class="rating">
                     <?= starRate($product->rate); ?>
                 </div>

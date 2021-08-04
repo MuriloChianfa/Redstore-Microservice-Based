@@ -30,8 +30,8 @@
                 <div class="row">
             <?php endif; ?>
                     <div class="col-4">
-                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><img src="<?= productImage($products[$i]); ?>" alt="produto1"></a>
-                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><h4><?= $products[$i]->name; ?></h4></a>
+                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><img src="<?= productImage($products[$i]); ?>" class="big-img" alt="produto1"></a>
+                        <a href="<?= url("/product/{$products[$i]->id}"); ?>"><h4><?= str_limit_chars($products[$i]->name, 30); ?></h4></a>
                         <div class="rating">
                             <?= starRate($products[$i]->rate); ?>
                         </div>

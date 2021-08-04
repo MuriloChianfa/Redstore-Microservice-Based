@@ -470,6 +470,27 @@ select:focus {
     cursor: pointer;
 }
 
+.small-img {
+    min-width: 113px;
+    min-height: 113px;
+    max-width: 113px;
+    max-height: 113px;
+    object-fit: cover;
+}
+
+.big-img {
+    min-height: 320px;
+    object-fit: cover;
+}
+
+.featured-img {
+    min-width: 480px;
+    min-height: 630px;
+    max-width: 480px;
+    max-height: 630px;
+    object-fit: cover;
+}
+
 /* ------------ CART ITEMS ------------- */
 
 .cart-page {
@@ -968,6 +989,76 @@ input[type="file"] {
     width: 45px;
     height: 45px;
     position: absolute;
-    margin-top: -80px;
-    margin-left: 35px;
+    margin-top: -30px;
+    margin-left: 75px;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    /* max-width: 80%; */
+    max-width: 475px !important;
+    width: 100%;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+}
+
+.custom-button-2 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+    color: #f1e5e6;
+    background-color: rgb(255, 83, 59);
+    width: 100% !important;
+    max-width: 475px !important;
+}
+
+.no-js .inputfile + label {
+    display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    margin-right: 0.25em;
+}
+
+.inputfile-1 + label {
+    color: #f1e5e6;
+    background-color: rgb(255, 83, 59);
+}
+
+.inputfile-1:focus + label,
+.inputfile-1.has-focus + label,
+.inputfile-1 + label:hover {
+    background-color: rgb(255, 83, 59);
 }
