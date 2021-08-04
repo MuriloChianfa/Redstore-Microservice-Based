@@ -71,6 +71,7 @@ class Web extends Controller
     public function products($data): void
     {
         $page = 1;
+        $sort = 'id';
 
         if (!empty($data)) {
             $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -78,6 +79,16 @@ class Web extends Controller
             if (isset($data['page'])) {
                 if (filter_var($data['page'], FILTER_VALIDATE_INT)) {
                     $page = $data['page'];
+                }
+            }
+
+            if (isset($data['sort'])) {
+                switch ($data['sort']) {
+                    case 'value': $sort = 'value'; break;
+                    case 'rate': $sort = 'rate'; break;
+                    case 'views': $sort = 'rate'; break;
+                    case 'sales': $sort = 'id'; break;
+                    default: $sort = 'id'; break;
                 }
             }
         }
@@ -89,7 +100,7 @@ class Web extends Controller
             routeImage('Products')
         )->render();
 
-        $req = callAPI("/products/{$page}/12", 'GET', [], $_SESSION['user'] ?? '');
+        $req = callAPI("/products/{$page}/12/{$sort}/DESC", 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
         $products = (json_decode($req['result']))->message ?? [];
@@ -102,6 +113,7 @@ class Web extends Controller
             'head' => $head,
             'user' => $this->user,
             'currentPage' => $page,
+            'sort' => $sort,
             'lastPage' => $lastpage,
             'products' => $products,
             'productsCount' => $productsCount

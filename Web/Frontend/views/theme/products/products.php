@@ -9,12 +9,12 @@
         <?php if (!empty($user) && in_array($user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])): ?>
             <button class="btn" onclick="window.location.href='<?= $router->route('web.productInsert'); ?>';">Adicionar produto</button>
         <?php endif; ?>
-        <select>
-            <option>Default Sorting</option>
-            <option>Sort by price</option>
-            <option>Sort by popularity</option>
-            <option>Sort by rating</option>
-            <option>Sort by sales</option>
+        <select onchange="window.location.href=this.value;">
+            <option value="<?= $router->route('web.products'); ?>/latest/<?= $currentPage; ?>" <?php if ($sort == 'latest') { echo 'selected'; } ?>>Default Sorting</option>
+            <option value="<?= $router->route('web.products'); ?>/value/<?= $currentPage; ?>" <?php if ($sort == 'value') { echo 'selected'; } ?>>Sort by price</option>
+            <option value="<?= $router->route('web.products'); ?>/views/<?= $currentPage; ?>" <?php if ($sort == 'views') { echo 'selected'; } ?>>Sort by popularity</option>
+            <option value="<?= $router->route('web.products'); ?>/rate/<?= $currentPage; ?>" <?php if ($sort == 'rate') { echo 'selected'; } ?>>Sort by rating</option>
+            <option value="<?= $router->route('web.products'); ?>/sales/<?= $currentPage; ?>" <?php if ($sort == 'sales') { echo 'selected'; } ?>>Sort by sales</option>
         </select>
     </div>
     

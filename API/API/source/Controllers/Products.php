@@ -24,6 +24,15 @@ class Products
     private $Request;
 
     /**
+     * @var array $validExtensions
+     */
+    private $validExtensions = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png'
+    ];
+
+    /**
      * Products model constructor...
      */
     public function __construct()
@@ -231,9 +240,36 @@ class Products
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
         }
 
+        $base64Image = $data['image'];
+
+        try {
+            $base64 = getimagesizefromstring(base64_decode(explode(',', $base64Image)[1]));
+        }
+        catch (\Exception $e) {
+            $this->Message->message = 'imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        if (!$base64) {
+            $this->Message->message = 'imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        if (!empty($base64[0]) && !empty($base64[0]) && !empty($base64['mime'])) {
+            if (!in_array($base64['mime'], $this->validExtensions)) {
+                $this->Message->message = 'tipo de imagem invalida';
+                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+            }
+        }
+
+        if (!filter_var($base64Image, FILTER_DEFAULT)) {
+            $this->Message->message = 'imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
         $ProductImage->product_id = $Product->id;
         $ProductImage->url_slug = $imageName;
-        $ProductImage->image = $data['image'];
+        $ProductImage->image = $base64Image['image'];
 
         if (!$ProductImage->save()) {
             $this->Message->message = $Product->message();

@@ -50,6 +50,7 @@ $router->group(null);
 $router->get('/', 'Web:home', 'web.home');
 $router->get('/products', 'Web:products', 'web.products');
 $router->get('/products/{page}', 'Web:products', 'web.products');
+$router->get('/products/{sort}/{page}', 'Web:products', 'web.products');
 $router->get('/product/{id}', 'Web:productsDetails', 'web.productsDetails');
 $router->get('/about', 'Web:about', 'web.about');
 $router->get('/cart', 'Web:cart', 'web.cart');
