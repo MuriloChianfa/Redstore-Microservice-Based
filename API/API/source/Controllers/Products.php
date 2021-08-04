@@ -262,14 +262,9 @@ class Products
             }
         }
 
-        if (!filter_var($base64Image, FILTER_DEFAULT)) {
-            $this->Message->message = 'imagem invalida';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
-
         $ProductImage->product_id = $Product->id;
         $ProductImage->url_slug = $imageName;
-        $ProductImage->image = $base64Image['image'];
+        $ProductImage->image = $base64Image;
 
         if (!$ProductImage->save()) {
             $this->Message->message = $Product->message();
