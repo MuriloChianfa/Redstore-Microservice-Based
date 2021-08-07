@@ -79,22 +79,26 @@
 
 <!------------ PRODUCTS ------------->
 
-<div class="small-container">
-
-<div class="row">
-    <?php foreach ($relatedProducts as $product): ?>
-        <div class="col-4">
-            <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" alt="produto1"></a>
-            <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= $product->name ?></h4></a>
-            <div class="rating">
-                <?= starRate($product->rate); ?>
-            </div>
-            <p>$<?= $product->value ?></p>
+<?php if (empty($relatedProducts)): ?>
+    <div class="row">
+        <h2 class="title" style="margin-top: 50px; margin-bottom: 120px;">No products related!</h2>
+    </div>
+<?php else: ?>
+    <div class="small-container">
+        <div class="row">
+            <?php foreach ($relatedProducts as $product): ?>
+                <div class="col-4">
+                    <a href="<?= url("/product/{$product->id}"); ?>"><img src="<?= productImage($product); ?>" class="big-img" alt="produto1"></a>
+                    <a href="<?= url("/product/{$product->id}"); ?>"><h4><?= str_limit_chars($product->name, 30); ?></h4></a>
+                    <div class="rating">
+                        <?= starRate($product->rate); ?>
+                    </div>
+                    <p>$<?= $product->value ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
-</div>
-
-</div>
+    </div>
+<?php endif; ?>
 
 <?php $v->start("scripts"); ?>
 <script src="<?= asset("/js/fileInput/custom-file-input.js"); ?>"></script>

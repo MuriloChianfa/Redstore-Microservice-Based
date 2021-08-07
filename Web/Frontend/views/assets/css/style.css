@@ -350,6 +350,40 @@ ul {
     }
 }
 
+.frete-class {
+    max-width: 350px;
+    flex-wrap: wrap;
+}
+
+.total-price-class {
+    flex-wrap: wrap;
+}
+
+.checkout-btn {
+    float: right;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 930px) {
+    .frete-class {
+        margin: 0 auto;
+        min-width: 60%;
+        flex-wrap: wrap;
+    }
+
+    .total-price-class {
+        margin: 0 auto;
+        min-width: 60%;
+    }
+
+    .checkout-btn {
+        margin: 25px auto;
+        min-width: 100%;
+    }
+}
+
 /* ---------- media query for less than 600 screen size ----------- */
 
 @media only screen and (max-width: 600px) {
@@ -538,7 +572,8 @@ td img {
 
 .total-price {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .total-price table {

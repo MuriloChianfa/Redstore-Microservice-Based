@@ -140,7 +140,7 @@ class Web extends Controller
 
         $product = (json_decode($req['result']))->message;
 
-        $req = callAPI('/products/1/4', 'GET', [], $_SESSION['user'] ?? '');
+        $req = callAPI("/products/1/4/rate/DESC/product_type_id/{$product->category->id}/{$product->id}", 'GET', [], $_SESSION['user'] ?? '');
         if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
 
         $relatedProducts = (json_decode($req['result']))->message ?? [];

@@ -7,6 +7,14 @@ Welcome to the Redstore microservice based, a simple implementation with docker 
 #### How to setup the DEV environment:
 
 ```shell
+$ cp .env.example .env && vi !$
+```
+
+```shell
+$ ./Reverse-Proxy/gen-ssl.sh
+```
+
+```shell
 $ docker-compose build && docker-compose up -d
 ```
 

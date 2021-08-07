@@ -32,6 +32,8 @@ $route->namespace('Source\Controllers')->group('/');
 $route->get('/products', 'Products:products');
 $route->get('/products/{page}/{limit}', 'Products:products');
 $route->get('/products/{page}/{limit}/{order}/{direction}', 'Products:products');
+$route->get('/products/{page}/{limit}/{order}/{direction}/{filterColumn}/{filterValue}', 'Products:products');
+$route->get('/products/{page}/{limit}/{order}/{direction}/{filterColumn}/{filterValue}/{selfId}', 'Products:products');
 $route->get('/product/{id}', 'Products:product');
 /** POST */ ## ADMIN AUTH REQUIRED
 $route->post('/product', 'Products:addProduct');

@@ -113,6 +113,13 @@ class Auth
         $this->Message->message = 'registered with success';
         $this->Message->token = (new Token())->generateNewToken($jwt);
 
+        (new RabbitSender('email', 'email'))->sendMessage(json_encode([
+            'type' => 'confirmEmail',
+            'content' => [
+                'email' => $result->email
+            ]
+        ]));
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
@@ -138,7 +145,7 @@ class Auth
             // fazer um push para o rabbit na fila de email //
             /*********************** ************************/
 
-            (new RabbitSender('emails', 'emails'))->sendMessage(json_encode([
+            (new RabbitSender('email', 'email'))->sendMessage(json_encode([
                 'type' => 'resetPassword',
                 'content' => [
                     'email' => $email,

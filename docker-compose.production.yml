@@ -129,6 +129,8 @@ services:
       - redstore-queue
     env_file:
       - ./.env
+    environment:
+      - CHECKOUT_ENVIRONMENT=prod
     stdin_open: false
     tty: false
     networks:
@@ -163,6 +165,8 @@ services:
     container_name: redstore-mailler
     depends_on:
       - redstore-api
+    env_file:
+      - ./.env
     stdin_open: false
     tty: false
     networks:

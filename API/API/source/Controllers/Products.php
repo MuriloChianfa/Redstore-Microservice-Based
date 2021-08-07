@@ -74,7 +74,18 @@ class Products
         $limit = filter_var($data['limit'], FILTER_VALIDATE_INT);
 
         if (isset($data['order']) && isset($data['direction'])) {
-            $find = $Product->find();
+            if (!empty($data['filterColumn'])) {
+                if (!empty($data['selfId'])) {
+                    $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']} AND id != {$data['selfId']}");
+                }
+                else {
+                    $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']}");
+                }
+            }
+            else {
+                $find = $Product->find();
+            }
+
             $find = $find->order($data['order'] . ' ' . $data['direction']);
             $find = $find->limit($limit);
             $find = $find->offset(($page * $limit) - $limit);

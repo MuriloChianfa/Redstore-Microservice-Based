@@ -57,20 +57,35 @@
     </table>
 
     <div class="total-price">
-        <table>
+        <table class="frete-class">
+            <tr>
+                <td>CEP:</td>
+                <td>
+                    <input type="text" name="frete" id="frete" style="width: 100%;">
+                </td>
+                <td>
+                    <a href="" class="btn">Calcular</a>
+                </td>
+            </tr>
+        </table>
+        <table class="total-price-class">
             <tr>
                 <td>Subtotal</td>
                 <td>$200.00</td>
             </tr>
             <tr>
-                <td>Tax</td>
-                <td>$35.00</td>
+                <td>Frete</td>
+                <td>$0</td>
             </tr>
             <tr>
                 <td>Total</td>
-                <td>$230.00</td>
+                <td>$200.00</td>
             </tr>
         </table>
+    </div>
+
+    <div style="margin-bottom: 170px;">
+        <a href="" class="btn checkout-btn">Checkout</a>
     </div>
 
 </div>

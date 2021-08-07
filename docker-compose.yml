@@ -135,6 +135,8 @@ services:
       - ./API/API:/var/www/html
     env_file:
       - ./.env
+    environment:
+      - CHECKOUT_ENVIRONMENT=sandbox
     stdin_open: false
     tty: false
     networks:
@@ -171,6 +173,8 @@ services:
       - redstore-api
     volumes:
       - ./Mailler/App:/app
+    env_file:
+      - ./.env
     stdin_open: false
     tty: false
     networks:

@@ -372,6 +372,7 @@
     </div>
 </div>
 
+<?php $v->start("scripts"); ?>
 <script>
 function showModal(id) {
 	document.querySelector(`#${id}`).classList.add("show-modal");
@@ -687,4 +688,4 @@ async function changeAddress(data) {
 }
 
 </script>
-
+<?php $v->end(); ?>

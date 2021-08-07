@@ -62,6 +62,16 @@ define('CONF_JWT_CONTEXT', ['typ' => 'JWT', 'alg' => 'HS256']);
 define('CONF_JWT_SECRET', 'SECRET');
 
 /**
+ * Checkout
+ */
+// PagSeguro
+define('CONF_CHECKOUT_ENVIRONMENT', getenv('CHECKOUT_ENVIRONMENT') ?? 'sandbox');
+define('CONF_CHECKOUT_PAGSEGURO_EMAIL', getenv('PAGSEGURO_EMAIL') ?? '');
+define('CONF_CHECKOUT_PAGSEGURO_TOKEN', getenv('PAGSEGURO_TOKEN') ?? '');
+define('CONF_CHECKOUT_PAGSEGURO_URL_PROD', 'https://ws.pagseguro.uol.com.br/v2');
+define('CONF_CHECKOUT_PAGSEGURO_URL_SANDBOX', 'https://ws.sandbox.pagseguro.uol.com.br/v2');
+
+/**
  * HTTP
  */
 define('HTTP_CONTINUE', 100);

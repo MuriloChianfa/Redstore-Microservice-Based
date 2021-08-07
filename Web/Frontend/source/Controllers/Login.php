@@ -21,7 +21,7 @@ class Login extends Controller {
             routeImage("Login")
         )->render();
 
-        echo $this->view->render("theme/main/login", [
+        echo $this->view->render("theme/account/login", [
             "head" => $head
         ]);
     }
@@ -34,7 +34,7 @@ class Login extends Controller {
             routeImage("Register")
         )->render();
 
-        echo $this->view->render("theme/main/register", [
+        echo $this->view->render("theme/account/register", [
             "head" => $head
         ]);
     }
@@ -47,7 +47,7 @@ class Login extends Controller {
             routeImage("Forget")
         )->render();
 
-        echo $this->view->render("theme/main/forget", [
+        echo $this->view->render("theme/account/forget", [
             "head" => $head
         ]);
     }
@@ -81,7 +81,7 @@ class Login extends Controller {
     //         routeImage("Reset")
     //     )->render();
 
-    //     echo $this->view->render("theme/main/reset", [
+    //     echo $this->view->render("theme/account/reset", [
     //         "head" => $head
     //     ]);
     // }

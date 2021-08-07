@@ -20,18 +20,22 @@ final class Email
     /**
      * @param array $MailAddress
      */
-    public function __construct(array $MailAddress)
+    public function __construct(array $MailAddress, bool $html = true)
     {
         $this->mail = new PHPMailer();
 
-        //Server settings
-        $this->mail->isSMTP();
-        
-        $this->mail->isHTML();
-        
-        $this->mail->setLanguage("br");
+        // SMTP Server settings
+        if (CONF_MAIL_OPTION_SMTP === true) {
+            $this->mail->isSMTP();
+        }
 
-        $this->mail->CharSet = 'UTF-8';
+        if ($html === true) {
+            $this->mail->isHTML();
+        }
+
+        $this->mail->setLanguage(CONF_MAIL_OPTION_LANG);
+
+        $this->mail->CharSet = CONF_MAIL_OPTION_CHARSET;
 
         $this->setConfig();
 
@@ -54,12 +58,12 @@ final class Email
      */
     private function setConfig(): void
     {
-        $this->mail->Host = gethostbyname('smtp.sendgrid.net');
-        $this->mail->Port = '587';
-        $this->mail->Username = 'apikey';
-        $this->mail->Password = '';
-        $this->mail->SMTPAuth = true;
-        $this->mail->SMTPSecure = 'tls';
+        $this->mail->Host = gethostbyname(CONF_MAIL_HOST);
+        $this->mail->Port = CONF_MAIL_PORT;
+        $this->mail->Username = CONF_MAIL_USER;
+        $this->mail->Password = getenv('MAIL_PASS') ?? '';
+        $this->mail->SMTPAuth = CONF_MAIL_OPTION_AUTH;
+        $this->mail->SMTPSecure = CONF_MAIL_OPTION_SECURE;
 
         // Debug off
         $this->mail->SMTPDebug = 0;
@@ -67,7 +71,7 @@ final class Email
         // Debug on
         // $this->mail->SMTPDebug = 4;
 
-        $this->mail->setFrom('contato@contato.com.br', 'TESTES');
+        $this->mail->setFrom(CONF_MAIL_SENDER['address'], CONF_MAIL_SENDER['name']);
         $this->mail->SMTPOptions = [
             'ssl' => [
                 'verify_peer' => false,
@@ -99,7 +103,7 @@ final class Email
         }
         catch (\Exception $e) {
             \writeLog($e->getMessage());
-            \writeLob($this->mail->ErrorInfo);
+            \writeLog($this->mail->ErrorInfo);
 
             $this->error = $this->mail->ErrorInfo;
             return false;

@@ -18,6 +18,9 @@ use Source\RabbitMQ\RabbitSender;
  */
 use Source\Email\Email;
 
+// Email templates
+use Source\Templates\ConfirmEmail;
+
 /**
  * Main listener for send emails
  * 
@@ -47,17 +50,33 @@ final class Listener extends RabbitReceiver
      */
     protected function handler($receivedMessage)
     {
-        $message = $receivedMessage->body;
+        $message = json_decode($receivedMessage->body);
+
+        $handledMessage = false;
 
         try {
-            switch ($message) {
-                default:
-                    \writeLog(json_encode($message));
+            if (!isset($message->type)) {
+                throw new \Exception('Invalid message, missing type');
+            }
+
+            switch ($message->type) {
+                case 'confirmEmail':
+                    $Email = new Email([ $message->content->email ], true);
+
+                    if (!$Email->SendMail(ConfirmEmail::bind('127.0.0.1:80/confirm'), 'Confirm your email')) {
+                        \writeLog('Confirm email not delivered for: ', $message->content->email);
+                        \writeLog($Email->getError());
+                    }
+
+                    $handledMessage = true;
                     break;
+
+                default: \writeLog(json_encode($message)); $handledMessage = true; break;
             }
         }
         catch (\Throwable $exception) {
             \writeLog($exception->getMessage());
+            $handledMessage = true;
         }
         finally {
             /**
@@ -74,4 +93,3 @@ final class Listener extends RabbitReceiver
         }
     }
 }
-
