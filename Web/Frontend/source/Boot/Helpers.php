@@ -26,6 +26,11 @@ function url(string $path = null): string
     return CONF_URL_BASE;
 }
 
+function url_back(string $path = null): string
+{
+    return ($_SERVER['HTTP_REFERER'] ?? url());
+}
+
 function routeImage(string $imageUrl): string {
     return "https://via.placeholder.com/1200x628/0984e3/FFFFFF?text={$imageUrl}";
 }

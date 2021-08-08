@@ -54,6 +54,14 @@ $router->get('/products/{sort}/{page}', 'Web:products', 'web.products');
 $router->get('/product/{id}', 'Web:productsDetails', 'web.productsDetails');
 $router->get('/about', 'Web:about', 'web.about');
 $router->get('/cart', 'Web:cart', 'web.cart');
+// Checkout
+$router->group('/checkout');
+$router->get('/select-address', 'Checkout:selectAddress', 'checkout.selectAddress');
+$router->get('/payment-method', 'Checkout:paymentMethod', 'checkout.paymentMethod');
+$router->get('/method/boleto', 'Checkout:boleto', 'checkout.boleto');
+$router->get('/method/credit', 'Checkout:credit', 'checkout.credit');
+$router->get('/method/debit', 'Checkout:debit', 'checkout.debit');
+$router->get('/success', 'Checkout:success', 'checkout.success');
 
 // Products
 $router->get('/product/insert', 'Web:productInsert', 'web.productInsert');

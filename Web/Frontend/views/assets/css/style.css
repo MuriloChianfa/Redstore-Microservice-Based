@@ -512,6 +512,14 @@ select:focus {
     object-fit: cover;
 }
 
+.bank-img {
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    object-fit: cover;
+}
+
 .big-img {
     min-height: 320px;
     object-fit: cover;
@@ -1096,4 +1104,24 @@ input[type="file"] {
 .inputfile-1.has-focus + label,
 .inputfile-1 + label:hover {
     background-color: rgb(255, 83, 59);
+}
+
+.select-address-block-display {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.select-address-row {
+    display: flex;
+    justify-content: center;
+}
+
+.select-address-row label {
+    margin-top: 32px;
+    margin-right: 10px;
+}
+
+.auto-margin {
+    margin: auto;
 }

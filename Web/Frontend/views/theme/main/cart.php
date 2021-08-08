@@ -85,7 +85,7 @@
     </div>
 
     <div style="margin-bottom: 170px;">
-        <a href="" class="btn checkout-btn">Checkout</a>
+        <a href="<?= $router->route('checkout.selectAddress'); ?>" class="btn checkout-btn">Checkout</a>
     </div>
 
 </div>
