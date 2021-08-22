@@ -14,4 +14,3 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 WORKDIR /app/
 
 CMD composer install > /dev/null 2> /dev/null; composer update > /dev/null 2> /dev/null && php /app/Mailler.php --debug > /dev/stdout 2> /dev/stdout
-

@@ -2,7 +2,9 @@
 
 namespace Source\Controllers;
 
-use Source\Support\Email;
+use \Source\Support\Email;
+use \Source\Language\Locale;
+use \Source\Logger\Log;
 
 class Auth extends Controller
 {
@@ -40,6 +42,8 @@ class Auth extends Controller
         $req = json_decode($req['result']);
 
         if (!isset($req->token)) {
+            Log::debug($req->message . ' para ' . $email);
+
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => $req->message
@@ -48,6 +52,10 @@ class Auth extends Controller
         }
 
         $_SESSION['user'] = $req->token;
+
+        Log::debug('User {email} logged with success', [
+            'email' => $email
+        ]);
 
         if (!empty($_SESSION['returnToCart'])) {
             unset($_SESSION['returnToCart']);

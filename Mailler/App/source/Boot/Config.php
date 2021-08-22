@@ -3,7 +3,7 @@
 /**
  * RABBITMQ
  */
-define('RABBITMQ_HOST', '172.16.239.10');
+define('RABBITMQ_HOST', 'redstore-queue');
 define('RABBITMQ_PORT', 5672);
 define('RABBITMQ_USER', 'admin');
 define('RABBITMQ_PASS', 'admin');
@@ -13,7 +13,7 @@ define('RABBITMQ_EXCHANGER', 'email');
 /**
  * REDIS
  */
-define('CONF_REDIS_HOST', '172.16.241.12');
+define('CONF_REDIS_HOST', 'redstore-cache');
 define('CONF_REDIS_SCHEME', 'tcp');
 define('CONF_REDIS_PORT', 6379);
 define('CONF_REDIS_PASS', '');

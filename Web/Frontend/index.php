@@ -1,47 +1,24 @@
 <?php
 
-/**
- * @param \Throwable $exception
- * @return void
- */
-function exceptionHandler($exception) {
-    $errorCode = @$exception->getCode();
-    $errorMessage = @$exception->getMessage();
-
-    if (!empty($exception->getTrace())) {
-        $errorLine = @$exception->getTrace()[0]['line'] ?? '';
-        $errorFile = @$exception->getTrace()[0]['file'] ?? '';
-    }
-
-    error_log((empty($errorLine)) ? "[{$errorCode}] {$errorMessage}" : "[{$errorCode}] {$errorMessage} on line {$errorLine} of file {$errorFile}");
-
-    header('Location: /500');
-    exit;
-}
-
-/**
- * @param int $errno
- * @param string $errstr
- * @param string $errfile
- * @param int $errline
- * @return void
- */
-function errorHandler($errno, $errstr, $errfile, $errline) {
-    exceptionHandler(new ErrorException($errstr, 0, $errno, $errfile, $errline));
-}
-
-set_error_handler('errorHandler');
-set_exception_handler('exceptionHandler');
-
-ob_start();
+@ob_start();
 @session_start();
 
 require __DIR__ . '/vendor/autoload.php';
 
+@set_error_handler('errorHandler');
+@set_exception_handler('exceptionHandler');
+
+$_SERVER['REMOTE_ADDR'] = getallheaders()['X-Real-IP'];
+
 use CoffeeCode\Router\Router;
+use \Source\Language\Locale;
+use \Source\Logger\Log;
 
 $router = new Router(site());
 $router->namespace('Source\Controllers');
+
+Locale::init();
+Log::init();
 
 /**
  * WEB
@@ -118,4 +95,5 @@ if($router->error()) {
     $router->redirect('web.error', ['errcode' => $router->error()]);
 }
 
-ob_end_flush();
+@ob_end_flush();
+@closelog();

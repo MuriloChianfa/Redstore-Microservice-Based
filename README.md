@@ -7,7 +7,7 @@ Welcome to the Redstore microservice based, a simple implementation with docker 
 #### How to setup the DEV environment:
 
 ```shell
-$ cp .env.example .env && vi !$
+$ cp .env.example .env && vi .env
 ```
 
 ```shell
@@ -19,7 +19,8 @@ $ docker-compose build && docker-compose up -d
 ```
 
 ```shell
-$ docker container exec redstore-api composer install && docker container exec redstore-web composer install
+$ docker container exec redstore-api composer install && \
+  docker container exec redstore-web composer install
 ```
 
 To setup the PROD environment use -f docker-compose.production.yml in two commands

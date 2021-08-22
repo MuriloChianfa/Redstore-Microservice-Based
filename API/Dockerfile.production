@@ -6,8 +6,8 @@ MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y install net-tools zip apache2-utils libcurl3-dev curl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Adicionar extenções PDO
+RUN docker-php-ext-install pdo pdo_mysql pcntl sockets opcache curl
 RUN docker-php-ext-configure opcache --enable-opcache
-RUN docker-php-ext-install mysqli pdo pdo_mysql pcntl sockets opcache curl
 
 # Enable rewrite url
 RUN a2enmod rewrite

@@ -7,8 +7,6 @@ services:
     image: redstore-database
     container_name: redstore-database
     restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=simple-server
     volumes:
       - database:/var/lib/mysql
     stdin_open: false
@@ -90,7 +88,7 @@ services:
   redstore-queue:
     build:
       context: ./Queue
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.production
     image: redstore-queue
     container_name: redstore-queue
     restart: unless-stopped
@@ -130,7 +128,7 @@ services:
     env_file:
       - ./.env
     environment:
-      - CHECKOUT_ENVIRONMENT=prod
+      - CHECKOUT_ENVIRONMENT=production
     stdin_open: false
     tty: false
     networks:

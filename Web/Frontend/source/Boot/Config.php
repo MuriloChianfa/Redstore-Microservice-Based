@@ -11,9 +11,7 @@ define('SITE', [
 define('BASE_API', 'https://' . getenv('MAIN_IP') . '/api');
 define('CONF_URL_BASE', 'https://' . getenv('MAIN_IP'));
 
-// DESCOMENTAR APENAS PARA FAZER OS MINIFY
-
-// if($_SERVER['SERVER_NAME'] == 'localhost') {
+// if ($_SERVER['SERVER_NAME'] == 'localhost') {
 //     require __DIR__ . '/Minify.php';
 // }
 
@@ -29,3 +27,4 @@ define('FACEBOOK_LOGIN', []);
 
 define('GOOGLE_LOGIN', []);
 
+define('DEFAULT_COUNTRY', 'US');

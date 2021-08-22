@@ -1,10 +1,11 @@
 <?php
 
-ob_start();
+@ob_start();
 
 require __DIR__ . '/vendor/autoload.php';
 
 use Source\Core\Response;
+use \Source\Logger\Log;
 
 /**
  * BOOTSTRAP
@@ -12,6 +13,8 @@ use Source\Core\Response;
 use CoffeeCode\Router\Router;
 
 $route = new Router(url(), ':');
+
+Log::init();
 
 /**
  * LOGIN
@@ -94,6 +97,8 @@ catch (\Throwable $throwable) {
     $Message->status = '500 ' . HTTP_500;
     $Message->message = $throwable->getMessage();
 
+    Log::error($throwable->getMessage());
+
     (new Response())->setStatusCode(HTTP_INTERNAL_SERVER_ERROR)->send($Message);
 }
 
@@ -105,5 +110,5 @@ if ($route->error()) {
     $route->redirect("/error/{$route->error()}");
 }
 
-ob_end_flush();
-
+@ob_end_flush();
+@closelog();

@@ -7,8 +7,6 @@ services:
     image: redstore-database
     container_name: redstore-database
     restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=simple-server
     ports:
       - "3306:3306"
     volumes:
@@ -16,10 +14,8 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.10
-      api-network:
-        ipv4_address: 172.16.240.10
+      - log-network
+      - api-network
     logging:
       driver: local
     healthcheck:
@@ -28,9 +24,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-logs:
     build:
@@ -44,17 +37,15 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.11
+      - log-network
+    logging:
+      driver: local
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:514"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-cache:
     build:
@@ -68,31 +59,19 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.12
-      api-network:
-        ipv4_address: 172.16.240.11
-      cache-network:
-        ipv4_address: 172.16.241.10
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-Cache"
+      - api-network
+      - cache-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "6379"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-queue:
     build:
       context: ./Queue
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     image: redstore-queue
     container_name: redstore-queue
     restart: unless-stopped
@@ -103,24 +82,13 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.14
-      queue-network:
-        ipv4_address: 172.16.239.10
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-Queue"
+      - queue-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "5672"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-api:
     build:    
@@ -140,28 +108,16 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.13
-      queue-network:
-        ipv4_address: 172.16.239.11
-      api-network:
-        ipv4_address: 172.16.240.12
-      cache-network:
-        ipv4_address: 172.16.241.11
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-API"
+      - log-network
+      - queue-network
+      - api-network
+      - cache-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:3000"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-mailler:
     build:
@@ -178,17 +134,9 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.15
-      queue-network:
-        ipv4_address: 172.16.239.12
-      cache-network:
-        ipv4_address: 172.16.241.12
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-Mailler"
+      - log-network
+      - queue-network
+      - cache-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-n", "&&", "echo", "1"]
       interval: 1m30s
@@ -197,7 +145,7 @@ services:
       start_period: 40s
     deploy:
       mode: global
-      replicas: 1
+      replicas: 2
 
   redstore-web:
     build:
@@ -215,26 +163,15 @@ services:
     stdin_open: false
     tty: false
     networks:
-      log-network:
-        ipv4_address: 172.16.238.16
-      queue-network:
-        ipv4_address: 172.16.239.13
-      api-network:
-        ipv4_address: 172.16.240.13
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-Web"
+      - log-network
+      - queue-network
+      - api-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
   redstore-reverse-proxy:
     build:
@@ -254,44 +191,27 @@ services:
     stdin_open: false
     tty: false
     networks:
-      api-network:
-        ipv4_address: 172.16.240.14
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://172.16.238.11:514"
-        tag: "Redstore-Reverse-Proxy"
+      - api-network
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
       interval: 1m30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-      mode: global
-      replicas: 1
 
 networks:
   log-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.238.0/24"
+    name: redstore-log-network
+    driver: bridge
   queue-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.239.0/24"
+    name: redstore-queue-network
+    driver: bridge
   api-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.240.0/24"
+    name: redstore-api-network
+    driver: bridge
   cache-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.241.0/24"
+    name: redstore-cache-network
+    driver: bridge
 
 volumes:
   database:

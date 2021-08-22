@@ -2,14 +2,8 @@ FROM rabbitmq:3.8.14-alpine
 
 MAINTAINER Murilo Chianfa <github.com/murilochianfa>
 
-# WORKDIR /
-
 # installing curl
 RUN apk update && apk add curl
-
-RUN rabbitmq-plugins enable rabbitmq_management
-RUN rabbitmq-plugins enable rabbitmq_federation
-RUN rabbitmq-plugins enable rabbitmq_federation_management
 
 # set reference for conf file
 ADD rabbitmq.conf /etc/rabbitmq/

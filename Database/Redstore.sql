@@ -8,39 +8,11 @@ USE Syslog;
 DROP TABLE IF EXISTS SystemEvents;
 CREATE TABLE SystemEvents (
   ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  CustomerID BIGINT,
   ReceivedAt DATETIME NULL,
-  DeviceReportedTime DATETIME NULL,
-  Facility SMALLINT NULL,
-  Priority SMALLINT NULL,
-  FromHost VARCHAR(60) NULL,
-  Message TEXT,
-  NTSeverity INT NULL,
-  Importance INT NULL,
-  EventSource VARCHAR(60),
-  EventUser VARCHAR(60) NULL,
-  EventCategory INT NULL,
-  EventID INT NULL,
-  EventBinaryData TEXT NULL,
-  MaxAvailable INT NULL,
-  CurrUsage INT NULL,
-  MinUsage INT NULL,
-  MaxUsage INT NULL,
-  InfoUnitID INT NULL ,
   SysLogTag VARCHAR(60),
-  EventLogType VARCHAR(60),
-  GenericFileName VARCHAR(60),
-  SystemID INT NULL
+  Severity VARCHAR(60) NULL,
+  Message TEXT
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS SystemEventsProperties;
-CREATE TABLE SystemEventsProperties (
-  ID int not null auto_increment primary key,
-  SystemEventID int NULL,
-  ParamName varchar(255) NULL,
-  ParamValue text NULL
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
 
 -- 
 -- REDSTORE
