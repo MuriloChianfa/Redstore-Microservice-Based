@@ -92,8 +92,8 @@ services:
 
   redstore-api:
     build:    
-      context: ./API
-      dockerfile: Dockerfile.development
+      context: .
+      dockerfile: API/Dockerfile.development
     image: redstore-api
     container_name: redstore-api
     restart: unless-stopped
@@ -149,10 +149,11 @@ services:
 
   redstore-web:
     build:
-      context: ./Web
-      dockerfile: Dockerfile.development
+      context: .
+      dockerfile: Web/Dockerfile.development
     image: redstore-web
     container_name: redstore-web
+    hostname: web
     restart: unless-stopped
     depends_on:
       - redstore-api

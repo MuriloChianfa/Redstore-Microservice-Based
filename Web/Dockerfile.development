@@ -1,35 +1,114 @@
-# PHP 7.2 docker apache image
-FROM php:7.2-apache
+# PHP fixed image version
+FROM php:7.2.34-apache-buster
 
-MAINTAINER Murilo Chianfa <github.com/murilochianfa>
+# Common labels
+LABEL maintainer="Murilo Chianfa <github.com/murilochianfa>"
+LABEL br.com.redstore.version="0.0.1-beta"
+LABEL br.com.redstore.version.is-production="no"
+LABEL br.com.redstore.release-date="2021-11-25"
+LABEL vendor="Redstore"
 
-RUN apt-get update && apt-get -o Acquire::ForceIPv4=true -y --no-install-recommends install rsyslog vim tcpdump wget net-tools zip libcurl3-dev curl apache2-utils geoip-bin geoip-database libgeoip-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install GeoIP in php
-RUN pecl install geoip-1.1.1
-
-# Adicionar extenções
-RUN docker-php-ext-enable geoip
-RUN docker-php-ext-install curl mbstring
-
-# Enable rewrite url
-RUN a2enmod rewrite
-
-# Copiar conf com ssl habilitado
-COPY ./000-default.conf /etc/apache2/sites-enabled/000-default.conf 
-
-# Habilitar portas de acesso
-COPY ./ports.conf /etc/apache2/ports.conf
-
-# Adicionar php.ini de desenvolvimento!
-COPY ./php.ini-development "$PHP_INI_DIR/php.ini"
-COPY ./.vimrc /root/.vimrc
-COPY ./rsyslog.conf /etc/rsyslog.conf
-
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-CMD ( /etc/init.d/rsyslog restart & ) && apache2-foreground
-
-# http port
+# Http default application port
 EXPOSE 80
 
+# Adding composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# Install all PHP dependencies
+RUN apt-get -o Acquire::ForceIPv4=true update && \
+    apt-get -o Acquire::ForceIPv4=true -y \
+    --no-install-recommends install \
+    geoip-database \
+    apache2-utils \
+    libcurl3-dev \
+    libgeoip-dev \
+    net-tools \
+    geoip-bin \
+    rsyslog \
+    tcpdump \
+    unzip \
+    wget \
+    curl \
+    sudo \
+    htop \
+    zip \
+    vim \
+    git \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# -----------------------------
+# PHP configuration
+# -----------------------------
+
+# Install all needed extensions in php
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    opcache \
+    pcntl \
+    curl \
+    pdo
+
+# Install GeoIP extension in PHP
+RUN pecl install geoip-1.1.1 && \
+    docker-php-ext-enable geoip
+
+# Install Redis in PHP
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
+# Copy PHP ini for development
+COPY Web/php.ini-development "$PHP_INI_DIR/php.ini"
+
+# -----------------------------
+# Apache configuration
+# -----------------------------
+
+# Enable rewrite URL
+RUN a2enmod rewrite
+
+# Enable real IP
+RUN a2enmod remoteip
+
+# Enable caching
+RUN a2enmod expires
+
+# Add VHost configuration
+COPY Web/000-default.conf /etc/apache2/sites-enabled/000-default.conf 
+
+# Add ports listeners
+COPY Web/ports.conf /etc/apache2/ports.conf
+
+# Change apache configuration to set server name
+RUN sed -i '1 i ServerName redstore-web' /etc/apache2/apache2.conf
+
+# Change default output logs to Apache error logs
+RUN rm -rf /var/log/apache2/access.log
+RUN ln -sf /dev/stdout /var/log/apache2/error.log
+
+# -----------------------------
+# User configuration
+# -----------------------------
+
+# Create user and modify your terminal
+RUN adduser --shell /bin/bash --home /home/redstore redstore
+
+# Add custom vimrc
+COPY Scripts/.vimrc /home/redstore/.vimrc
+COPY Scripts/.bashrc /home/redstore/.bashrc
+COPY Scripts/.bash_aliases /home/redstore/.bash_aliases
+
+# Perm new user to rsyslog
+RUN echo 'redstore ALL=NOPASSWD: /etc/init.d/rsyslog' >> /etc/sudoers
+
+# Add custom rsyslog conf
+COPY Scripts/rsyslog.conf /etc/rsyslog.conf
+
+# Switch default user
+USER redstore
+
+# Change default user and workspace
+WORKDIR /var/www/html/
+
+# Restart rsyslog to reload conf and retake apache to foreground
+CMD ( sudo /etc/init.d/rsyslog restart & ) && apache2-foreground

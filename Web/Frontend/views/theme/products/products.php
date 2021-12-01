@@ -20,7 +20,7 @@
     
     <?php if (empty($products)): ?>
         <div class="row">
-            <h2 class="title" style="margin-top: 50px; margin-bottom: 120px;">No products available!</h2>
+            <h2 class="title" style="margin-top: 15vh; margin-bottom: 20vh;">No products available!</h2>
         </div>
     <?php else: ?>
         <?php $productCounter = 0; ?>

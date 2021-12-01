@@ -89,12 +89,6 @@ Output
 
 > Add and exclude new products and there images
 
-<p align="center"><img src="./Web/upload-image.png" /></p>
+<p align="center"><img src="./Web/Images/upload-image.png" /></p>
 
-<p align="center"><img src="./Web/exclude-image.png" /></p>
-
-<!---
-
-## <p align="center">Account page</p>
-
-<p align="center"><img src="./Web/upload-image.png" /></p>
+<p align="center"><img src="./Web/Images/exclude-image.png" /></p>

@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -o Acquire::ForceIPv4=true -y dnsutils net
 
 # Add ssl
 RUN mkdir -p /etc/ssl/
-COPY ./ssl.key /etc/ssl/ssl.key
-COPY ./ssl.crt /etc/ssl/ssl.crt
+COPY ssl.key /etc/ssl/ssl.key
+COPY ssl.crt /etc/ssl/ssl.crt
 
 RUN rm /etc/nginx/nginx.conf && rm /etc/nginx/conf.d/*
 
