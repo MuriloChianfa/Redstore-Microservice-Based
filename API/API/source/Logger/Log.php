@@ -12,7 +12,7 @@ abstract class Log implements LoggerInterface
      */
     public static final function init(): void
     {
-        openlog('Redstore-Web', LOG_PERROR, LOG_USER);
+        openlog('Redstore-API', LOG_PERROR, LOG_USER);
     }
 
     /**

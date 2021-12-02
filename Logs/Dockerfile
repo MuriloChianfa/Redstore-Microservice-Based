@@ -1,18 +1,30 @@
+# Every from latest alpine version
 FROM alpine:latest
 
-MAINTAINER Murilo Chianfa <github.com/murilochianfa>
+# Common labels
+LABEL maintainer="Murilo Chianfa <github.com/murilochianfa>"
+LABEL br.com.redstore.version="0.0.1-beta"
+LABEL br.com.redstore.version.is-production="no"
+LABEL br.com.redstore.release-date="2021-11-25"
+LABEL vendor="Redstore"
 
-RUN apk update
-
-RUN apk add --no-cache rsyslog
-RUN apk add --no-cache rsyslog-mysql
-
-COPY /skel /
-
-RUN chmod +x init.sh
-
-# expose rsyslog ports
+# Expose default Rsyslog ports
 EXPOSE 514/tcp
 EXPOSE 514/udp
 
+# Installing dependecies
+RUN apk update && apk add --no-cache \
+    rsyslog-mysql \
+    mysql-client \
+    rsyslog \
+    tcpdump \
+    vim
+
+# Copy custom scripts to Rsyslog
+COPY /skel /
+
+# Give your permissions
+RUN chmod u+x init.sh
+
+# Set custom entrypoint as a custom script
 ENTRYPOINT [ "./init.sh" ]

@@ -21,7 +21,6 @@ class Web extends Controller
             $req = callAPI('/me/profile', 'POST', null, $_SESSION['user']);
 
             if (isset($req['curl_error'])) {
-                error_log(json_encode($req));
                 return;
             }
 
@@ -48,13 +47,8 @@ class Web extends Controller
         )->render();
 
         $req = callAPI('/products/1/4/rate/DESC', 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
-
         $req2 = callAPI('/products/1/4/id/DESC', 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req2['curl_error']) || $req2['code'] != 200) { error_log(json_encode($req2)); }
-
         $req3 = callAPI('/products/2/4/id/DESC', 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req3['curl_error']) || $req3['code'] != 200) { error_log(json_encode($req3)); }
 
         $featuredProducts = (json_decode($req['result']))->message ?? [];
         $latestProducts = (json_decode($req2['result']))->message ?? [];
