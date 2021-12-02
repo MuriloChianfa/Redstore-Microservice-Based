@@ -4,6 +4,8 @@
 
 Welcome to the Redstore microservice based, a simple implementation with docker containers
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/badges/build.png?b=master)](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/build-status/master) [![Code Intelligence Status](https://scrutinizer-ci.com/g/MuriloChianfa/Redstore-Microservice-Based/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+
 #### How to setup the DEV environment:
 
 ```shell
