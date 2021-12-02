@@ -2,7 +2,6 @@
   "name": "murilochianfa/redstore-api",
   "description": "Simple API to Redstore WEB",
   "minimum-stability": "dev",
-  "prefer-stable": true,
   "authors": [
     {
       "name": "MuriloChianfa",
@@ -37,7 +36,7 @@
   "require": {
     "coffeecode/router": "^1.0",
     "predis/predis": "1.1.*",
-    "php-amqplib/php-amqplib": "2.12",
+    "php-amqplib/php-amqplib": "2.12.*",
     "guzzlehttp/guzzle": "7.*"
   },
   "require-dev": {
