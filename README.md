@@ -29,7 +29,7 @@ To setup the PROD environment use -f docker-compose.production.yml in two comman
 
 ## Architecture:
 
-<p align="center"><img src="./Redstore.jpg" /></p>
+<p align="center"><img src="./Web/Images/Redstore.jpg" /></p>
 
 #
 

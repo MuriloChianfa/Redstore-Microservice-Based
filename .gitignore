@@ -13,9 +13,6 @@ Mailler/App/composer.lock
 Mailler/App/symfony.lock
 Mailler/App/.env
 
-Reverse-Proxy/ssl.crt
-Reverse-Proxy/ssl.key
-
 .env
 
 ##### Windows

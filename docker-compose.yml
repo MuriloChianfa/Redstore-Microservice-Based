@@ -4,7 +4,7 @@ services:
     build:
       context: ./Database
       dockerfile: Dockerfile
-    image: redstore-database
+    image: murilochianfa/redstore-database:development
     container_name: redstore-database
     restart: unless-stopped
     ports:
@@ -29,7 +29,7 @@ services:
     build:
       context: ./Logs
       dockerfile: Dockerfile
-    image: redstore-logs
+    image: murilochianfa/redstore-logs:development
     container_name: redstore-logs
     restart: unless-stopped
     depends_on:
@@ -51,7 +51,7 @@ services:
     build:
       context: ./Cache
       dockerfile: Dockerfile
-    image: redstore-cache
+    image: murilochianfa/redstore-cache:development
     container_name: redstore-cache
     restart: unless-stopped
     depends_on:
@@ -72,7 +72,7 @@ services:
     build:
       context: ./Queue
       dockerfile: Dockerfile.development
-    image: redstore-queue
+    image: murilochianfa/redstore-queue:development
     container_name: redstore-queue
     restart: unless-stopped
     depends_on:
@@ -94,7 +94,7 @@ services:
     build:    
       context: .
       dockerfile: API/Dockerfile.development
-    image: redstore-api
+    image: murilochianfa/redstore-api:development
     container_name: redstore-api
     restart: unless-stopped
     depends_on:
@@ -123,7 +123,7 @@ services:
     build:
       context: ./Mailler
       dockerfile: Dockerfile.development
-    image: redstore-mailler
+    image: murilochianfa/redstore-mailler:development
     hostname: mailler
     depends_on:
       - redstore-api
@@ -151,7 +151,7 @@ services:
     build:
       context: .
       dockerfile: Web/Dockerfile.development
-    image: redstore-web
+    image: murilochianfa/redstore-web:development
     container_name: redstore-web
     hostname: web
     restart: unless-stopped
@@ -178,7 +178,7 @@ services:
     build:
       context: ./Reverse-Proxy
       dockerfile: Dockerfile
-    image: redstore-reverse-proxy
+    image: murilochianfa/redstore-reverse-proxy:development
     container_name: redstore-reverse-proxy
     restart: unless-stopped
     depends_on:
