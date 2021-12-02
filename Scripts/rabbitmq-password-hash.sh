@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -z "$1" ]] ; then
-  echo "missing password argument"
+  echo "Missing password argument"
   exit 1
 fi
 
@@ -31,4 +31,4 @@ function encode_password()
     echo "$PASS"
 }
 
-echo -e "\nSua senha: \"$1\" foi hasheada!\n$(encode_password $1)\n"
+echo -e "\nYour password: \"$1\" was hashed!\n$(encode_password $1)\n"

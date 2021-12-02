@@ -124,7 +124,7 @@ services:
       context: ./Mailler
       dockerfile: Dockerfile.development
     image: redstore-mailler
-    container_name: redstore-mailler
+    hostname: mailler
     depends_on:
       - redstore-api
     volumes:
@@ -138,14 +138,14 @@ services:
       - queue-network
       - cache-network
     healthcheck:
-      test: ["CMD", "netstat", "-a", "-p", "TCP", "-n", "&&", "echo", "1"]
-      interval: 1m30s
+      test: ["CMD", "ping", "-c", "1", "-w", "1", "redstore-queue"]
+      interval: 5s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 10
+      start_period: 20s
     deploy:
-      mode: global
-      replicas: 2
+      mode: replicated
+      replicas: 4
 
   redstore-web:
     build:
