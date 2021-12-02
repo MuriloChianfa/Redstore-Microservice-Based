@@ -1,7 +1,10 @@
 {
   "name": "murilochianfa/redstore-api",
+  "type": "project",
   "description": "Simple API to Redstore WEB",
+  "keywords": ["redstore", "microsservices"],
   "minimum-stability": "dev",
+  "license": "MIT",
   "authors": [
     {
       "name": "MuriloChianfa",
