@@ -6,7 +6,7 @@ if (!extension_loaded('curl')) {
 }
 
 function site(string $param = null): string {
-    if($param && !empty(SITE[$param])) {
+    if ($param && !empty(SITE[$param])) {
         return SITE[$param];
     }
 
@@ -40,7 +40,7 @@ function asset(string $path, $time = true): string {
 }
 
 function flash(string $type = null, string $message = null): ?string {
-    if($type && $message) {
+    if ($type && $message) {
         $_SESSION['flash'] = [
             'type' => $type,
             'message' => $message
@@ -48,7 +48,7 @@ function flash(string $type = null, string $message = null): ?string {
         return null;
     }
 
-    if(!empty($_SESSION['flash']) && $flash = $_SESSION['flash']) {
+    if (!empty($_SESSION['flash']) && $flash = $_SESSION['flash']) {
         unset($_SESSION['flash']);
         return "<div class=\"message {$flash["type"]}\">{$flash["message"]}</div>";
     }
@@ -173,7 +173,7 @@ function callAPI(string $url, string $method, $data = null, string $jwt = null)
     curl_close($curl);
 
     if ($curlError) {
-        return [ 'curl_error' => $curlError ];
+        return ['curl_error' => $curlError];
     }
 
     return [

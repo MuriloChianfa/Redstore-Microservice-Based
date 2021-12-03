@@ -61,7 +61,7 @@ final class Listener extends RabbitReceiver
 
             switch ($message->type) {
                 case 'confirmEmail':
-                    $Email = new Email([ $message->content->email ], true);
+                    $Email = new Email([$message->content->email], true);
 
                     if (!$Email->SendMail(ConfirmEmail::bind('127.0.0.1:80/confirm'), 'Confirm your email')) {
                         \writeLog('Confirm email not delivered for: ', $message->content->email);
@@ -73,12 +73,10 @@ final class Listener extends RabbitReceiver
 
                 default: \writeLog(json_encode($message)); $handledMessage = true; break;
             }
-        }
-        catch (\Throwable $exception) {
+        } catch (\Throwable $exception) {
             \writeLog($exception->getMessage());
             $handledMessage = true;
-        }
-        finally {
+        } finally {
             /**
              * Verify if the message are received and if yes, send the ack for the queue
              */

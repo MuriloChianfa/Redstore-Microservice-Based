@@ -91,8 +91,7 @@ $route->get('/{errcode}', 'App:error');
  */
 try {
     $route->dispatch();
-} 
-catch (\Throwable $throwable) {
+} catch (\Throwable $throwable) {
     $Message = new stdClass();
     $Message->status = '500 ' . HTTP_500;
     $Message->message = $throwable->getMessage();

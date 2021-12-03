@@ -100,8 +100,7 @@ final class Email
             }
 
             return true;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             \writeLog($e->getMessage());
             \writeLog($this->mail->ErrorInfo);
 

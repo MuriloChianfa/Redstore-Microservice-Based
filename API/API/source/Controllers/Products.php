@@ -77,12 +77,10 @@ class Products
             if (!empty($data['filterColumn'])) {
                 if (!empty($data['selfId'])) {
                     $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']} AND id != {$data['selfId']}");
-                }
-                else {
+                } else {
                     $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']}");
                 }
-            }
-            else {
+            } else {
                 $find = $Product->find();
             }
 
@@ -255,8 +253,7 @@ class Products
 
         try {
             $base64 = getimagesizefromstring(base64_decode(explode(',', $base64Image)[1]));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->Message->message = 'imagem invalida';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
         }

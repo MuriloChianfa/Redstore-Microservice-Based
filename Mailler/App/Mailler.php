@@ -48,8 +48,7 @@ do {
     try {
         sleep(2);
         $RabbitReceiver = new Listener(RABBITMQ_QUEUE, RABBITMQ_EXCHANGER);
-    }
-    catch (\Throwable $exception) {
+    } catch (\Throwable $exception) {
         \writeLog($exception->getMessage());
 
         if (!empty($RabbitReceiver)) {
