@@ -13,7 +13,7 @@ $ cp .env.example .env && vi .env
 ```
 
 ```shell
-$ ./Reverse-Proxy/gen-ssl.sh
+$ ./Scripts/gen-ssl.sh
 ```
 
 ```shell
