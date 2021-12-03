@@ -37,7 +37,7 @@
                     <li><a href="<?= $router->route("web.products"); ?>">Products</a></li>
                     <li><a href="<?= $router->route("web.about"); ?>">About</a></li>
 
-                    <?php if(!empty($_SESSION["user"])): ?>
+                    <?php if (!empty($_SESSION["user"])): ?>
                         <li><a href="<?= $router->route("app.account"); ?>">Account</a></li>
                         <li><a href="<?= $router->route("app.logoff"); ?>">Logoff</a></li>
                     <?php else: ?>

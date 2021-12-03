@@ -26,7 +26,7 @@ abstract class RabbitReceiver extends Rabbit // implements Interface
      */
     protected function consume()
     {
-        $callback = function ($message) { $this->handler($message); };
+        $callback = function($message) { $this->handler($message); };
         $this->channel->basic_consume($this->getQueue(), 'consumer', false, $this->getReply(), false, false, $callback);
         
         $pid = pcntl_fork();

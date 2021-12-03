@@ -38,14 +38,14 @@ class Token
             return false;
         }
 
-        if (!$this->Redis->get((json_decode($payload)->id.json_decode($payload)->expirationTime))) {
+        if (!$this->Redis->get((json_decode($payload)->id . json_decode($payload)->expirationTime))) {
             $this->error = 'please login first';
             return false;
         }
 
         if ((json_decode($payload)->expirationTime - (time()) <= 0) ? true : false) {
             $this->error = 'token expired';
-            $this->Redis->del((json_decode($payload)->id.json_decode($payload)->expirationTime));
+            $this->Redis->del((json_decode($payload)->id . json_decode($payload)->expirationTime));
             return false;
         }
 
@@ -72,7 +72,7 @@ class Token
         
         $token = "{$parsedPayload}." . base64UrlEncode(hash_hmac('sha256', $parsedPayload, $secret, true));
 
-        $this->Redis->set($data['id'].$data['expirationTime'], $token, 'EX', $this->timeout);
+        $this->Redis->set($data['id'] . $data['expirationTime'], $token, 'EX', $this->timeout);
 
         return $token;
     }

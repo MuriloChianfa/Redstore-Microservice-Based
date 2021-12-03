@@ -91,7 +91,7 @@ $router->dispatch();
 /**
  * ERRORS PROCESS
  */
-if($router->error()) {
+if ($router->error()) {
     $router->redirect('web.error', ['errcode' => $router->error()]);
 }
 

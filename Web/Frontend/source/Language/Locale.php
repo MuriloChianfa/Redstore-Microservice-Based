@@ -269,7 +269,7 @@ abstract class Locale
         $replace = [];
         $args = func_get_args();
 
-        for ($i = 1, $max = count($args); $i < $max; $i ++) {
+        for ($i = 1, $max = count($args); $i < $max; $i++) {
             $replace['{arg:' . $i . '}'] = $args[$i];
         }
 

@@ -32,7 +32,7 @@ class Auth
         $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
         $passwd = filter_var($data["password"], FILTER_DEFAULT);
 
-        if(!$email || !$passwd) {
+        if (!$email || !$passwd) {
             $this->Message->message = 'Informe seu e-mail e senha para logar';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
@@ -73,19 +73,19 @@ class Auth
         $first_name = filter_var($data["first_name"], FILTER_DEFAULT);
         $last_name = filter_var($data["last_name"], FILTER_DEFAULT);
 
-        if(!$email || !$passwd) {
+        if (!$email || !$passwd) {
             $this->Message->message = 'Informe um e-mail e uma senha para se cadastrar!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
         }
 
-        if(!$first_name) {
+        if (!$first_name) {
             $this->Message->message = 'Informe seu primeiro nome para se cadastrar!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
         }
 
-        if(!$last_name) {
+        if (!$last_name) {
             $this->Message->message = 'Informe seu ultimo nome para se cadastrar!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
@@ -127,7 +127,7 @@ class Auth
     {
         $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
 
-        if(!$email) {
+        if (!$email) {
             $this->Message->message = 'Informe um e-mail valido para continuar';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
@@ -191,13 +191,13 @@ class Auth
         $passwd = filter_var($data["password"], FILTER_DEFAULT);
         $passwdRepeat = filter_var($data["passwordRepeat"], FILTER_DEFAULT);
 
-        if(!$passwd || !$passwdRepeat) {
+        if (!$passwd || !$passwdRepeat) {
             $this->Message->message = 'Informe e repita sua nova senha!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
         }
 
-        if($passwd != $passwdRepeat) {
+        if ($passwd != $passwdRepeat) {
             $this->Message->message = 'As senhas nao batem!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;
@@ -233,7 +233,7 @@ class Auth
 
         $Redis = (new Redis())->getClient();
 
-        if ($Redis->del($token->id.$token->expirationTime) === 0) {
+        if ($Redis->del($token->id . $token->expirationTime) === 0) {
             $this->Message->message = 'Ocorreu algum erro!';
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
             return;

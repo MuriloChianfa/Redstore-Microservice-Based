@@ -284,10 +284,12 @@ abstract class Model
      */
     protected function safe(): ?array
     {
-        $safe = (array)$this->data;
+        $safe = (array) $this->data;
+
         foreach (static::$protected as $unset) {
             unset($safe[$unset]);
         }
+
         return $safe;
     }
 
@@ -301,6 +303,7 @@ abstract class Model
         foreach ($data as $key => $value) {
             $filter[$key] = (is_null($value) ? null : filter_var($value, FILTER_DEFAULT));
         }
+
         return $filter;
     }
 
@@ -309,12 +312,14 @@ abstract class Model
      */
     protected function required(): bool
     {
-        $data = (array)$this->data();
+        $data = (array) $this->data();
+
         foreach (static::$required as $field) {
             if (empty($data[$field])) {
                 return false;
             }
         }
+
         return true;
     }
 

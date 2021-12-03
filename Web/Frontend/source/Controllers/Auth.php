@@ -16,7 +16,7 @@ class Auth extends Controller
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         $passwd = filter_var($data['password'], FILTER_DEFAULT);
 
-        if(!$email || !$passwd) {
+        if (!$email || !$passwd) {
             echo $this->ajaxResponse('message', [
                 'type' => 'alert',
                 'message' => 'Informe seu e-mail e senha para logar'
@@ -72,7 +72,7 @@ class Auth extends Controller
 
     public function register($data): void {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-        if(in_array('', $data) || empty($data)) {
+        if (in_array('', $data) || empty($data)) {
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => 'Preencha todos os campos para cadastrar-se'
@@ -80,7 +80,7 @@ class Auth extends Controller
             return;
         }
 
-        if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => 'Favor informe um e-mail válido para continuar'
@@ -117,7 +117,7 @@ class Auth extends Controller
 
     public function forget($data): void {
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
-        if(!$email) {
+        if (!$email) {
             echo $this->ajaxResponse('message', [
                 'type' => 'alert',
                 'message' => 'Informe um e-mail valido para continuar'
@@ -126,7 +126,7 @@ class Auth extends Controller
         }
 
         $user = (new User())->find('email = :e', "e={$email}")->fetch();
-        if(!$user) {
+        if (!$user) {
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => 'E-mail informado, não cadastrado'
@@ -141,7 +141,7 @@ class Auth extends Controller
 
         $email = new Email();
         $email->add(
-            'Recupere sua senha |'. site('name'),
+            'Recupere sua senha |' . site('name'),
             $this->view->render('emails/recover', [
                 'user' => $user,
                 'link' => $this->router->route('web.reset', [
@@ -161,7 +161,7 @@ class Auth extends Controller
     }
 
     public function reset($data): void {
-        if(empty($_SESSION['forget']) || !$user = (new User())->findById($_SESSION['forget'])) {
+        if (empty($_SESSION['forget']) || !$user = (new User())->findById($_SESSION['forget'])) {
             flash('error', 'Não foi possivel recuperar');
             echo $this->ajaxResponse('redirect', [
                 'url' => $this->router->route('web.forget')
@@ -169,14 +169,14 @@ class Auth extends Controller
             return;
         }
 
-        if(empty($data['password']) || empty($data['password_re'])) {
+        if (empty($data['password']) || empty($data['password_re'])) {
             echo $this->ajaxResponse('message', [
                 'type' => 'alert',
                 'message' => 'Informe e repita sua nova senha'
             ]);
         }
 
-        if($data['password'] != $data['password_re']) {
+        if ($data['password'] != $data['password_re']) {
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => 'As senhas nao batem'
@@ -186,7 +186,7 @@ class Auth extends Controller
         $user->passwd = $data['password'];
         $user->forget = null;
 
-        if(!$user->save()) {
+        if (!$user->save()) {
             echo $this->ajaxResponse('message', [
                 'type' => 'error',
                 'message' => $user->fail()->getMessage()

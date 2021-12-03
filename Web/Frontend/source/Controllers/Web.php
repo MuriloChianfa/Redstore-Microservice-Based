@@ -150,7 +150,7 @@ class Web extends Controller
 
     public function productInsert(): void
     {
-        if (empty($this->user) || !in_array($this->user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])) {
+        if (empty($this->user) || !in_array($this->user->access_level_id->name, ['Administrador', 'Gerente', 'Vendedor'])) {
             $this->router->redirect('web.products');
         }
 
@@ -212,7 +212,7 @@ class Web extends Controller
         $head = $this->seo->optimize(
             "Ooooppss {$error} |" . site('name'),
             site('desc'),
-            $this->router->route('web.error', [ 'errcode' => $error ]),
+            $this->router->route('web.error', ['errcode' => $error]),
             routeImage($error)
         )->render();
 

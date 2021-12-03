@@ -1,8 +1,7 @@
 <?php
 
-declare(ticks = 1);
-
-declare(strict_types = 1);
+declare(ticks=1);
+declare(strict_types=1);
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
@@ -10,10 +9,10 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 set_time_limit(0); 
 
 if (isset($argv)) {
-	if (in_array('--debug', $argv)) {
-		$filename = pathinfo(__FILE__, PATHINFO_FILENAME);
+    if (in_array('--debug', $argv)) {
+        $filename = pathinfo(__FILE__, PATHINFO_FILENAME);
         openlog($filename, LOG_PID | LOG_PERROR, LOG_LOCAL0);
-	}
+    }
 }
 
 require __DIR__ . '/vendor/autoload.php';
@@ -26,16 +25,16 @@ use Source\Listener;
 // Shutdown function
 function shutdown(): void
 {
-	\writeLog('Stoping E-mail Service...');
+    \writeLog('Stoping E-mail Service...');
 
-	// Closing connection with syslog
-	if (isset($argv)) {
+    // Closing connection with syslog
+    if (isset($argv)) {
         if (in_array('--debug', $argv)) {
             closelog();
         }
     }
 
-	exit();
+    exit();
 }
 
 register_shutdown_function('shutdown');
@@ -61,4 +60,3 @@ do {
         continue;
     }
 } while (true);
-

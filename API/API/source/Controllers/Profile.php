@@ -76,7 +76,7 @@ class Profile
         if (isset($data['first_name'])) {
             $first_name = filter_var($data["first_name"], FILTER_DEFAULT);
             
-            if(!$first_name) {
+            if (!$first_name) {
                 $this->Message->message = 'Nome inválido';
                 (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
                 return;
@@ -86,7 +86,7 @@ class Profile
         if (isset($data['last_name'])) {
             $last_name = filter_var($data["last_name"], FILTER_DEFAULT);
 
-            if(!$last_name) {
+            if (!$last_name) {
                 $this->Message->message = 'Nome inválido';
                 (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
                 return;
@@ -96,7 +96,7 @@ class Profile
         if (isset($data['birth_date'])) {
             $birth_date = filter_var($data["birth_date"], FILTER_DEFAULT);
 
-            if(!$birth_date) {
+            if (!$birth_date) {
                 $this->Message->message = 'Data de nascimento inválida';
                 (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
                 return;

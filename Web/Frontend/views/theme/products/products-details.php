@@ -16,7 +16,7 @@
             </div>
 
             <div class="row">
-                <?php if (!empty($user) && in_array($user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])): ?>
+                <?php if (!empty($user) && in_array($user->access_level_id->name, ['Administrador', 'Gerente', 'Vendedor'])): ?>
                     <div class="form-message">
                         <div class="login_form_callback">
                             <?= flash(); ?>
@@ -112,7 +112,7 @@ for (let i = 0; i < 4; i++) {
     SmallImg[i].onclick = () => { ProductImg.src = SmallImg[i].src }
 }
 
-<?php if (!empty($user) && in_array($user->access_level_id->name, [ 'Administrador', 'Gerente', 'Vendedor' ])): ?>
+<?php if (!empty($user) && in_array($user->access_level_id->name, ['Administrador', 'Gerente', 'Vendedor'])): ?>
 
 Array.from(SmallImg).forEach(element => {
     if (element.src.includes('no-product-image.png')) {

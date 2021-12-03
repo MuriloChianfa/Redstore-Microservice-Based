@@ -16,7 +16,7 @@ class ProductImage extends Model
      */
     public function __construct()
     {
-        parent::__construct('product_image', [ 'id' ], [ 'product_id', 'url_slug', 'image' ]);
+        parent::__construct('product_image', ['id'], ['product_id', 'url_slug', 'image']);
     }
 
     /**

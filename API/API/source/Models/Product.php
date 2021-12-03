@@ -96,7 +96,7 @@ class Product extends Model
             return null;
         }
 
-        $value->category =(new Category())->findById((int) $value->product_type_id)->data();
+        $value->category = (new Category())->findById((int) $value->product_type_id)->data();
         $value->ProductImage = (new ProductImage())->findAllByProductId((int) $value->id);
 
         return $value;
