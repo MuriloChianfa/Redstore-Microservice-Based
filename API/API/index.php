@@ -62,12 +62,12 @@ $route->namespace('Source\Controllers')->group('/me');
 $route->post('/profile', 'Profile:profile');
 $route->patch('/update', 'Profile:update');
 // Phone
-$route->post('/phone', 'Profile:addPhone');
-$route->patch('/phone', 'Profile:updatePhone');
+$route->post('/phone', 'PhoneController:addPhone');
+$route->patch('/phone', 'PhoneController:updatePhone');
 // Address
-$route->get('/address/{id}', 'Profile:address');
-$route->post('/address', 'Profile:addAddress');
-$route->patch('/address', 'Profile:updateAddress');
+$route->get('/address/{id}', 'AddressController:address');
+$route->post('/address', 'AddressController:addAddress');
+$route->patch('/address', 'AddressController:updateAddress');
 
 $route->post('/favorite', 'Profile:favorite');
 $route->post('/history', 'Profile:history');
