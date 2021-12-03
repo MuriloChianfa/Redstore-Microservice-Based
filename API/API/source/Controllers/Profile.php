@@ -115,6 +115,7 @@ class Profile
 
         $User = new User();
 
+        /** @var \Source\Models\User $User */
         $User = $User->findById($this->token['id'], 'id');
 
         if (!$User || $User == null) {
@@ -161,6 +162,7 @@ class Profile
         }
 
         $User = new User();
+        /** @var Source\Models\User $User */
         $User = $User->findById($this->token['id'], 'id');
 
         if (!$User || $User == null) {
@@ -175,6 +177,7 @@ class Profile
             return;
         }
 
+        /** @var Source\Models\Phone $Phone */
         $Phone = new Phone();
         $Phone->user_id = $User->id;
         $Phone->phone_type_id = 1;
@@ -217,6 +220,7 @@ class Profile
         }
 
         $Phone = new Phone();
+        /** @var Source\Models\Phone $Phone */
         $Phone = $Phone->findById($data['id'], 'id, user_id');
 
         if ($User->id != $Phone->user_id) {
@@ -256,6 +260,7 @@ class Profile
         }
 
         $User = new User();
+        /** @var Source\Models\User $User */
         $User = $User->findById($this->token['id'], 'id');
 
         if (!$User || $User == null) {
@@ -294,6 +299,7 @@ class Profile
             return;
         }
 
+        /** @var Source\Models\Address $Address */
         $Address = new Address();
 
         $Address->city_id = $city_id;
@@ -392,6 +398,7 @@ class Profile
             }
         }
 
+        /** @var Source\Models\Address $Address */
         $Address = new Address();
 
         if (isset($data['city_id'])) {
@@ -431,6 +438,7 @@ class Profile
             return;
         }
 
+        /** @var Source\Models\Address $Address */
         $Address = new Address();
         $result = $Address->findById($data['id'], "*");
         
