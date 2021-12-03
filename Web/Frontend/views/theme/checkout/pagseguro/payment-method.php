@@ -7,6 +7,7 @@
 
     <div class="brands">
         <div class="small-container">
+            <br><br><br><br>
             <div class="row">
                 <div class="col-5">
                     <a href="<?= $router->route('checkout.boleto'); ?>"><img src="<?= asset("/images/boleto.png"); ?>" alt=""></a>
@@ -18,6 +19,7 @@
                     <a href="<?= $router->route('checkout.debit'); ?>"><img src="<?= asset("/images/debit-card.png"); ?>" alt=""></a>
                 </div>
             </div>
+            <br><br><br><br>
         </div>
     </div>
 </div>
