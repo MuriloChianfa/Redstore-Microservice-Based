@@ -8,21 +8,29 @@ Welcome to the Redstore microservice based, a simple implementation with docker 
 
 #### How to setup the DEV environment:
 
-```shell
-$ cp .env.example .env && vi .env
+```bash
+git clone https://github.com/MuriloChianfa/Redstore-Microservice-Based.git
 ```
 
-```shell
-$ ./Reverse-Proxy/gen-ssl.sh
+```bash
+cd Redstore-Microservice-Based
 ```
 
-```shell
-$ docker-compose build && docker-compose up -d
+```bash
+cp .env.example .env && vi .env
 ```
 
-```shell
-$ docker container exec redstore-api composer install && \
-  docker container exec redstore-web composer install
+```bash
+Scripts/gen-ssl.sh
+```
+
+```bash
+docker-compose build && docker-compose up -d
+```
+
+```bash
+docker container exec redstore-api composer install && \
+docker container exec redstore-web composer install
 ```
 
 To setup the PROD environment use -f docker-compose.production.yml in two commands
