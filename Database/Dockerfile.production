@@ -31,9 +31,9 @@ RUN apt-get -o Acquire::ForceIPv4=true update && \
 # Binding all addresses to MySQL listen
 RUN echo "bind-address = 0.0.0.0" >> /etc/mysql/my.cnf
 
-# Addind all dev scripts to entrypoint
+# Addind all prod scripts to entrypoint
 ADD priority*-all-*.sql /docker-entrypoint-initdb.d/
-ADD priority*-dev-*.sql /docker-entrypoint-initdb.d/
+ADD priority*-prod-*.sql /docker-entrypoint-initdb.d/
 
 # Changing permission of these scripts 
 RUN chown -R mysql:mysql /docker-entrypoint-initdb.d/

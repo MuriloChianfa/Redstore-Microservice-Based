@@ -5,5 +5,5 @@ if [ -z "$1" ]; then
     exit
 fi
 
-docker container exec -it -u 0 redstore-database mysql -U -n -i -h 127.0.0.1 -u root -p"simple-server" --column-names --auto-vertical-output -A -D "redstore" -e "$1"
+docker container exec -it -u 0 redstore-database mysql -U -n -i -h 127.0.0.1 -u root -p"simple-server" --column-names -A -D "redstore" -e "$1"
 

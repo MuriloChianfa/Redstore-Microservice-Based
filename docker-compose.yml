@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   redstore-database:
     build:
@@ -18,13 +18,15 @@ services:
       - log-network
       - api-network
     logging:
-      driver: local
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
-      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "3306"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "healthy"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 60s
 
   redstore-logs:
     build:
@@ -41,7 +43,9 @@ services:
     networks:
       - log-network
     logging:
-      driver: local
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:514"]
       interval: 1m30s
@@ -64,6 +68,10 @@ services:
     networks:
       - api-network
       - cache-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "6379"]
       interval: 1m30s
@@ -87,6 +95,10 @@ services:
     tty: false
     networks:
       - queue-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "5672"]
       interval: 1m30s
@@ -117,6 +129,10 @@ services:
       - queue-network
       - api-network
       - cache-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:3000"]
       interval: 1m30s
@@ -142,6 +158,10 @@ services:
       - log-network
       - queue-network
       - cache-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "ping", "-c", "1", "-w", "1", "redstore-queue"]
       interval: 5s
@@ -172,6 +192,10 @@ services:
       - log-network
       - queue-network
       - api-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
       interval: 1m30s
@@ -199,6 +223,10 @@ services:
     tty: false
     networks:
       - api-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
     healthcheck:
       test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:443"]
       interval: 1m30s
