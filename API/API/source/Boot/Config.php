@@ -1,8 +1,6 @@
 <?php
 
-/**
- * PROJECT URLs
- */
+// PROJECT
 define('CONF_URL_BASE', 'https://' . getenv('MAIN_IP'));
 define('CONF_URL_TEST', 'https://' . getenv('MAIN_IP'));
 
