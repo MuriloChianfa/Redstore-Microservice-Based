@@ -6,7 +6,7 @@ use Source\Core\Model;
 
 /**
  * ProductImage class...
- * 
+ *
  * @package \Source\Models\ProductImage
  */
 class ProductImage extends Model

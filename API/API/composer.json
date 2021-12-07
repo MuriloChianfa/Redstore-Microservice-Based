@@ -37,6 +37,9 @@
     ],
     "codingstyle": [
       "./vendor/bin/phpcs --ignore=*/tests/*,*/vendor/* --error-severity=1 --warning-severity=8 --tab-width=4 --standard=PSR12 source/"
+    ],
+    "fixcodingstyle": [
+      "./vendor/bin/phpcbf --ignore=*/tests/*,*/vendor/* --error-severity=1 --warning-severity=8 --tab-width=4 --standard=PSR12 source/"
     ]
   },
   "require": {

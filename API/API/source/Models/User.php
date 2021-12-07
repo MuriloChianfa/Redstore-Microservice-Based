@@ -49,7 +49,7 @@ class User extends Model
 
         return $find->fetch();
     }
-    
+
     public function updateUser(): bool
     {
         $userId = $this->id;

@@ -21,7 +21,8 @@ class Gender extends Model
      * @param string $name
      * @return Gender
      */
-    public function bootstrap(string $name): Gender {
+    public function bootstrap(string $name): Gender
+    {
         $this->name = $name;
         return $this;
     }

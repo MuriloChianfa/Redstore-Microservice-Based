@@ -2,15 +2,12 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
 use Source\Core\Token;
 use Source\Core\Redis;
-
 use Source\Models\User;
-
 use Source\Core\Rabbit\RabbitSender;
 
 class Auth
@@ -105,7 +102,7 @@ class Auth
         }
 
         $result = $User->data();
-        
+
         $jwt = new stdClass();
         $jwt->id = $result->id;
         $jwt->email = $result->email;
@@ -160,7 +157,7 @@ class Auth
 
         $User = new User();
         $User->forget = (md5(uniqid(rand(), true)));
-        
+
         $this->Message->message = 'Enviamos um link de recuperação para seu e-mail';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
@@ -242,7 +239,7 @@ class Auth
         $this->Message->message = 'Você saiu com sucesso volte logo =)';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
-    
+
     public function validateLogin()
     {
         if (!($jwt = $this->Request->getToken())) {

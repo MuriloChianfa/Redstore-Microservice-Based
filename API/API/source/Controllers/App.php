@@ -2,11 +2,9 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
-
 use Source\Models\Product;
 use Source\Models\Category;
 
@@ -25,7 +23,7 @@ class App
     public function test()
     {
         $this->Message->message = 'this is a test';
-        
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 

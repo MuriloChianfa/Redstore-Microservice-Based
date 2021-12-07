@@ -23,10 +23,10 @@ abstract class Model
 
     /** @var string */
     protected $order;
-    
+
     /** @var int */
     protected $limit;
-    
+
     /** @var int */
     protected $offset;
 
@@ -108,8 +108,8 @@ abstract class Model
     }
 
     /**
-     * @param 
-     * @return Model|mixed 
+     * @param
+     * @return Model|mixed
      */
     public function find(?string $terms = null, ?string $params = null, string $columns = "*")
     {
@@ -165,21 +165,21 @@ abstract class Model
     public function order(string $columnOrder): Model
     {
         $this->order = " ORDER BY {$columnOrder}";
-        
+
         return $this;
     }
 
     public function limit(int $limit): Model
     {
         $this->limit = " LIMIT {$limit}";
-        
+
         return $this;
     }
 
     public function offset(int $offset): Model
     {
         $this->offset = " OFFSET {$offset}";
-        
+
         return $this;
     }
 
@@ -271,7 +271,7 @@ abstract class Model
             $stmt = Connect::getInstance()->prepare("DELETE FROM " . static::$entity . " WHERE {$key} = :key");
             $stmt->bindValue("key", $value, \PDO::PARAM_STR);
             $stmt->execute();
-            
+
             return true;
         } catch (\PDOException $exception) {
             $this->fail = $exception;
@@ -329,7 +329,7 @@ abstract class Model
         foreach (static::$required as $field) {
             $data[] = $field;
         }
-        
+
         return $data;
     }
 }

@@ -2,9 +2,6 @@
 
 namespace Source\Core\Rabbit;
 
-/**
- * RabbitMQ lib.
- */
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 
@@ -31,7 +28,7 @@ abstract class Rabbit implements RabbitInterface
      * @var string $passwd
      */
     const PASSWD = CONF_RABBITMQ_PASS;
-    
+
     /**
      * @var AMQPStreamConnection $connection
      */
@@ -66,7 +63,6 @@ abstract class Rabbit implements RabbitInterface
         $this->channel->exchange_declare($this->exchanger, AMQPExchangeType::DIRECT, false, true, false);
         $this->channel->queue_bind($this->queue, $this->exchanger);
 
-        
         $this->channel->basic_qos(null, 1, null);
         return $this;
     }
@@ -79,7 +75,7 @@ abstract class Rabbit implements RabbitInterface
         if (!empty($this->channel)) {
             $this->channel->close();
         }
-        
+
         if (!empty($this->connection)) {
             $this->connection->close();
         }

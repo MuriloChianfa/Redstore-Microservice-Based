@@ -2,18 +2,15 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
-
 use Source\Models\User;
 use Source\Models\Phone;
 use Source\Models\Gender;
 use Source\Models\AccessLevel;
 use Source\Models\Address\Address;
 use Source\Models\Address\City;
-
 use Source\Controllers\Auth;
 
 class Profile
@@ -35,16 +32,16 @@ class Profile
     public function cart()
     {
         $this->Message->message = $this->token;
-        
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
     public function profile()
     {
         $User = new User();
-        
+
         $result = $User->findById($this->token['id'], 'id, gender_id, access_level_id, first_name, last_name, email, cpf, birth_date, photo, status, receive_promotion');
-        
+
         if (!$result || $result == null) {
             $this->Message->message = 'Usuário não encontrado!';
             (new Response())->setStatusCode(HTTP_NOT_FOUND)->send($this->Message);
@@ -58,7 +55,7 @@ class Profile
         $this->Message->message->address = Address::getAddressByUserId($result->id);
         $this->Message->message->gender_id = (new Gender())->findById($result->gender_id)->data();
         $this->Message->message->access_level_id = (new AccessLevel())->findById($result->access_level_id)->data();
-        
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 
@@ -85,7 +82,7 @@ class Profile
 
         if (isset($data['first_name'])) {
             $first_name = filter_var($data["first_name"], FILTER_DEFAULT);
-            
+
             if (!$first_name) {
                 $this->Message->message = 'Nome inválido';
                 (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
@@ -141,4 +138,3 @@ class Profile
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 }
-

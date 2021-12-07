@@ -10,7 +10,7 @@ abstract class Log implements LoggerInterface
     /**
      * @return void
      */
-    public static final function init(): void
+    final public static function init(): void
     {
         openlog('Redstore-API', LOG_PERROR, LOG_USER);
     }
@@ -22,7 +22,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function emergency($message, array $context = []): void
+    final public static function emergency($message, array $context = []): void
     {
         syslog(LOG_EMERG, self::interpolate($message, $context));
     }
@@ -37,7 +37,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function alert($message, array $context = []): void
+    final public static function alert($message, array $context = []): void
     {
         syslog(LOG_ALERT, self::interpolate($message, $context));
     }
@@ -51,7 +51,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function critical($message, array $context = []): void
+    final public static function critical($message, array $context = []): void
     {
         syslog(LOG_CRIT, self::interpolate($message, $context));
     }
@@ -64,7 +64,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function error($message, array $context = []): void
+    final public static function error($message, array $context = []): void
     {
         syslog(LOG_ERR, self::interpolate($message, $context));
     }
@@ -79,7 +79,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function warning($message, array $context = []): void
+    final public static function warning($message, array $context = []): void
     {
         syslog(LOG_WARNING, self::interpolate($message, $context));
     }
@@ -91,7 +91,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function notice($message, array $context = []): void
+    final public static function notice($message, array $context = []): void
     {
         syslog(LOG_NOTICE, self::interpolate($message, $context));
     }
@@ -105,7 +105,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function info($message, array $context = []): void
+    final public static function info($message, array $context = []): void
     {
         syslog(LOG_INFO, self::interpolate($message, $context));
     }
@@ -117,7 +117,7 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function debug($message, array $context = []): void
+    final public static function debug($message, array $context = []): void
     {
         syslog(LOG_DEBUG, self::interpolate($message, $context));
     }
@@ -130,9 +130,10 @@ abstract class Log implements LoggerInterface
      * @param array $context
      * @return void
      */
-    public static final function log(int $level, $message, array $context = []): void
+    final public static function log(int $level, $message, array $context = []): void
     {
-        if (!in_array($level, [
+        if (
+            !in_array($level, [
             LOG_EMERG,
             LOG_ALERT,
             LOG_CRIT,
@@ -141,7 +142,8 @@ abstract class Log implements LoggerInterface
             LOG_NOTICE,
             LOG_INFO,
             LOG_DEBUG
-        ])) {
+            ])
+        ) {
             $level = LOG_NOTICE;
         }
 
@@ -151,7 +153,7 @@ abstract class Log implements LoggerInterface
     /**
      * Interpolates context values into the message placeholders.
      */
-    private static final function interpolate($message, array $context = []): string
+    final private static function interpolate($message, array $context = []): string
     {
         // build a replacement array with braces around the context keys
         $replace = [];

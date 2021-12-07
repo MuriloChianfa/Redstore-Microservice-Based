@@ -38,7 +38,7 @@ interface ExceptionInterface
      * Formated string of trace
      */
     public function getTraceAsString();
-    
+
     /**
      * @var string $message
      * @var int $code

@@ -2,18 +2,15 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
-
 use Source\Models\User;
 use Source\Models\Phone;
 use Source\Models\Gender;
 use Source\Models\AccessLevel;
 use Source\Models\Address\Address;
 use Source\Models\Address\City;
-
 use Source\Controllers\Auth;
 
 final class PhoneController
@@ -74,7 +71,7 @@ final class PhoneController
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
         return;
     }
-    
+
     public function updatePhone($data)
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);

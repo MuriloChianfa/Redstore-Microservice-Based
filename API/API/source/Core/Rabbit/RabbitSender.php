@@ -2,14 +2,11 @@
 
 namespace Source\Core\Rabbit;
 
-/**
- * RabbitMQ MessageType lib. (The buffer class)
- */
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * The rabbit receiver will be listening infinitefor messages in your queue
- * 
+ *
  * the handler method can be overwrited by main class for handle the received messages
  */
 final class RabbitSender extends Rabbit // implements Interface
@@ -30,7 +27,7 @@ final class RabbitSender extends Rabbit // implements Interface
     public function sendMessage(string $message)
     {
         $properties = array('content_type' => 'text/plain', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT);
-        
+
         $message = str_replace("\n", "<br>", $message);
 
         $Buffer = new AMQPMessage($message, $properties);

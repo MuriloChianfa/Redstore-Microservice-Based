@@ -2,11 +2,9 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
-
 use Source\Models\Product;
 use Source\Models\ProductImage;
 use Source\Models\Category;
@@ -43,7 +41,7 @@ class Products
 
     /**
      * GET the list of all products
-     * 
+     *
      * @param array|null $data Receive the current page and limit of then
      * @return void
      */
@@ -107,7 +105,7 @@ class Products
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
         }
-        
+
         $this->Message->message = $products;
         $this->Message->count = $Product->coluntAllAvailableProducts();
 
@@ -116,7 +114,7 @@ class Products
 
     /**
      * GET one single product
-     * 
+     *
      * @param array $data
      * @return void
      */
@@ -144,7 +142,7 @@ class Products
 
     /**
      * POST insert a new product
-     * 
+     *
      * @param array $data
      * @return void
      */
@@ -186,7 +184,7 @@ class Products
 
         if (isset($data['id'])) {
             $id = filter_var($data["id"], FILTER_VALIDATE_INT);
-            
+
             if (!$id) {
                 $this->Message->message = 'este produto não foi encontrado';
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
@@ -215,7 +213,7 @@ class Products
 
     /**
      * POST insert a new product image to one product
-     * 
+     *
      * @param array $data
      * @return void
      */
@@ -285,7 +283,7 @@ class Products
 
     /**
      * DELETE delete one product image by id
-     * 
+     *
      * @param array $data
      * @return void
      */

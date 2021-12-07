@@ -2,18 +2,15 @@
 
 namespace Source\Controllers;
 
-use \stdClass;
-
+use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
-
 use Source\Models\User;
 use Source\Models\Phone;
 use Source\Models\Gender;
 use Source\Models\AccessLevel;
 use Source\Models\Address\Address;
 use Source\Models\Address\City;
-
 use Source\Controllers\Auth;
 
 final class AddressController
@@ -51,7 +48,7 @@ final class AddressController
             (new Response())->setStatusCode(HTTP_NOT_FOUND)->send($this->Message);
             return;
         }
-        
+
         $city_id = filter_var($data['city_id'], FILTER_DEFAULT);
         $street = filter_var($data['street'], FILTER_DEFAULT);
         $complement = filter_var($data['complement'], FILTER_DEFAULT);
@@ -107,7 +104,7 @@ final class AddressController
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
         return;
     }
-    
+
     public function updateAddress($data)
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -196,7 +193,7 @@ final class AddressController
         /** @var Source\Models\Address $Address */
         $Address = new Address();
         $result = $Address->findById($data['id'], "*");
-        
+
         if (!$result || $result == null) {
             $this->Message->message = 'Endereço não encontrado!';
             (new Response())->setStatusCode(HTTP_NOT_FOUND)->send($this->Message);
@@ -205,7 +202,7 @@ final class AddressController
 
         $result = $result->data();
         $this->Message->message = $result;
-        
+
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 }

@@ -18,7 +18,7 @@ class Token
     {
         $this->timeout = $timeout;
 
-        $this->Redis = (new Redis)->getClient();
+        $this->Redis = (new Redis())->getClient();
     }
 
     /**
@@ -57,7 +57,7 @@ class Token
      * @param object $data
      * @param array $context
      * @param string $secret
-     * @return 
+     * @return
      */
     public function generateNewToken(object $data, array $context = CONF_JWT_CONTEXT, string $secret = CONF_JWT_SECRET): string
     {
@@ -69,7 +69,7 @@ class Token
         $base64UrlPayload = base64UrlEncode(json_encode($data));
 
         $parsedPayload = "{$base64UrlHeader}.{$base64UrlPayload}";
-        
+
         $token = "{$parsedPayload}." . base64UrlEncode(hash_hmac('sha256', $parsedPayload, $secret, true));
 
         $this->Redis->set($data['id'] . $data['expirationTime'], $token, 'EX', $this->timeout);

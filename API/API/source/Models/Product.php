@@ -3,7 +3,6 @@
 namespace Source\Models;
 
 use Source\Core\Model;
-
 use Source\Models\Category;
 use Source\Models\ProductImage;
 
@@ -79,7 +78,7 @@ class Product extends Model
 
             $result->category = (new Category())->findById((int) $result->product_type_id)->data();
             $result->ProductImage = (new ProductImage())->findAllByProductId((int) $result->id);
-            
+
             $return[] = $result;
         }
 

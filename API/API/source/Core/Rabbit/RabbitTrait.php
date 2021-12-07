@@ -2,9 +2,6 @@
 
 namespace Source\Core\Rabbit;
 
-/**
- * Exception.
- */
 use Source\Core\Exception\InternalNameException;
 
 /**

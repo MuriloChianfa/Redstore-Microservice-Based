@@ -13,11 +13,11 @@ final class Response
         'Keep-Alive' => 'timeout=5, max=100',
         'Connection' => 'keep-alive'
     ];
-    
+
     private const HTTP_PROTOCOL = 'HTTP/1.1';
-    
+
     private $statusCode;
-    
+
     private $message;
 
     public function __construct($customHeaders = null)
@@ -55,7 +55,7 @@ final class Response
 
         return $this;
     }
-    
+
     public function setStatusCode(int $statusCode): Response
     {
         $text = $this->handleCode($statusCode);
@@ -81,7 +81,7 @@ final class Response
         $this->sendResponse();
 
         exit;
-    }    
+    }
 
     private function sendResponse(): void
     {

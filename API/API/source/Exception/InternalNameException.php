@@ -2,7 +2,7 @@
 
 namespace Source\Core\Exception;
 
-use \Exception;
+use Exception;
 
 final class InternalNameException extends Exception implements ExceptionInterface
 {
@@ -10,12 +10,12 @@ final class InternalNameException extends Exception implements ExceptionInterfac
      * Exception message
      */
     protected $message = "";
-    
+
     /**
      * Unknown
      */
     private $string;
-    
+
     /**
      * User-defined exception code
      */

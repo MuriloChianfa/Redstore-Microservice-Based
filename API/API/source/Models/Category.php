@@ -24,7 +24,8 @@ class Category extends Model
      * @param string|null $document
      * @return User
      */
-    public function bootstrap(string $name): Category {
+    public function bootstrap(string $name): Category
+    {
         $this->name = $name;
         return $this;
     }
