@@ -37,8 +37,12 @@ jobs:
 
     - name: Install dependencies to Web
       working-directory: ./Web/Frontend
+      with:
+        php-version: 7.2
       run: composer install --prefer-dist --no-progress
 
     - name: Run test suite to Web
       working-directory: ./Web/Frontend
+      with:
+        php-version: 7.2
       run: composer run-script codingstyle
