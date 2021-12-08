@@ -27,6 +27,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
+    - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
     - name: Install dependencies to API
       working-directory: ./API/API
       run: composer install --prefer-dist --no-progress
@@ -37,12 +44,8 @@ jobs:
 
     - name: Install dependencies to Web
       working-directory: ./Web/Frontend
-      with:
-        php-version: 7.2
       run: composer install --prefer-dist --no-progress
 
     - name: Run test suite to Web
       working-directory: ./Web/Frontend
-      with:
-        php-version: 7.2
       run: composer run-script codingstyle
