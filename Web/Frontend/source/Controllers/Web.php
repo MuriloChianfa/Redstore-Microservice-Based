@@ -218,8 +218,36 @@ class Web extends Controller
             routeImage('Cart')
         )->render();
 
+        $products = [
+            // [
+            //     'id' => 1,
+            //     'quantity' => 1
+            // ],
+            // [
+            //     'id' => 2,
+            //     'quantity' => 1
+            // ],
+            // [
+            //     'id' => 3,
+            //     'quantity' => 1
+            // ]
+        ];
+
+        // $rawProducts = $_COOKIE['rawproducts'];
+        $rawProducts = [['id' => 1],[ 'id' => 2]];
+
+        foreach ($rawProducts as $key => $value) {
+            $req = callAPI("/product/{$value['id']}", 'GET', [], $_SESSION['user'] ?? '');
+            if (isset($req['curl_error']) || $req['code'] != 200) {
+                error_log(json_encode($req));
+            }
+    
+            $products[] = (json_decode($req['result']))->message ?? [];
+        }
+
         echo $this->view->render('theme/main/cart', [
-            'head' => $head
+            'head' => $head,
+            'products' => $products
         ]);
     }
 

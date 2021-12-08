@@ -2,59 +2,45 @@
 
 <!------------ CART ITEMS DETAILS ------------->
 
-<div class="small-container cart-page">
+<div class="small-container cart-page" style="margin-top: 15vh; margin-bottom: 8vh;">
     <table>
         <tr>
             <th>Product</th>
             <th>Quantity</th>
             <th>Subtotal</th>
         </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="<?= asset("/images/buy-1.jpg"); ?>">
-                    <div>
-                        <p>Printed Tshirt</p>
-                        <small>Price: $50.00</small>
-                        <br>
-                        <a href="">Remove</a>
+
+    <?php if (!empty($products)): ?>
+        <?php foreach ($products as $product): ?>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="
+                            <?php if (empty($product->ProductImage)) {
+                                echo asset("/images/no-product-image.png");
+                            } else {
+                                echo asset($product->ProductImage);
+                            } ?>
+                        ">
+                        <div>
+                            <p><?= $product->name; ?></p>
+                            <small>Price: $<?= $product->value; ?></small>
+                            <br>
+                            <a href="">Remove</a>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td><input type="number" value="1" /></td>
-            <td>$50.00</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="<?= asset("/images/buy-2.jpg"); ?>">
-                    <div>
-                        <p>Printed Tshirt</p>
-                        <small>Price: $75.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1" /></td>
-            <td>$75.00</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="<?= asset("/images/buy-3.jpg"); ?>">
-                    <div>
-                        <p>Printed Tshirt</p>
-                        <small>Price: $75.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1" /></td>
-            <td>$75.00</td>
-        </tr>
-    </table>
+                </td>
+                <td><input type="number" value="1" /></td>
+                <td>$<?= $product->value; ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </table>
+    <?php else: ?></table>
+        <div class="row">
+            <h2 class="title" style="margin-top: 15vh; margin-bottom: 17vh;">Your cart is empty!</h2>
+        </div>
+        </table>
+    <?php endif; ?>
 
     <div class="total-price">
         <table class="frete-class">
@@ -86,6 +72,5 @@
 
     <div style="margin-bottom: 170px;">
         <a href="<?= $router->route('checkout.selectAddress'); ?>" class="btn checkout-btn">Checkout</a>
-    </div>
-
+    </div>    
 </div>
