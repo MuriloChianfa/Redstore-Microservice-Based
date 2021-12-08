@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 define('SITE', [
     'name' => 'A loja virtual',

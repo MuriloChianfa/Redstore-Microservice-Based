@@ -35,7 +35,7 @@ class Checkout extends Controller
 
             return;
         }
-        
+
         $this->user = (json_decode($req['result']))->message;
     }
 
@@ -58,7 +58,7 @@ class Checkout extends Controller
         echo $this->view->render('theme/checkout/select-address', [
             'head' => $head,
             'userData' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 
@@ -74,7 +74,7 @@ class Checkout extends Controller
         echo $this->view->render('theme/checkout/pagseguro/payment-method', [
             'head' => $head,
             'userData' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 
@@ -90,7 +90,7 @@ class Checkout extends Controller
         echo $this->view->render('theme/checkout/pagseguro/methods/boleto', [
             'head' => $head,
             'userData' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 
@@ -106,7 +106,7 @@ class Checkout extends Controller
         echo $this->view->render('theme/checkout/pagseguro/methods/credit', [
             'head' => $head,
             'userData' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 
@@ -122,7 +122,7 @@ class Checkout extends Controller
         echo $this->view->render('theme/checkout/pagseguro/methods/debit', [
             'head' => $head,
             'userData' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 

@@ -7,7 +7,8 @@ class App extends Controller
     /** @var mixed */
     protected $user;
 
-    public function __construct($router) {
+    public function __construct($router)
+    {
         parent::__construct($router);
 
         if (empty(@$_SESSION["user"])) {
@@ -18,7 +19,8 @@ class App extends Controller
         $this->user = $_SESSION["user"];
     }
 
-    public function account(): void {
+    public function account(): void
+    {
         $head = $this->seo->optimize(
             "Bem vindo(a) a |" . site("name"),
             site("desc"),
@@ -34,22 +36,22 @@ class App extends Controller
                 "message" => "Ocorreu algum problema interno!"
             ]);
         }
-        
+
         $userData = (json_decode($req['result']))->message;
 
         echo $this->view->render("theme/account/account", [
             "head" => $head,
             "userData" => $userData,
             'userJWT' => $this->user,
-            'mainURL' => BASE_API 
+            'mainURL' => BASE_API
         ]);
     }
 
-    public function logoff(): void {
+    public function logoff(): void
+    {
         unset($_SESSION["user"]);
 
         flash("info", "Você saiu com sucesso, volte logo");
         $this->router->redirect("login.login");
     }
 }
-

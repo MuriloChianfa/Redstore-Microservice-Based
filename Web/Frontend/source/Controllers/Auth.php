@@ -2,17 +2,19 @@
 
 namespace Source\Controllers;
 
-use \Source\Support\Email;
-use \Source\Language\Locale;
-use \Source\Logger\Log;
+use Source\Support\Email;
+use Source\Language\Locale;
+use Source\Logger\Log;
 
 class Auth extends Controller
 {
-    public function __construct($router) {
+    public function __construct($router)
+    {
         parent::__construct($router);
     }
 
-    public function login($data): void {
+    public function login($data): void
+    {
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         $passwd = filter_var($data['password'], FILTER_DEFAULT);
 
@@ -70,7 +72,8 @@ class Auth extends Controller
         ]);
     }
 
-    public function register($data): void {
+    public function register($data): void
+    {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
         if (in_array('', $data) || empty($data)) {
             echo $this->ajaxResponse('message', [
@@ -115,7 +118,8 @@ class Auth extends Controller
         ]);
     }
 
-    public function forget($data): void {
+    public function forget($data): void
+    {
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         if (!$email) {
             echo $this->ajaxResponse('message', [
@@ -160,7 +164,8 @@ class Auth extends Controller
         ]);
     }
 
-    public function reset($data): void {
+    public function reset($data): void
+    {
         if (empty($_SESSION['forget']) || !$user = (new User())->findById($_SESSION['forget'])) {
             flash('error', 'Não foi possivel recuperar');
             echo $this->ajaxResponse('redirect', [
@@ -202,5 +207,3 @@ class Auth extends Controller
         ]);
     }
 }
-
-

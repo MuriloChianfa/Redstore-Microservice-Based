@@ -32,7 +32,7 @@ class Web extends Controller
 
                 return;
             }
-            
+
             $this->user = (json_decode($req['result']))->message;
         }
     }
@@ -78,11 +78,21 @@ class Web extends Controller
 
             if (isset($data['sort'])) {
                 switch ($data['sort']) {
-                    case 'value': $sort = 'value'; break;
-                    case 'rate': $sort = 'rate'; break;
-                    case 'views': $sort = 'rate'; break;
-                    case 'sales': $sort = 'id'; break;
-                    default: $sort = 'id'; break;
+                    case 'value':
+                        $sort = 'value';
+                        break;
+                    case 'rate':
+                        $sort = 'rate';
+                        break;
+                    case 'views':
+                        $sort = 'rate';
+                        break;
+                    case 'sales':
+                        $sort = 'id';
+                        break;
+                    default:
+                        $sort = 'id';
+                        break;
                 }
             }
         }
@@ -95,13 +105,17 @@ class Web extends Controller
         )->render();
 
         $req = callAPI("/products/{$page}/12/{$sort}/DESC", 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
+        if (isset($req['curl_error']) || $req['code'] != 200) {
+            error_log(json_encode($req));
+        }
 
         $products = (json_decode($req['result']))->message ?? [];
         $productsCount = (json_decode($req['result']))->count ?? 0;
 
         $lastpage = ceil($productsCount / 12);
-        if ($lastpage == 0) { $lastpage = 1; }
+        if ($lastpage == 0) {
+            $lastpage = 1;
+        }
 
         echo $this->view->render('theme/products/products', [
             'head' => $head,
@@ -130,12 +144,16 @@ class Web extends Controller
         }
 
         $req = callAPI("/product/{$data['id']}", 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
+        if (isset($req['curl_error']) || $req['code'] != 200) {
+            error_log(json_encode($req));
+        }
 
         $product = (json_decode($req['result']))->message;
 
         $req = callAPI("/products/1/4/rate/DESC/product_type_id/{$product->category->id}/{$product->id}", 'GET', [], $_SESSION['user'] ?? '');
-        if (isset($req['curl_error']) || $req['code'] != 200) { error_log(json_encode($req)); }
+        if (isset($req['curl_error']) || $req['code'] != 200) {
+            error_log(json_encode($req));
+        }
 
         $relatedProducts = (json_decode($req['result']))->message ?? [];
 

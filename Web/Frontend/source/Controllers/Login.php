@@ -4,16 +4,19 @@ namespace Source\Controllers;
 
 use Source\Models\User;
 
-class Login extends Controller {
-    public function __construct($router) {
+class Login extends Controller
+{
+    public function __construct($router)
+    {
         parent::__construct($router);
-        
+
         if (!empty($_SESSION["user"])) {
             $this->router->redirect("app.account");
         }
     }
 
-    public function loginn(): void {
+    public function loginn(): void
+    {
         $head = $this->seo->optimize(
             "Faça login para continuar |" . site("name"),
             site("desc"),
@@ -26,7 +29,8 @@ class Login extends Controller {
         ]);
     }
 
-    public function register(): void {
+    public function register(): void
+    {
         $head = $this->seo->optimize(
             "Crie sua conta no " . site("name"),
             site("desc"),
@@ -39,7 +43,8 @@ class Login extends Controller {
         ]);
     }
 
-    public function forget(): void {
+    public function forget(): void
+    {
         $head = $this->seo->optimize(
             "Recupere sua senha |" . site("name"),
             site("desc"),

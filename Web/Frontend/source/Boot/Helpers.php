@@ -5,7 +5,8 @@ if (!extension_loaded('curl')) {
     exit;
 }
 
-function site(string $param = null): string {
+function site(string $param = null): string
+{
     if ($param && !empty(SITE[$param])) {
         return SITE[$param];
     }
@@ -31,15 +32,18 @@ function url_back(string $path = null): string
     return ($_SERVER['HTTP_REFERER'] ?? url());
 }
 
-function routeImage(string $imageUrl): string {
+function routeImage(string $imageUrl): string
+{
     return "https://via.placeholder.com/1200x628/0984e3/FFFFFF?text={$imageUrl}";
 }
 
-function asset(string $path, $time = true): string {
+function asset(string $path, $time = true): string
+{
     return SITE['root'] . '/views/assets' . $path;
 }
 
-function flash(string $type = null, string $message = null): ?string {
+function flash(string $type = null, string $message = null): ?string
+{
     if ($type && $message) {
         $_SESSION['flash'] = [
             'type' => $type,
@@ -56,7 +60,8 @@ function flash(string $type = null, string $message = null): ?string {
     return null;
 }
 
-function productImage($product, int $index = 0) {
+function productImage($product, int $index = 0)
+{
     return (!empty($product->ProductImage[$index]->image)) ? $product->ProductImage[$index]->image : asset('/images/no-product-image.png');
 }
 
@@ -64,7 +69,8 @@ function productImage($product, int $index = 0) {
  * @param \Throwable $exception
  * @return void
  */
-function exceptionHandler($exception) {
+function exceptionHandler($exception)
+{
     $errorCode = @$exception->getCode();
     $errorMessage = @$exception->getMessage();
 
@@ -86,7 +92,8 @@ function exceptionHandler($exception) {
  * @param int $errline
  * @return void
  */
-function errorHandler($errno, $errstr, $errfile, $errline) {
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
     exceptionHandler(new ErrorException($errstr, 0, $errno, $errfile, $errline));
 }
 
@@ -165,8 +172,8 @@ function callAPI(string $url, string $method, $data = null, string $jwt = null)
     }
 
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method); // Definir metodo
-    
-    $resultado = curl_exec($curl); 
+
+    $resultado = curl_exec($curl);
     $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     $curlError = curl_error($curl);
 
@@ -182,7 +189,8 @@ function callAPI(string $url, string $method, $data = null, string $jwt = null)
     ];
 }
 
-function starRate(float $rate): string {
+function starRate(float $rate): string
+{
     if ($rate <= 0.4) {
         return '
             <i class="fa fa-star-o"></i>

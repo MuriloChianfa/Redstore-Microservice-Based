@@ -27,7 +27,7 @@ abstract class Locale
 
     /**
      * Lang default dir
-     * 
+     *
      * @var string $localeDir
      */
     private static $localeDir = __DIR__ . '/Translation';
@@ -37,17 +37,17 @@ abstract class Locale
      *
      * @return string
      */
-    public final static function getDefault(): string
+    final public static function getDefault(): string
     {
         return self::$defaultLocale;
     }
 
     /**
      * Set the default locale
-     * 
+     *
      * @return void
      */
-    private final static function setDefault(): void
+    final private static function setDefault(): void
     {
         self::$locale = self::$defaultLocale;
     }
@@ -57,7 +57,7 @@ abstract class Locale
      *
      * @return string
      */
-    public final static function get(): ?string
+    final public static function get(): ?string
     {
         return self::$locale;
     }
@@ -68,7 +68,7 @@ abstract class Locale
      * @param string $locale
      * @return void
      */
-    public final static function set($locale = null): void
+    final public static function set($locale = null): void
     {
         self::$locale = $locale;
     }
@@ -80,7 +80,7 @@ abstract class Locale
      * @param string $key
      * @return bool
      */
-    public final static function hasTranslation($locale, $key = null): bool
+    final public static function hasTranslation($locale, $key = null): bool
     {
         if (null == $key && isset(self::$translation[$locale])) {
             return true;
@@ -100,7 +100,7 @@ abstract class Locale
      * @param string $key
      * @return string|array
      */
-    public final static function getTranslation($locale, $key = null)
+    final public static function getTranslation($locale, $key = null)
     {
         if (null == $key && self::hasTranslation($locale)) {
             return self::$translation[$locale];
@@ -119,7 +119,7 @@ abstract class Locale
      * @param string $key
      * @return null|string
      */
-    public final static function getTranslationKey(string $key): ?string
+    final public static function getTranslationKey(string $key): ?string
     {
         if (self::hasTranslation(self::$locale, $key)) {
             return self::getTranslation(self::$locale, $key);
@@ -145,7 +145,7 @@ abstract class Locale
      * @param string $trans translations array
      * @return void
      */
-    private final static function setTranslation($locale, $trans = []): void
+    final private static function setTranslation($locale, $trans = []): void
     {
         self::$translation[$locale] = $trans;
     }
@@ -155,14 +155,14 @@ abstract class Locale
      *
      * @return void
      */
-    private final static function loadTranslation($locale = null, $force = false): void
+    final private static function loadTranslation($locale = null, $force = false): void
     {
         if ($locale == null) {
             $locale = self::$locale;
         }
 
         if (!self::hasTranslation($locale)) {
-            self::setTranslation($locale, include (sprintf('%s/%s.php', self::$localeDir, COUNTRY_TO_LANG[self::$locale])));
+            self::setTranslation($locale, include(sprintf('%s/%s.php', self::$localeDir, COUNTRY_TO_LANG[self::$locale])));
         }
     }
 
@@ -172,7 +172,7 @@ abstract class Locale
      * @param string $locale
      * @return void
      */
-    public final static function init($locale = null, $defaultLocale = null): void
+    final public static function init($locale = null, $defaultLocale = null): void
     {
         self::initLocale();
 
@@ -182,7 +182,7 @@ abstract class Locale
 
         if (
             $locale == null
-            || (!preg_match('#^[a-z]+_[a-zA-Z_]+$#', $locale) 
+            || (!preg_match('#^[a-z]+_[a-zA-Z_]+$#', $locale)
                 && !preg_match('#^[a-z]+_[a-zA-Z]+_[a-zA-Z_]+$#', $locale)
             )
         ) {
@@ -200,7 +200,7 @@ abstract class Locale
      *
      * @return void
      */
-    private final static function detectLocale(): void
+    final private static function detectLocale(): void
     {
         if (!function_exists('geoip_country_code_by_name')) {
             error_log('a funcao de GeoIP nao foi encontrada!');
@@ -231,7 +231,7 @@ abstract class Locale
      *
      * @return void
      */
-    private final static function initLocale(): void
+    final private static function initLocale(): void
     {
         if (null === self::$locale) {
             self::detectLocale();
@@ -250,7 +250,7 @@ abstract class Locale
      * @param string optional arguments
      * @return string
      */
-    public final static function translate($key): string
+    final public static function translate($key): string
     {
         self::init();
         self::loadTranslation(self::$locale);

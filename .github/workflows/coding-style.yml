@@ -27,10 +27,18 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
+    - name: Install dependencies to API
       working-directory: ./API/API
       run: composer install --prefer-dist --no-progress
 
-    - name: Run test suite
+    - name: Run test suite to API
       working-directory: ./API/API
+      run: composer run-script codingstyle
+
+    - name: Install dependencies to Web
+      working-directory: ./Web/Frontend
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run test suite to Web
+      working-directory: ./Web/Frontend
       run: composer run-script codingstyle
