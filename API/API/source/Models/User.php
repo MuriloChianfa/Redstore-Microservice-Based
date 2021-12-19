@@ -104,6 +104,7 @@ class User extends Model
 
             $this->update($this->safe(), "id = :id", "id={$userId}");
             if ($this->fail()) {
+                error_log(($this->fail())->getMessage());
                 $this->error = "Erro ao atualizar, verifique os dados";
                 return false;
             }
@@ -118,6 +119,7 @@ class User extends Model
 
             $userId = $this->create($this->safe());
             if ($this->fail()) {
+                error_log(($this->fail())->getMessage());
                 $this->error = "Erro ao cadastrar, verifique os dados";
                 return false;
             }

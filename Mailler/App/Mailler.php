@@ -6,56 +6,44 @@ declare(strict_types=1);
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 /* Remove the execution time limit */
-set_time_limit(0); 
+set_time_limit(0);
 
-if (isset($argv)) {
-    if (in_array('--debug', $argv)) {
-        $filename = pathinfo(__FILE__, PATHINFO_FILENAME);
-        openlog($filename, LOG_PID | LOG_PERROR, LOG_LOCAL0);
-    }
-}
+/* Set default time to UTC */
+date_default_timezone_set('UTC');
 
-require __DIR__ . '/vendor/autoload.php';
+$startMicrotime = microtime(true);
 
-/**
- * Listener
- */
-use Source\Listener;
-
-// Shutdown function
-function shutdown(): void
-{
-    \writeLog('Stoping E-mail Service...');
-
-    // Closing connection with syslog
-    if (isset($argv)) {
-        if (in_array('--debug', $argv)) {
-            closelog();
-        }
-    }
-
-    exit();
-}
+require_once __DIR__ . '/vendor/autoload.php';
 
 register_shutdown_function('shutdown');
 
-pcntl_signal(SIGINT, 'shutdown');
-pcntl_signal(SIGTERM, 'shutdown');
+if (extension_loaded('pcntl')) {
+    function catchSignals() { exit; }
 
-\writeLog('Starting E-mail Service...');
+    pcntl_signal(SIGINT,  'catchSignals');
+    pcntl_signal(SIGTERM, 'catchSignals');
+}
 
-do {
+set_exception_handler('exceptionHandler');
+
+use Source\Infra\Logger\Log;
+
+if (isset($argv) && in_array('--debug', $argv)) {
+    Log::init();
+}
+
+Log::info('Starting E-mail Service...');
+
+while (true) {
     try {
-        sleep(2);
-        $RabbitReceiver = new Listener(RABBITMQ_QUEUE, RABBITMQ_EXCHANGER);
-    } catch (\Throwable $exception) {
-        \writeLog($exception->getMessage());
+        Log::info('Initing listener...');
 
-        if (!empty($RabbitReceiver)) {
-            unset($RabbitReceiver);
-        }
-        
-        sleep(5);
-        continue;
+        new Source\Core\Listener(RABBITMQ_QUEUE, RABBITMQ_EXCHANGER);
     }
-} while (true);
+    catch (\Throwable $exception) {
+        Log::exception($exception);
+    }
+    finally {
+        sleep(5);
+    }
+}

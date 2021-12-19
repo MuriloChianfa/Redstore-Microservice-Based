@@ -1,10 +1,19 @@
 <?php
 
-namespace Source\Redis;
+declare(strict_types=1);
+
+namespace Source\Infra\Cache\Redis;
 
 use Predis\Client;
 use Predis\Autoloader;
 
+/**
+ * Redis class...
+ *
+ * @version 0.1.0
+ * @author Murilo Chianfa <github.com/MuriloChianfa>
+ * @package Source\Infra\Cache\Redis\Redis
+ */
 final class Redis
 {
     private $client;

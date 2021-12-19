@@ -1,56 +1,50 @@
 <?php
 
-namespace Source\RabbitMQ;
+declare(strict_types=1);
 
-require_once __DIR__ . "/../../vendor/autoload.php";
+namespace Source\Infra\Queue\RabbitMQ;
 
-/**
- * RabbitMQ lib.
- */
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 
-abstract class RabbitMQ // implements RabbitMQInterface
+use Source\Infra\Queue\RabbitMQ\RabbitMQInterface;
+
+/**
+ * RabbitMQ class...
+ * 
+ * @version 0.1.0
+ */
+abstract class RabbitMQ implements RabbitMQInterface
 {
     use RabbitTrait;
 
-    /**
-     * @var string $host
-     */
+    /** @var string $host */
     const HOST = RABBITMQ_HOST;
 
-    /**
-     * @var int $port
-     */
+    /** @var int $port */
     const PORT = RABBITMQ_PORT;
 
-    /**
-     * @var string $user
-     */
+    /** @var string $user */
     const USER = RABBITMQ_USER;
 
-    /**
-     * @var string $passwd
-     */
+    /** @var string $passwd */
     const PASSWD = RABBITMQ_PASS;
     
-    /**
-     * @var AMQPStreamConnection $connection
-     */
+    /** @var AMQPStreamConnection $connection */
     protected $connection;
 
-    /**
-     * @var object $channel
-     */
+    /** @var object $channel */
     protected $channel;
 
     /**
      * Declare the queue and exchanger of the your rabbitmq server
-     * @var string $queue
-     * @var string $exchanger
+     *
+     * @param string $queue
+     * @param string $exchanger
+     * @param bool $reply
      * @return self
      */
-    protected function getInstance(string $queue, string $exchanger, bool $reply = false): self
+    public function getInstance(string $queue, string $exchanger, bool $reply = false): self
     {
         // basic validation for the queue, valid by the trait
         $this->setQueue($queue);
@@ -75,8 +69,10 @@ abstract class RabbitMQ // implements RabbitMQInterface
 
     /**
      * Close the connection with the rabbitmq
+     *
+     * @return void
      */
-    protected function closeConnection()
+    public function closeConnection(): void
     {
         if (!empty($this->channel)) {
             $this->channel->close();
@@ -89,6 +85,8 @@ abstract class RabbitMQ // implements RabbitMQInterface
 
     /**
      * Close the connection with the rabbitmq
+     *
+     * @return void
      */
     public function __destruct()
     {

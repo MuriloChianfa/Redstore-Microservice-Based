@@ -1,18 +1,15 @@
 <?php
 
-namespace Source\Templates;
+declare(strict_types=1);
 
-/**
- * Exception
- */
-use Source\Exception\InvalidArgumentException;
+namespace Source\Domain\Templates;
 
 abstract class ConfirmEmail
 {
     public final static function bind(string $confirmURL = ''): string
     {
         if (empty($confirmURL)) {
-            throw new InvalidArgumentException('Please provide the confirmation URL');
+            throw new \InvalidArgumentException('Please provide the confirmation URL');
         }
 
         return '

@@ -1,24 +1,25 @@
 <?php
 
-namespace Source\Email;
+declare(strict_types=1);
+
+namespace Source\Domain\Email;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+use Source\Infra\Logger\Log;
+
 final class Email
 {
-    /**
-     * @var PHPMailer\PHPMailer\PHPMailer $mail
-     */
+    /** @var PHPMailer $mail */
     private $mail;
 
-    /**
-     * @var string $error
-     */
+    /** @var string $error */
     private $error;
 
     /**
      * @param array $MailAddress
+     * @param bool $html
      */
     public function __construct(array $MailAddress, bool $html = true)
     {
@@ -34,9 +35,7 @@ final class Email
         }
 
         $this->mail->setLanguage(CONF_MAIL_OPTION_LANG);
-
         $this->mail->CharSet = CONF_MAIL_OPTION_CHARSET;
-
         $this->setConfig();
 
         //Recipients
@@ -100,9 +99,9 @@ final class Email
             }
 
             return true;
-        } catch (\Exception $e) {
-            \writeLog($e->getMessage());
-            \writeLog($this->mail->ErrorInfo);
+        } catch (\Exception $exception) {
+            Log::exception($exception);
+            Log::debug($this->mail->ErrorInfo);
 
             $this->error = $this->mail->ErrorInfo;
             return false;

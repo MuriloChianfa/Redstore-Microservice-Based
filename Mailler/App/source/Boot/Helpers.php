@@ -1,10 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * ####################
- * ###   VALIDATE   ###
- * ####################
+ * Simple shutdown function
  */
+function shutdown()
+{
+    global $argv;
+    global $startMicrotime;
+
+    $endMicrotime = round((microtime(true) - $startMicrotime), 2);
+
+    $usedMemory    = round(memory_get_usage(false) / 1024);
+    $allocedMemory = round(memory_get_usage(true)  / 1024);
+
+    \Source\Infra\Logger\Log::debug("[*] Used memory: {$usedMemory}KB, Alocated memory: {$allocedMemory}KB");
+    \Source\Infra\Logger\Log::debug("[*] Execution time: {$endMicrotime}, Exiting...");
+
+    if (isset($argv) && in_array('--debug', $argv)) {
+        @closelog();
+    }
+
+    exit(0);
+}
+
+/**
+ * @param \Throwable $exception
+ * @return void
+ */
+function exceptionHandler($exception)
+{
+    \Source\Infra\Logger\Log::exception($exception);
+}
 
 /**
  * @param string $email
@@ -112,19 +140,6 @@ function str_limit_chars(string $string, int $limit, string $pointer = '...'): s
 }
 
 /**
- * @param string $text
- * @return string
- */
-function base64UrlEncode(string $text): string
-{
-    return str_replace(
-        ['+', '/', '='],
-        ['-', '_', ''],
-        base64_encode($text)
-    );
-}
-
-/**
  * ################
  * ###   DATE   ###
  * ################
@@ -165,14 +180,32 @@ function date_fmt_app(string $date = 'now'): string
  */
 
 /**
- * Write log on syslog
- * 
- * @param string $message
- * @return void
+ * Get log level name by number
+ *
+ * @param int $logLevel
+ * @return string
  */
-function writeLog(string $message): void
+function getLogLevelName(int $logLevel): string
 {
-    $message = "{$message}\n";
-    syslog(LOG_DEBUG, $message);
+    switch ($logLevel) {
+        case LOG_EMERG:
+            return 'LOG_EMERG';
+        case LOG_ALERT:
+            return 'LOG_ALERT';
+        case LOG_CRIT:
+            return 'LOG_CRIT';
+        case LOG_ERR:
+            return 'LOG_ERR';
+        case LOG_WARNING:
+            return 'LOG_WARNING';
+        case LOG_NOTICE:
+            return 'LOG_NOTICE';
+        case LOG_INFO:
+            return 'LOG_INFO';
+        case LOG_DEBUG:
+            return 'LOG_DEBUG';
+        default:
+            return 'UNRECOGNIZED';
+    }
 }
 

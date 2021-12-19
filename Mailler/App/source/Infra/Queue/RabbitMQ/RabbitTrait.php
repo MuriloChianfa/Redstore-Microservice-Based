@@ -1,47 +1,37 @@
 <?php
 
-namespace Source\RabbitMQ;
+declare(strict_types=1);
 
-/**
- * Exception.
- */
-use Source\Exception;
-use Source\Exception\InternalNameException;
+namespace Source\Infra\Queue\RabbitMQ;
 
 /**
  * The global trait to use in Rabbitmq classes
  */
 trait RabbitTrait
 {
-    /**
-     * @var string $queue
-     */
+    /** @var string $queue */
     private $queue;
 
-    /**
-     * @var string $exchanger
-     */
+    /** @var string $exchanger */
     private $exchanger;
 
-    /**
-     * @var bool $reply
-     */
+    /** @var bool $reply */
     private $reply;
 
     /**
-     * @var string $queue
+     * @param string $queue
      * @return self
      */
-    protected function setQueue(string $queue): self // Return yourself
+    protected function setQueue(string $queue): self
     {
         $queue = trim($queue);
 
         if (empty($queue)) {
-            throw new InternalNameException("Fila inválida!");
+            throw new \InvalidArgumentException("Fila inválida!");
         }
 
         if (!filter_var($queue)) {
-            throw new InternalNameException("Fila inválida!");
+            throw new \InvalidArgumentException("Fila inválida!");
         }
 
         $this->queue = $queue;
@@ -49,19 +39,19 @@ trait RabbitTrait
     }
 
     /**
-     * @var string $queue
+     * @param string $queue
      * @return self
      */
-    protected function setExchanger(string $exchanger): self // Return yourself
+    protected function setExchanger(string $exchanger): self
     {
         $exchanger = trim($exchanger);
 
         if (empty($exchanger)) {
-            throw new InternalNameException("Exchanger '{$exchanger}' inválido!");
+            throw new \InvalidArgumentException("Exchanger '{$exchanger}' inválido!");
         }
 
         if (!filter_var($exchanger)) {
-            throw new InternalNameException("Exchanger '{$exchanger}' inválido!");
+            throw new \InvalidArgumentException("Exchanger '{$exchanger}' inválido!");
         }
 
         $this->exchanger = $exchanger;
@@ -69,10 +59,10 @@ trait RabbitTrait
     }
 
     /**
-     * @var string $queue
+     * @param string $queue
      * @return self
      */
-    protected function setReply(bool $reply): self // Return yourself
+    protected function setReply(bool $reply): self
     {
         $this->reply = ($reply === true) ?? false;
 
@@ -82,7 +72,7 @@ trait RabbitTrait
     /**
      * @return null|string
      */
-    public function getQueue(): string
+    public function getQueue(): ?string
     {
         return $this->queue;
     }
@@ -90,7 +80,7 @@ trait RabbitTrait
     /**
      * @return null|string
      */
-    public function getExchanger(): string
+    public function getExchanger(): ?string
     {
         return $this->exchanger;
     }
@@ -98,7 +88,7 @@ trait RabbitTrait
     /**
      * @return null|bool
      */
-    public function getReply(): bool
+    public function getReply(): ?bool
     {
         return $this->reply;
     }

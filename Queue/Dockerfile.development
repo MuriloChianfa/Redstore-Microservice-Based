@@ -1,13 +1,21 @@
-FROM rabbitmq:3.8.14-alpine
+# Use fixed image to RabbitMQ
+FROM rabbitmq:3.9.11-management-alpine
 
-MAINTAINER Murilo Chianfa <github.com/murilochianfa>
+# Common labels
+LABEL maintainer="Murilo Chianfa <github.com/murilochianfa>"
+LABEL br.com.redstore.version="0.0.1-beta"
+LABEL br.com.redstore.version.is-production="no"
+LABEL br.com.redstore.release-date="2021-11-25"
+LABEL vendor="Redstore"
+
+# Queue port
+EXPOSE 5672
+
+# Web port
+EXPOSE 15672
 
 # installing curl
 RUN apk update && apk add curl
-
-RUN rabbitmq-plugins enable rabbitmq_management
-RUN rabbitmq-plugins enable rabbitmq_federation
-RUN rabbitmq-plugins enable rabbitmq_federation_management
 
 # set reference for conf file
 ADD rabbitmq.conf /etc/rabbitmq/

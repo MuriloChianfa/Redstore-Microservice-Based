@@ -1,5 +1,9 @@
 <?php
 
+define('VERSION', '0.1.0');
+define('VERSION_DATE', '2021-12-18 23:59');
+define('LOG_LEVEL', LOG_DEBUG);
+
 /**
  * RABBITMQ
  */

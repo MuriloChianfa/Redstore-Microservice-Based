@@ -1,19 +1,26 @@
 <?php
 
-namespace Source\RabbitMQ;
+declare(strict_types=1);
+
+namespace Source\Infra\Queue\RabbitMQ;
 
 use PhpAmqpLib\Wire\AMQPWriter;
 
 /**
  * The rabbit receiver will be listening infinitefor messages in your queue
- * 
- * the handler method can be overwrited by main class for handle the received messages
+ * Handler method can be overwrited by main class for handle the received messages
+ *
+ * @version 0.1.0
+ * @author Murilo Chianfa <github.com/MuriloChianfa>
+ * @package Source\Infra\Queue\RabbitMQ\RabbitMQ
  */
-abstract class RabbitReceiver extends RabbitMQ // implements Interface
+abstract class RabbitReceiver extends RabbitMQ
 {
     /**
      * The handler of the messages received from queue
-     * @var mixed $message Received from rabbitmq queue
+     *
+     * @param mixed $message Received from rabbitmq queue
+     * @return void
      */
     protected function handler($message)
     {
@@ -23,6 +30,8 @@ abstract class RabbitReceiver extends RabbitMQ // implements Interface
 
     /**
      * Infinite loop for listen the queue messages
+     *
+     * @return void
      */
     protected function consume()
     {
@@ -32,8 +41,11 @@ abstract class RabbitReceiver extends RabbitMQ // implements Interface
         $pid = pcntl_fork();
 
         if ($pid == -1) {
-            echo "can i help u ?";
-        } else if ($pid) {
+            echo 'annot fork consume proccess...';
+            return;
+        }
+
+        if ($pid) {
             while (true) {
                 $this->send_heartbeat();
                 sleep(10);
@@ -58,6 +70,7 @@ abstract class RabbitReceiver extends RabbitMQ // implements Interface
         $packet->write_short(0);
         $packet->write_long(0);
         $packet->write_octet(0xCE);
+
         $this->connection->getIO()->write($packet->getvalue());
     }
 }

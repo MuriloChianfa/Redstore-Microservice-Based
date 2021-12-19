@@ -145,6 +145,7 @@ services:
       context: ./Mailler
       dockerfile: Dockerfile.development
     image: murilochianfa/redstore-mailler:development
+    container_name: redstore-mailler
     hostname: mailler
     depends_on:
       - redstore-api
@@ -170,7 +171,7 @@ services:
       start_period: 20s
     deploy:
       mode: replicated
-      replicas: 4
+      replicas: 1
 
   redstore-web:
     build:
