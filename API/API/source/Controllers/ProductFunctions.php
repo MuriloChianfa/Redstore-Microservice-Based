@@ -17,7 +17,7 @@ trait ProductFunctions
             $this->Message->message = 'ID do produto inválido';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
         }
-    
+
         $id = filter_var($data['id'], FILTER_VALIDATE_INT);
 
         if (!$id) {
@@ -44,7 +44,7 @@ trait ProductFunctions
 
         $Product = new Product();
         $Product = $Product->findById($id, 'id');
-        
+
         if (is_null($Product)) {
             $this->Message->message = 'Produto não encontrado!';
             (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
@@ -56,7 +56,7 @@ trait ProductFunctions
     private function allProductsWithoutFilters($data)
     {
         if (!empty($data)) {
-            return; 
+            return;
         }
 
         if (is_null(($products = $Product->findAll()))) {
@@ -116,7 +116,7 @@ trait ProductFunctions
         if (empty($data['filterColumn'])) {
             return $Product->find();
         }
-        
+
         if (empty($data['selfId'])) {
             return $Product->find("{$data['filterColumn']} = {$data['filterValue']}");
         }
