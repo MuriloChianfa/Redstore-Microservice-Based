@@ -13,12 +13,20 @@ use Source\Models\Address\Address;
 use Source\Models\Address\City;
 use Source\Controllers\Auth;
 
+/**
+ * PhoneController class...
+ *
+ * @version 0.1.0
+ */
 final class PhoneController
 {
+    /** @var stdClass $Message */
     private $Message;
 
+    /** @var Request $Request */
     private $Request;
 
+    /** @var $token */
     private $token;
 
     public function __construct()
@@ -29,15 +37,12 @@ final class PhoneController
         $this->token = (new Auth())->validateLogin();
     }
 
+    /**
+     * @param $data
+     */
     public function addPhone($data)
     {
-        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-
-        if (empty($data)) {
-            $this->Message->message = 'Campos inválidos!';
-            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
-        }
+        $data = $this->validateData($data);
 
         $User = new User();
         /** @var Source\Models\User $User */
@@ -46,14 +51,9 @@ final class PhoneController
         if (!$User || $User == null) {
             $this->Message->message = 'Usuário não encontrado!';
             (new Response())->setStatusCode(HTTP_NOT_FOUND)->send($this->Message);
-            return;
         }
 
-        if (empty($data['number'])) {
-            $this->Message->message = 'Número de telefone inválido!';
-            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
-        }
+        $this->validateEmptyNumber($data);
 
         /** @var Source\Models\Phone $Phone */
         $Phone = new Phone();
@@ -64,23 +64,15 @@ final class PhoneController
         if (!$Phone->save()) {
             $this->Message->message = $User->message();
             (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
         }
 
         $this->Message->message = 'Alteração realizada com sucesso!';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-        return;
     }
 
     public function updatePhone($data)
     {
-        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-
-        if (empty($data)) {
-            $this->Message->message = 'Campos inválidos!';
-            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
-        }
+        $data = $this->validateData($data);
 
         $User = new User();
         $User = $User->findById($this->token['id'], 'id');
@@ -88,13 +80,11 @@ final class PhoneController
         if (!$User || $User == null) {
             $this->Message->message = 'Usuário não encontrado!';
             (new Response())->setStatusCode(HTTP_NOT_FOUND)->send($this->Message);
-            return;
         }
 
         if (!filter_var($data['id'], FILTER_VALIDATE_INT)) {
             $this->Message->message = 'Número de telefone inválido!';
             (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
         }
 
         $Phone = new Phone();
@@ -107,11 +97,7 @@ final class PhoneController
             return;
         }
 
-        if (empty($data['number'])) {
-            $this->Message->message = 'Número de telefone inválido!';
-            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
-            return;
-        }
+        $this->validateEmptyNumber($data);
 
         $Phone->phone_type_id = 1;
         $Phone->number = $data['number'];
@@ -125,5 +111,25 @@ final class PhoneController
         $this->Message->message = 'Alteração realizada com sucesso!';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
         return;
+    }
+
+    private function validateData($data)
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        if (empty($data)) {
+            $this->Message->message = 'Campos inválidos!';
+            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
+        }
+
+        return $data;
+    }
+
+    private function validateEmptyNumber($data)
+    {
+        if (empty($data['number'])) {
+            $this->Message->message = 'Número de telefone inválido!';
+            (new Response())->setStatusCode(HTTP_PARTIAL_CONTENT)->send($this->Message);
+        }
     }
 }

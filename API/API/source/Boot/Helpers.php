@@ -269,122 +269,51 @@ function passwd_rehash(string $hash): bool
  * ####################
  */
 
+/**
+ * @param int $statusCode
+ * @return string
+ */
 function handleStatusCode(int $statusCode): string
 {
-    switch ($statusCode) {
-        case 100:
-            return 'Continue';
-        break;
-        case 101:
-            return 'Switching Protocols';
-        break;
-        case 200:
-            return 'OK';
-        break;
-        case 201:
-            return 'Created';
-        break;
-        case 202:
-            return 'Accepted';
-        break;
-        case 203:
-            return 'Non-Authoritative Information';
-        break;
-        case 204:
-            return 'No Content';
-        break;
-        case 205:
-            return 'Reset Content';
-        break;
-        case 206:
-            return 'Partial Content';
-        break;
-        case 300:
-            return 'Multiple Choices';
-        break;
-        case 301:
-            return 'Moved Permanently';
-        break;
-        case 302:
-            return 'Moved Temporarily';
-        break;
-        case 303:
-            return 'See Other';
-        break;
-        case 304:
-            return 'Not Modified';
-        break;
-        case 305:
-            return 'Use Proxy';
-        break;
-        case 400:
-            return 'Bad Request';
-        break;
-        case 401:
-            return 'Unauthorized';
-        break;
-        case 402:
-            return 'Payment Required';
-        break;
-        case 403:
-            return 'Forbidden';
-        break;
-        case 404:
-            return 'Not Found';
-        break;
-        case 405:
-            return 'Method Not Allowed';
-        break;
-        case 406:
-            return 'Not Acceptable';
-        break;
-        case 407:
-            return 'Proxy Authentication Required';
-        break;
-        case 408:
-            return 'Request Time-out';
-        break;
-        case 409:
-            return 'Conflict';
-        break;
-        case 410:
-            return 'Gone';
-        break;
-        case 411:
-            return 'Length Required';
-        break;
-        case 412:
-            return 'Precondition Failed';
-        break;
-        case 413:
-            return 'Request Entity Too Large';
-        break;
-        case 414:
-            return 'Request-URI Too Large';
-        break;
-        case 415:
-            return 'Unsupported Media Type';
-        break;
-        case 500:
-            return 'Internal Server Error';
-        break;
-        case 501:
-            return 'Not Implemented';
-        break;
-        case 502:
-            return 'Bad Gateway';
-        break;
-        case 503:
-            return 'Service Unavailable';
-        break;
-        case 504:
-            return 'Gateway Time-out';
-        break;
-        case 505:
-            return 'HTTP Version not supported';
-        break;
-        default:
-            return 'unknown';
-        break;
-    }
+    $statsCodeHashTable = [
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Moved Temporarily',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Time-out',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Request Entity Too Large',
+        414 => 'Request-URI Too Large',
+        415 => 'Unsupported Media Type',
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Time-out',
+        505 => 'HTTP Version not supported'
+    ];
+
+    return $statsCodeHashTable[$statusCode] ?? 'Not Implemented';
 }

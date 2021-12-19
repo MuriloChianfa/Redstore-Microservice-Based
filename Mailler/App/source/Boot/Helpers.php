@@ -187,25 +187,17 @@ function date_fmt_app(string $date = 'now'): string
  */
 function getLogLevelName(int $logLevel): string
 {
-    switch ($logLevel) {
-        case LOG_EMERG:
-            return 'LOG_EMERG';
-        case LOG_ALERT:
-            return 'LOG_ALERT';
-        case LOG_CRIT:
-            return 'LOG_CRIT';
-        case LOG_ERR:
-            return 'LOG_ERR';
-        case LOG_WARNING:
-            return 'LOG_WARNING';
-        case LOG_NOTICE:
-            return 'LOG_NOTICE';
-        case LOG_INFO:
-            return 'LOG_INFO';
-        case LOG_DEBUG:
-            return 'LOG_DEBUG';
-        default:
-            return 'UNRECOGNIZED';
-    }
+    $logLevelHashTable = [
+        LOG_EMERG => 'LOG_EMERG',
+        LOG_ALERT => 'LOG_ALERT',
+        LOG_CRIT => 'LOG_CRIT',
+        LOG_ERR => 'LOG_ERR',
+        LOG_WARNING => 'LOG_WARNING',
+        LOG_NOTICE => 'LOG_NOTICE',
+        LOG_INFO => 'LOG_INFO',
+        LOG_DEBUG => 'LOG_DEBUG'
+    ];
+
+    return $logLevelHashTable[$logLevel] ?? 'UNRECOGNIZED';
 }
 
