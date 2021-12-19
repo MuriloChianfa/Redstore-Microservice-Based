@@ -24,6 +24,9 @@ LOCK TABLES phone_type WRITE;
 INSERT INTO phone_type (name) VALUES ('Movel'), ('Residencial');
 UNLOCK TABLES;
 
+INSERT INTO collection (name) VALUES ('Coleção de verão');
+INSERT INTO product_type (name) VALUES ('Camisas'), ('Sapatos'), ('Calças');
+
 LOCK TABLES state WRITE;
 INSERT INTO state (id, name, acronym) VALUES 
 (1, 'Acre', 'AC'),

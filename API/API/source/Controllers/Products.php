@@ -51,56 +51,13 @@ class Products
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        if (empty($data)) {
-            if (is_null(($products = $Product->findAll()))) {
-                (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
-            }
-
-            $this->Message->message = $products;
-            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-        }
-
-        if (!isset($data['page']) || !isset($data['limit'])) {
-            $this->Message->message = [
-                'message' => 'Missing page or limit argument'
-            ];
-
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
+        $this->allProductsWithoutFilters($data);
+        $this->validatePagination($data);
 
         $page = filter_var($data['page'], FILTER_VALIDATE_INT);
         $limit = filter_var($data['limit'], FILTER_VALIDATE_INT);
 
-        if (isset($data['order']) && isset($data['direction'])) {
-            if (!empty($data['filterColumn'])) {
-                if (!empty($data['selfId'])) {
-                    $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']} AND id != {$data['selfId']}");
-                } else {
-                    $find = $Product->find("{$data['filterColumn']} = {$data['filterValue']}");
-                }
-            } else {
-                $find = $Product->find();
-            }
-
-            $find = $find->order($data['order'] . ' ' . $data['direction']);
-            $find = $find->limit($limit);
-            $find = $find->offset(($page * $limit) - $limit);
-            $products = $find->fetch(true);
-
-            if (empty($products)) {
-                (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
-            }
-
-            foreach ($products as $key => $value) {
-                $products[$key] = $value->data();
-
-                $products[$key]->category = (new Category())->findById((int) $products[$key]->product_type_id)->data();
-                $products[$key]->ProductImage = (new ProductImage())->findAllByProductId((int) $products[$key]->id);
-            }
-
-            $this->Message->message = $products;
-            (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
-        }
+        $this->validateOrderAndDirection($data);
 
         if (is_null(($products = $Product->findAll($limit, ($page * $limit) - $limit)))) {
             (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
@@ -122,12 +79,7 @@ class Products
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        $id = filter_var(@$data["id"], FILTER_VALIDATE_INT);
-
-        if (!$id) {
-            $this->Message->message = 'parâmetro inválido';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
+        $id = $this->validateSingleProductId($data);
 
         $Product = new Product();
 
@@ -182,19 +134,6 @@ class Products
 
         $Product = new Product();
 
-        if (isset($data['id'])) {
-            $id = filter_var($data["id"], FILTER_VALIDATE_INT);
-
-            if (!$id) {
-                $this->Message->message = 'este produto não foi encontrado';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-
-            if (!is_null($Product->findById($id, 'id'))) {
-                $Product->id = $id;
-            }
-        }
-
         /** Criar produto */
         $Product->name = $name;
         $Product->value = $value;
@@ -223,57 +162,23 @@ class Products
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        $Product = new Product();
-
-        if (isset($data['id'])) {
-            $id = filter_var($data['id'], FILTER_VALIDATE_INT);
-
-            if (!$id) {
-                $this->Message->message = 'este produto não foi encontrado';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-
-            if (!is_null($Product->findById($id, 'id'))) {
-                $Product->id = $id;
-            }
-        }
+        $Product = $this->validateProductId($data);
 
         $ProductImage = new ProductImage();
-
         $imageName = md5(date('Y-m-dH:i:s', time()));
 
-        if (empty($data['image'])) {
-            $this->Message->message = 'imagem nao encontrada';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
+        $base64Image = $this->validateImageUpload($data);
 
-        $base64Image = $data['image'];
-
-        try {
-            $base64 = getimagesizefromstring(base64_decode(explode(',', $base64Image)[1]));
-        } catch (\Exception $e) {
-            $this->Message->message = 'imagem invalida';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
-
-        if (!$base64) {
-            $this->Message->message = 'imagem invalida';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
-
-        if (!empty($base64[0]) && !empty($base64[0]) && !empty($base64['mime'])) {
-            if (!in_array($base64['mime'], $this->validExtensions)) {
-                $this->Message->message = 'tipo de imagem invalida';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-        }
+        error_log($Product->id);
+        error_log($imageName);
+        // error_log($base64Image);
 
         $ProductImage->product_id = $Product->id;
         $ProductImage->url_slug = $imageName;
         $ProductImage->image = $base64Image;
 
         if (!$ProductImage->save()) {
-            $this->Message->message = $Product->message();
+            $this->Message->message = $ProductImage->message();
             (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
         }
 
@@ -323,17 +228,7 @@ class Products
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
-        if (!isset($data['id'])) {
-            $this->Message->message = 'ID do produto é requerido';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
-
-        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
-
-        if (!$id) {
-            $this->Message->message = 'parâmetro inválido';
-            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-        }
+        $id = $this->validateSingleProductId($data);
 
         if (is_null(($Product = $Product->findById($id, '*')))) {
             $this->Message->message = 'este produto não foi encontrado';
@@ -342,48 +237,26 @@ class Products
 
         $productData = &$Product->data();
 
-        if (isset($data["name"])) {
-            $name = filter_var(trim($data["name"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $fields = [
+            'name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'value' => FILTER_VALIDATE_FLOAT,
+            'description' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'available' => FILTER_VALIDATE_INT
+        ];
 
-            if (!$name) {
-                $this->Message->message = 'parâmetro inválido';
+        foreach ($fields as $key => $filter) {
+            if (!isset($data[$key])) {
+                continue;
+            }
+
+            $$key = filter_var(trim($data[$key]), $filter);
+
+            if (!$$key) {
+                $this->Message->message = "Parâmetro {$key} inválido!";
                 (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
             }
 
-            $productData->name = $name;
-        }
-
-        if (isset($data["value"])) {
-            $value = filter_var(trim($data["value"]), FILTER_VALIDATE_FLOAT);
-
-            if (!$value) {
-                $this->Message->message = 'parâmetro inválido';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-
-            $productData->value = $value;
-        }
-
-        if (isset($data["description"])) {
-            $description = filter_var($data["description"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            if (!$description) {
-                $this->Message->message = 'parâmetro inválido';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-
-            $productData->description = $description;
-        }
-
-        if (isset($data["available"])) {
-            $available = filter_var($data["available"], FILTER_VALIDATE_INT);
-
-            if (!$available) {
-                $this->Message->message = 'parâmetro inválido';
-                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
-            }
-
-            $productData->available = $available;
+            $productData->$key = $$key;
         }
 
         if (isset($data["product_type_id"])) {
@@ -411,5 +284,149 @@ class Products
 
         $this->Message->message = 'Produto atualizado com sucesso';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
+
+    private function validateSingleProductId($data)
+    {
+        if (empty($data['id'])) {
+            $this->Message->message = 'ID do produto inválido';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+    
+        $id = filter_var($data['id'], FILTER_VALIDATE_INT);
+
+        if (!$id) {
+            $this->Message->message = 'parâmetro inválido';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        return $id;
+    }
+
+    private function validateProductId($data)
+    {
+        if (!isset($data['id'])) {
+            $this->Message->message = 'Id do produto inválido!';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+        if (!$id) {
+            $this->Message->message = 'Id do produto inválido!';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        $Product = new Product();
+        $Product = $Product->findById($id, 'id');
+        
+        if (is_null($Product)) {
+            $this->Message->message = 'Produto não encontrado!';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        return $Product;
+    }
+
+    private function allProductsWithoutFilters($data)
+    {
+        if (!empty($data)) {
+            return; 
+        }
+
+        if (is_null(($products = $Product->findAll()))) {
+            (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
+        }
+
+        $this->Message->message = $products;
+        (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
+
+    private function validatePagination($data)
+    {
+        if (!isset($data['page']) || !isset($data['limit'])) {
+            $this->Message->message = [
+                'message' => 'Missing page or limit argument'
+            ];
+
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+    }
+
+    private function validateOrderAndDirection($data)
+    {
+        if (!isset($data['order']) || !isset($data['direction'])) {
+            return;
+        }
+
+        $page = filter_var($data['page'], FILTER_VALIDATE_INT);
+        $limit = filter_var($data['limit'], FILTER_VALIDATE_INT);
+
+        $find = $this->validateSearchFilters($data);
+
+        $find = $find->order($data['order'] . ' ' . $data['direction']);
+        $find = $find->limit($limit);
+        $find = $find->offset(($page * $limit) - $limit);
+        $products = $find->fetch(true);
+
+        if (empty($products)) {
+            (new Response())->setStatusCode(HTTP_NO_CONTENT)->send($this->Message);
+        }
+
+        foreach ($products as $key => $value) {
+            $products[$key] = $value->data();
+
+            $products[$key]->category = (new Category())->findById((int) $products[$key]->product_type_id)->data();
+            $products[$key]->ProductImage = (new ProductImage())->findAllByProductId((int) $products[$key]->id);
+        }
+
+        $this->Message->message = $products;
+        (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
+
+    private function validateSearchFilters($data)
+    {
+        $Product = new Product();
+
+        if (empty($data['filterColumn'])) {
+            return $Product->find();
+        }
+        
+        if (empty($data['selfId'])) {
+            return $Product->find("{$data['filterColumn']} = {$data['filterValue']}");
+        }
+
+        return $Product->find("{$data['filterColumn']} = {$data['filterValue']} AND id != {$data['selfId']}");
+    }
+
+    private function validateImageUpload($data)
+    {
+        if (empty($data['image'])) {
+            $this->Message->message = 'imagem nao encontrada';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        $base64Image = $data['image'];
+
+        try {
+            $base64 = getimagesizefromstring(base64_decode(explode(',', $base64Image)[1]));
+        } catch (\Exception $e) {
+            $this->Message->message = 'imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        if (!$base64) {
+            $this->Message->message = 'imagem invalida';
+            (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+        }
+
+        if (!empty($base64[0]) && !empty($base64[0]) && !empty($base64['mime'])) {
+            if (!in_array($base64['mime'], $this->validExtensions)) {
+                $this->Message->message = 'tipo de imagem invalida';
+                (new Response())->setStatusCode(HTTP_BAD_REQUEST)->send($this->Message);
+            }
+        }
+
+        return $base64Image;
     }
 }
