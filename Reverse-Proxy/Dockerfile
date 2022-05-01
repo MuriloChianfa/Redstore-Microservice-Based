@@ -1,5 +1,5 @@
 # From Nginx fixed version
-FROM nginx:1.20.0
+FROM macbre/nginx-http3
 
 # Common labels
 LABEL maintainer="Murilo Chianfa <github.com/murilochianfa>"
@@ -15,13 +15,13 @@ EXPOSE 80
 EXPOSE 443
 
 # Installing basic dependencies for load balancing
-RUN apt-get update && apt-get install \
-    -o Acquire::ForceIPv4=true -y \
-    net-tools \
-    dnsutils \
-    bash \
-    wget \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install \
+#     -o Acquire::ForceIPv4=true -y \
+#     net-tools \
+#     dnsutils \
+#     bash \
+#     wget \
+#     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add ssl
 RUN mkdir -p /etc/ssl/
