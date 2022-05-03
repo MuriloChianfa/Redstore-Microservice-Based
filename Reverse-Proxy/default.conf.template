@@ -12,6 +12,9 @@ server {
 
     server_name ${MAIN_IP};
 
+   	quic_retry on;
+    ssl_early_data on;
+
     # RSA certificate
     ssl_certificate /etc/ssl/ssl.crt;
     ssl_certificate_key /etc/ssl/ssl.key;
@@ -19,17 +22,14 @@ server {
     # Enable all TLS versions (TLSv1.3 is required for QUIC).
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
 
-    # 0-RTT QUIC connection resumption
-    ssl_early_data on;
-
     # Request buffering in not currently supported for HTTP/3.
-    # proxy_request_buffering off;
+    proxy_request_buffering off;
 
     # Add Alt-Svc header to negotiate HTTP/3.
     add_header alt-svc 'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400';
 
     # Sent when QUIC was used
-    # add_header QUIC-Status $quic;
+    add_header QUIC-Status $http3;
 
     include /etc/nginx/conf.d/proxy_params.conf;
 
