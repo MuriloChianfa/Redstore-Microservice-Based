@@ -19,7 +19,7 @@
                             <?php if (empty($product->ProductImage)) {
                                 echo asset("/images/no-product-image.png");
                             } else {
-                                echo asset($product->ProductImage);
+                                echo $product->ProductImage[0]->image;
                             } ?>
                         ">
                         <div>

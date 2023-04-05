@@ -237,17 +237,9 @@ services:
 
 networks:
   log-network:
-    name: redstore-log-network
-    driver: bridge
   queue-network:
-    name: redstore-queue-network
-    driver: bridge
   api-network:
-    name: redstore-api-network
-    driver: bridge
   cache-network:
-    name: redstore-cache-network
-    driver: bridge
 
 volumes:
   database:

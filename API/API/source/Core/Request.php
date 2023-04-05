@@ -19,12 +19,12 @@ final class Request
 
     public function getToken()
     {
-        if (!($token = $this->getRequestHeader('Authorization'))) {
+        if (!($token = $this->getRequestHeader('authorization'))) {
             $this->error = "require login";
             return false;
         }
 
-        $token = str_replace(['Bearer', ' '], '', $token['Authorization']);
+        $token = str_replace(['Bearer', ' '], '', $token['authorization']);
 
         return $token;
     }
