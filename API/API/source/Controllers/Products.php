@@ -6,8 +6,9 @@ use stdClass;
 use Source\Core\Request;
 use Source\Core\Response;
 use Source\Models\Product;
-use Source\Models\ProductImage;
 use Source\Models\Category;
+use Source\Models\ProductImage;
+use Source\Core\Rabbit\RabbitSender;
 use Source\Controllers\ProductFunctions;
 
 class Products
@@ -286,6 +287,21 @@ class Products
         }
 
         $this->Message->message = 'Produto atualizado com sucesso';
+        (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
+    }
+
+    public function checkoutSuccess()
+    {
+        (new Auth())->validateLogin();
+
+        (new RabbitSender('email', 'email'))->sendMessage(json_encode([
+            'type' => 'checkout',
+            'content' => [
+                'product_id' => 0
+            ]
+        ]));
+
+        $this->Message->message = 'Produto foi pedido com sucesso';
         (new Response())->setStatusCode(HTTP_OK)->send($this->Message);
     }
 }

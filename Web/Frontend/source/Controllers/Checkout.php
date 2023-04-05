@@ -135,7 +135,7 @@ class Checkout extends Controller
             routeImage('Checkout success')
         )->render();
 
-        // TODO: Adicionar na fila do rabbitmq um novo pedido pro microservico de email e vendas
+        $req = callAPI('/product-checkout', 'POST', null, $_SESSION['user']);
 
         echo $this->view->render('theme/checkout/success', [
             'head' => $head

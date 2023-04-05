@@ -41,6 +41,7 @@ $route->get('/product/{id}', 'Products:product');
 /** POST */ ## ADMIN AUTH REQUIRED
 $route->post('/product', 'Products:addProduct');
 $route->post('/product-image/{id}', 'Products:addProductImage');
+$route->post('/product-checkout', 'Products:checkoutSuccess');
 $route->delete('/product-image/{id}', 'Products:deleteProductImage');
 $route->patch('/product', 'Products:alterProduct');
 
